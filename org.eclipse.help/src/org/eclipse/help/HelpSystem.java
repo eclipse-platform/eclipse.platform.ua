@@ -44,7 +44,7 @@ public final class HelpSystem {
 	 * @return the context, or <code>null</code> if none
 	 */
 	public static IContext getContext(String contextId) {
-		return new ContextProxy(contextId);
+		return HelpPlugin.getContextManager().getContext(contextId);
 	}
 
 	/**

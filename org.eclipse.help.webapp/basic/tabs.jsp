@@ -20,7 +20,9 @@
 </head>
    
 <body bgcolor="#D4D0C8" text="#000000" link="#0000FF" vlink="#0000FF" alink="#0000FF">
-<b>
+	<table cellspacing='0' >
+	<tr>
+
 <%
 	for (int i=0; i<views.length; i++) 
 	{
@@ -30,22 +32,26 @@
 			title=WebappResources.getString("Search", request);
 		}
 %>
-	     <a  href='<%="view.jsp?view="+views[i].getName()%>' 
+		<td nowrap>
+		<b>
+		<a  href='<%="view.jsp?view="+views[i].getName()%>' > 
 	         <img alt="<%=title%>" 
 	              title="<%=title%>" 
-	              src="<%=views[i].getImageURL()%>"
-	         >
+	              src="<%=views[i].getImageURL()%>" border=0>
+	         
 	     <%=title%>
 	     </a>
 	     &nbsp;
+		</b>
+	     </td>
 <%
 	}
 %>
-</b>
-	<iframe name="liveHelpFrame" style="visibility:hidden" frameborder="no" width="0" height="0" scrolling="no">
-	<ilayer name="liveHelpFrame" style="visibility:hidden;width:0;height:0;" frameborder="no" width="0" height="0" scrolling="no"></ilayer>
+	</tr>
+	</table>
+	<iframe name="liveHelpFrame" frameborder="no" width="0" height="0" scrolling="no">
+	<layer name="liveHelpFrame" frameborder="no" width="0" height="0" scrolling="no"></ilayer>
 	</iframe>
-
 </body>
 </html>
 

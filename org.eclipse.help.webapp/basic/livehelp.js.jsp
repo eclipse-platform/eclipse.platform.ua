@@ -23,10 +23,16 @@ function liveActionInternal(topHelpWindow, pluginId, className, argument)
 
 	url=url.substring(0, i);
 	url=url+"livehelp/?pluginID="+pluginId+"&class="+className+"&arg="+escape(argument)+"&nocaching="+Math.random();
-	
-	
-	// to do
 
+	var tabsFrame = topHelpWindow.TabsFrame;
+	if (!tabsFrame){
+		return;
+	}
+	if(tabsFrame.liveHelpFrame){
+		tabsFrame.liveHelpFrame.location=url;
+	} else if(tabsFrame.document && tabsFrame.document.liveHelpFrame){
+		tabsFrame.document.liveHelpFrame.src=url;
+	}
 <%
 	}
 %>

@@ -39,7 +39,10 @@ function liveActionInternal(topHelpWindow, pluginId, className, argument)
 %>
 }
 function showTopicInContentsInternal(topHelpWindow, topic) {
-	topHelpWindow.HelpFrame.NavFrame.displayTocFor(topic);
+	try{
+		topHelpWindow.HelpFrame.NavFrame.displayTocFor(topic);
+	}catch(e){
+	}
 }
 
 </script>

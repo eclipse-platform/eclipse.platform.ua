@@ -37,7 +37,7 @@
 		<a id='a<%=i%>' 
 		   href='<%=bookmarks[i].getHref()%>' 
 		   title="<%=UrlUtil.htmlEncode(bookmarks[i].getLabel())%>">
-		   <img src="<%=prefs.getImagesDirectory()%>/bookmark_obj.gif">
+		   <img src="<%=prefs.getImagesDirectory()%>/bookmark_obj.gif" border=0>
 		   		<%=UrlUtil.htmlEncode(bookmarks[i].getLabel())%>
 		</a>
 	</td>

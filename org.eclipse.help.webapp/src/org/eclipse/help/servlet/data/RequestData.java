@@ -9,6 +9,7 @@ import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
+import org.eclipse.help.internal.HelpSystem;
 import org.eclipse.help.servlet.WebappPreferences;
 import org.w3c.dom.*;
 
@@ -16,6 +17,9 @@ import org.w3c.dom.*;
  * Helper class for contents.jsp initialization
  */
 public class RequestData {
+	public final static int MODE_WORBENCH = HelpSystem.MODE_WORBENCH;
+	public final static int MODE_INFOCENTER = HelpSystem.MODE_INFOCENTER;
+	public final static int MODE_STANDALONE = HelpSystem.MODE_STANDALONE;
 	protected ServletContext context;
 	protected HttpServletRequest request;
 	protected boolean isIE;
@@ -48,5 +52,8 @@ public class RequestData {
 	
 	public boolean isMozilla() {
 		return isMozilla;
+	}
+	public int getMode(){
+		return HelpSystem.getMode();
 	}
 }

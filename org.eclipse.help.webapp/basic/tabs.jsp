@@ -24,7 +24,11 @@
 <%
 	for (int i=0; i<views.length; i++) 
 	{
+		// search view is not called "advanced view"
 		String title = WebappResources.getString(views[i].getName(), request);
+		if("search".equals(views[i].getName())){
+			title=WebappResources.getString("Search", request);
+		}
 %>
 	     <a  href='<%="view.jsp?view="+views[i].getName()%>' 
 	         <img alt="<%=title%>" 
@@ -38,6 +42,10 @@
 	}
 %>
 </b>
+	<iframe name="liveHelpFrame" style="visibility:hidden" frameborder="no" width="0" height="0" scrolling="no">
+	<ilayer name="liveHelpFrame" style="visibility:hidden;width:0;height:0;" frameborder="no" width="0" height="0" scrolling="no"></ilayer>
+	</iframe>
+
 </body>
 </html>
 

@@ -18,9 +18,16 @@
 </head>
  
 <body bgcolor="#D4D0C8" text="#000000">
-	<b><%=data.getTitle()%></b>
-    <iframe name="liveHelpFrame" frameborder="no" width="0" height="0" scrolling="no">
-    </iframe>
+<%
+	String title=data.getTitle();
+	// search view is not called "advanced view"
+	if("search".equals(request.getParameter("view"))){
+		title=WebappResources.getString("Search", request);
+	}
+	%>
+	<b>
+	<%=title%>
+	</b>
 
 </body>     
 </html>

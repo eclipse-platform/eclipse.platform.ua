@@ -89,8 +89,8 @@ public class SearchServlet extends HttpServlet {
 		} finally {
 			if (hits == null)
 				hits = new SearchHit[0];
-			return hits;
 		}
+		return hits;
 	}
 
 	private ISearchQuery createSearchQuery(HttpServletRequest request) {

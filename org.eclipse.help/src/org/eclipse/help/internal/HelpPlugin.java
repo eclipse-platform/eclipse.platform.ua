@@ -17,11 +17,8 @@ public class HelpPlugin extends Plugin {
 	public final static String PLUGIN_ID = "org.eclipse.help";
 	// debug options
 	public static boolean DEBUG = false;
-	public static boolean DEBUG_CONSOLELOG = false;
 	public static boolean DEBUG_CONTEXT = false;
 	public static boolean DEBUG_PROTOCOLS = false;
-	public static boolean DEBUG_SEARCH = false;
-
 	protected static HelpPlugin plugin;
 	/** 
 	 * Logs an Error message with an exception. Note that the message should already 
@@ -97,7 +94,7 @@ public class HelpPlugin extends Plugin {
 	 *   this plug-in 
 	 */
 	public void shutdown() throws CoreException {
-		HelpSystem.shutdown();
+		HelpCore.shutdown();
 	}
 	/**
 	 * Starts up this plug-in.
@@ -134,31 +131,10 @@ public class HelpPlugin extends Plugin {
 		// Setup debugging options
 		DEBUG = isDebugging();
 		if (DEBUG) {
-			DEBUG_CONSOLELOG = "true".equalsIgnoreCase(Platform.getDebugOption("org.eclipse.help/debug/consolelog")); //$NON-NLS-1$
 			DEBUG_CONTEXT = "true".equalsIgnoreCase(Platform.getDebugOption("org.eclipse.help/debug/context")); //$NON-NLS-1$
 			DEBUG_PROTOCOLS = "true".equalsIgnoreCase(Platform.getDebugOption("org.eclipse.help/debug/protocols")); //$NON-NLS-1$
-			DEBUG_SEARCH = "true".equalsIgnoreCase(Platform.getDebugOption("org.eclipse.help/debug/search")); //$NON-NLS-1$
 		}
 
-		HelpSystem.startup();
-	}
-
-	/**
-	* Initializes the default preferences settings for this plug-in.
-	* 
-	* @since 2.0
-	*/
-	protected void initializeDefaultPluginPreferences() {
-		Preferences prefs = getPluginPreferences();
-
-		String os = System.getProperty("os.name").toLowerCase();
-		boolean isWindows = os.indexOf("windows") != -1;
-
-		if (isWindows)
-			prefs.setDefault(
-				"custom_browser_path",
-				"\"C:\\Program Files\\Internet Explorer\\IEXPLORE.EXE\" %1");
-		else
-			prefs.setDefault("custom_browser_path", "mozilla %1");
+		HelpCore.startup();
 	}
 }

@@ -332,7 +332,7 @@ public class SearchData extends RequestData {
 			return new WorkingSet[0];
 		}
 		if (scopes.length
-			== HelpSystem.getTocManager().getTocs(getLocale()).length) {
+			== HelpCore.getTocManager().getTocs(getLocale()).length) {
 			// do not filter if all books are selected
 			return null;
 		}

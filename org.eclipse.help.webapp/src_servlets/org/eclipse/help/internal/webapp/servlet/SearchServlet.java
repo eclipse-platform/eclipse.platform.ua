@@ -168,7 +168,7 @@ public class SearchServlet extends HttpServlet {
 			return new WorkingSet[0];
 		}
 		if (scopes.length
-			== HelpSystem.getTocManager().getTocs(locale).length) {
+			== HelpCore.getTocManager().getTocs(locale).length) {
 			// do not filter if all books are selected
 			return null;
 		}

@@ -13,7 +13,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.eclipse.help.*;
-import org.eclipse.help.internal.HelpSystem;
+import org.eclipse.help.internal.HelpCore;
 
 /**
  * Helper class for linksView.jsp initialization
@@ -83,7 +83,7 @@ public class LinksData extends RequestData {
 	 * or within a scope if specified
 	 */
 	private IToc findTocForTopic(String href) {
-		IToc[] tocs = HelpSystem.getTocManager().getTocs(getLocale());
+		IToc[] tocs = HelpCore.getTocManager().getTocs(getLocale());
 		for (int i = 0; i < tocs.length; i++) {
 			ITopic topic = tocs[i].getTopic(href);
 			if (topic != null)
@@ -95,7 +95,7 @@ public class LinksData extends RequestData {
 	private void loadLinks() {
 
 		String contextId = request.getParameter("contextId");
-		IContext context = HelpSystem.getContextManager().getContext(contextId);
+		IContext context = HelpCore.getContextManager().getContext(contextId);
 		if (context == null) {
 			links = new IHelpResource[0];
 			return;

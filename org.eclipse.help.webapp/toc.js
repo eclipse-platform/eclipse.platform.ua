@@ -11,6 +11,7 @@ var isIE50 = navigator.userAgent.indexOf('MSIE 5.0') != -1;
 
 var tocTitle = "";
 var oldActive;
+var oldActiveClass = "";
 
 
 // Preload images
@@ -285,10 +286,11 @@ function highlightTopic(topic)
   	if (a != null)
   	{
   	  	parent.parent.setToolbarTitle(tocTitle);
-  	  	if (oldActive && oldActive != a) 
-  	  		oldActive.className = "";
+  	  	if (oldActive) 
+  	  		oldActive.className = oldActiveClass;
 
   		oldActive = a;
+  		oldActiveClass = a.className;
   		a.className = "active";
   
   		//if (isIE)
@@ -312,6 +314,22 @@ function selectTopic(topic)
 			scrollIntoView(links[i]);
 			return true;
 		}
+	}
+	return false;
+}
+
+/**
+ * Selects a topic in the tree: expand tree and highlight it
+ */
+function selectTopicById(id)
+{
+	var topic = document.getElementById(id);
+	if (topic)
+	{
+		expandPathTo(topic);
+		highlightTopic(topic);
+		scrollIntoView(topic);
+		return true;
 	}
 	return false;
 }

@@ -166,12 +166,6 @@ public class ContentsData {
 	 * @throws IOException
 	 */
 	public void generateToc(Element toc, Writer out) throws IOException {
-		// Only generate the selected toc
-		if (getSelectedToc() == null)
-			return;
-		if (!getSelectedToc().getAttribute("href").equals(toc.getAttribute("href")))
-			return;
-
 		// load the toc first
 		if (loadSelectedToc() == null)
 			return;

@@ -81,9 +81,6 @@ A.active:hover{
 	width:100%;
 }
   
-.book {
-	font-weight: bold;
-}
    
 </style>  
     
@@ -116,14 +113,23 @@ function loadTOC(tocId)
 	<ul class='expanded' id='root'>
 <%
 	ContentsData contents = new ContentsData(application, request);
+	Element selectedToc = contents.getSelectedToc();
+	String id = "";
 	Element[] tocs = contents.getTocs();
 	for (int i=0; i<tocs.length; i++) 
 	{
 %>
 		<li>
-		<nobr><img id="book" src="images/toc_obj.gif"><a class='book' href="<%=contents.getTocDescriptionTopic(tocs[i])%>" onclick='loadTOC("<%=contents.getTocHref(tocs[i])%>")'><%=contents.getTocLabel(tocs[i])%></a></nobr>
+		<nobr><img src="images/toc_obj.gif"><a id="b<%=i%>" style="font-weight: bold;" href="<%=contents.getTocDescriptionTopic(tocs[i])%>" onclick='loadTOC("<%=contents.getTocHref(tocs[i])%>")'><%=contents.getTocLabel(tocs[i])%></a></nobr>
 <%
+		// Only generate the selected toc
+		if (selectedToc == null)
+			continue;
+		if (!selectedToc.getAttribute("href").equals(tocs[i].getAttribute("href")))
+			continue;
 		contents.generateToc(tocs[i], out);
+		// keep track of the selected toc id
+		id = "b"+i;
 %>
 		</li>	
 <%
@@ -133,7 +139,7 @@ function loadTOC(tocId)
 	</ul>
 
 <%
-	if (false) //(contents.getSelectedToc() != null)
+	if (contents.getSelectedToc() != null)
 	{
 %>
 <script language="JavaScript">
@@ -143,7 +149,6 @@ function loadTOC(tocId)
 		
 	// select specified topic, or else the book
 	var topic = '<%=contents.getSelectedTopic()%>';
-	alert(topic)
 	if (topic != "about:blank")
 	{
 		if (topic.indexOf(window.location.protocol) != 0)
@@ -151,10 +156,7 @@ function loadTOC(tocId)
 		selectTopic(topic);
 	}
 	else
-	{
-		topic = window.location.protocol + "//" +window.location.host +"<%=request.getContextPath()%>" + "/home.jsp?title=" + ""<%=UrlUtil.encode(contents.getTocLabel(contents.getSelectedToc()))%>"";
-		alert(topic)
-		parent.parent.MainFrame.location = topic;
+		selectTopicById("<%=id%>");
 
 </script>
 

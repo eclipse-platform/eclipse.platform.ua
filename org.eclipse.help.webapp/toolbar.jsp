@@ -5,7 +5,7 @@
 <%@ include file="header.jsp"%>
 
 <% 
-	RequestData data = new RequestData(application,request);
+	ToolbarData data = new ToolbarData(application,request);
 	WebappPreferences prefs = data.getPrefs();
 %>
 
@@ -64,47 +64,6 @@ var isMozilla = navigator.userAgent.indexOf('Mozilla') != -1 && parseInt(navigat
 var isIE = navigator.userAgent.indexOf('MSIE') != -1;
 
 var navVisible = true;
-	
-function goBack(button) {
-	parent.history.back();
-	if (isIE && button) button.blur();
-}
-
-function goForward(button) {
-	parent.history.forward();
-	if (isIE && button) button.blur();
-}
-
-
-function bookmarkPage(button)
-{
-	// Currently we pick up the url from the content page.
-	// If the page is from outside the help domain, a script
-	// exception is thrown. We need to catch it and ignore it.
-	try
-	{
-		/********** HARD CODED VIEW NAME *************/
-		parent.parent.NavFrame.showView("bookmarks");
-		
-		// use the url from plugin id only
-		var url = parent.ContentViewFrame.location.href;
-		var i = url.indexOf("content/help:/");
-		if (i >=0 )
-			url = url.substring(i+13);
-		// remove any query string
-		i = url.indexOf("?");
-		if (i >= 0)
-			url = url.substring(0, i);
-			
-		var title = parent.ContentViewFrame.document.title;
-		if (title == null || title == "")
-			title = url;
-			
-		parent.parent.NavFrame.ViewsFrame.bookmarks.location.replace("bookmarks.jsp?add="+url+"&title="+escape(title));
-	}catch (e) {}
-	if (isIE && button) button.blur();
-
-}
 
 function toggleNav(button)
 {
@@ -126,31 +85,6 @@ function toggleNav(button)
 	if (isIE && button) button.blur();
 }
 
-
-function resynch(button)
-{
-	try
-	{
-		var topic = parent.ContentViewFrame.window.location.href;
-		// remove the query, if any
-		var i = topic.indexOf('?');
-		if (i != -1)
-			topic = topic.substring(0, i);
-		parent.parent.NavFrame.displayTocFor(topic);
-	}
-	catch(e)
-	{
-	}
-	if (isIE && button) button.blur();
-}
-
-function printContent(button)
-{
-	parent.ContentFrame.focus();
-	print();
-	if (isIE && button) button.blur();
-}
-
 function setTitle(label)
 {
 	if( label == null) label = "";
@@ -158,7 +92,6 @@ function setTitle(label)
 	var text = title.lastChild;
 	text.nodeValue = " "+label;
 }
-
 
 </script>
 
@@ -190,36 +123,35 @@ function setTitle(label)
 				<td>
 					&nbsp;
 				</td>
-				<td align="middle" width="22">
-					<a href="#" onclick="goBack(this);" onmouseover="window.status='<%=WebappResources.getString("back_tip", request)%>';return true;" onmouseout="window.status='';"><img src="<%=prefs.getImagesDirectory()%>/back.gif" alt='<%=WebappResources.getString("back_tip", request)%>' border="0" name="back"></a>
-				</td>
-				<td align="middle" width="22">
-					<a href="#" onclick="goForward(this);" onmouseover="window.status='<%=WebappResources.getString("forward_tip", request)%>';return true;" onmouseout="window.status='';"><img src="<%=prefs.getImagesDirectory()%>/forward.gif" alt='<%=WebappResources.getString("forward_tip", request)%>' border="0" name="forward"></a>
-				</td>
+<%
+	ToolbarButton[] buttons = data.getButtons();
+	for (int i=0; i<buttons.length; i++) {
+		if (buttons[i].isSeparator()) {
+%>
 				<td align="middle" valign="middle" width="9">
 				<!--
 					<img width="1" height=18 src="<%=prefs.getImagesDirectory()%>/tool_separator.gif" alt='' border="0">
 				-->
 				</td>
-				<td id="hide_nav" align="middle" width="22">
-					<a href="#" onclick="toggleNav(this);" onmouseover="window.status='<%=WebappResources.getString("Toggle", request)%>';return true;" onmouseout="window.status='';"><img src="<%=prefs.getImagesDirectory()%>/hide_nav.gif" alt='<%=WebappResources.getString("Toggle", request)%>' border="0" name="hide_nav"></a>
-				</td>
-				<td align="middle" width="22">
-					<a  href="#" onclick="resynch(this);" onmouseover="window.status= '<%=WebappResources.getString("Synch", request)%>'; return true;" onmouseout="window.status='';"><img src="<%=prefs.getImagesDirectory()%>/synch_toc_nav.gif" alt='<%=WebappResources.getString("Synch", request)%>' border="0" name="sync_nav"></a>
-				</td>
 <%
-	if (prefs.isBookmarksView()) 
-	{
+		} else {
 %>
-				<td id="bookmark" align="middle" width="22">
-					<a href="#" onclick="bookmarkPage(this)" onmouseover="window.status='<%=WebappResources.getString("BookmarkPage", request)%>';return true;" onmouseout="window.status='';"><img src="<%=prefs.getImagesDirectory()%>/bookmark_obj.gif" alt='<%=WebappResources.getString("BookmarkPage", request)%>' border="0" name="bookmark"></a>
+				<script language="JavaScript" src="<%=buttons[i].getScript()%>"></script>
+				<td align="middle" width="22">
+					<a href="#" 
+					   onclick="<%=buttons[i].getAction()%>(this);" 
+					   onmouseover="window.status='<%=buttons[i].getTooltip()%>';return true;" 
+					   onmouseout="window.status='';">
+					   <img src="<%=buttons[i].getImage()%>" 
+					        alt='<%=buttons[i].getTooltip()%>' 
+					        border="0" 
+					        name="<%=buttons[i].getName()%>">
+					</a>
 				</td>
 <%
+		}
 	}
 %>
-				<td align="middle" width="22">
-					<a  href="#" onclick="printContent(this);" onmouseover="window.status='<%=WebappResources.getString("Print", request)%>' ;return true;"  onmouseout="window.status='';"><img  src="<%=prefs.getImagesDirectory()%>/print_edit.gif" alt='<%=WebappResources.getString("Print", request)%>' border="0" name="print"></a>
-				</td>
 			</tr>
 		</table>
 	</div>	

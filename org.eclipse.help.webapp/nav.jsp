@@ -20,12 +20,22 @@ var isMozilla10 = isMozilla && navigator.userAgent.indexOf('rv:1') != -1;
 var isIE = navigator.userAgent.indexOf('MSIE') != -1;
 
 /**
- * Views can call this to set the title on the main toolbar
+ * Views can call this to set the title on the content toolbar
  */
-function setToolbarTitle(title)
+function setContentToolbarTitle(title)
 {
 	if(parent.ContentFrame.ToolbarFrame && parent.ContentFrame.ToolbarFrame.setTitle ){
 		parent.ContentFrame.ToolbarFrame.setTitle(title);
+	}
+}
+
+/**
+ * Views can call this to set the title on the navigation toolbar
+ */
+function setNavToolbarTitle(title)
+{
+	if(ToolbarFrame && ToolbarFrame.setTitle ){
+		ToolbarFrame.setTitle(title);
 	}
 }
 

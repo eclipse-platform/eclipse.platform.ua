@@ -76,7 +76,7 @@ function removeBookmark()
 	<td align='left' class='label' nowrap>
 		<a id='a<%=i%>' 
 		   href='<%=bookmarks[i].getHref()%>' 
-		   onclick='parent.parent.setToolbarTitle(" ")' 
+		   onclick='parent.parent.setContentToolbarTitle(" ")' 
 		   oncontextmenu="contextMenuHandler(event);return false;"
 		   title="<%=UrlUtil.htmlEncode(bookmarks[i].getLabel())%>">
 		   <img src="<%=prefs.getImagesDirectory()%>/bookmark_obj.gif">

@@ -49,7 +49,7 @@ if(!data.isLinksRequest()) {
 	<td align='left' class='label' nowrap>
 		<a id='a<%=i%>' 
 		   href='<%=links[i].getHref()%>' 
-		   onclick='parent.parent.setToolbarTitle("<%=UrlUtil.JavaScriptEncode(links[i].getTocLabel())%>")' 
+		   onclick='parent.parent.setContentToolbarTitle("<%=UrlUtil.JavaScriptEncode(links[i].getTocLabel())%>")' 
 		   title="<%=UrlUtil.htmlEncode(links[i].getTocLabel())%>">
 		   <img src="<%=prefs.getImagesDirectory()%>/topic.gif">
 		   <%=UrlUtil.htmlEncode(links[i].getLabel())%>

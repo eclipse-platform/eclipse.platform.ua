@@ -80,7 +80,7 @@ function showView(view)
 	lastView = view;
 	
 	// set the title on the navigation toolbar to match the tab
-  	parent.ToolbarFrame.document.getElementById("titleText").innerHTML = titleArray[view];
+  	parent.setNavToolbarTitle(titleArray[view]);
        	
 	// show appropriate frame
  	var iframes = parent.ViewsFrame.document.body.getElementsByTagName("IFRAME");

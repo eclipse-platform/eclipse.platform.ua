@@ -61,7 +61,7 @@ function onloadHandler()
 	tocTitle = '<%=UrlUtil.JavaScriptEncode(data.getTocLabel(data.getSelectedToc()))%>';
 	
 	// set title on the content toolbar
-	parent.parent.setToolbarTitle(tocTitle);
+	parent.parent.setContentToolbarTitle(tocTitle);
 		
 	// select specified topic, or else the book
 	var topic = '<%=data.getSelectedTopic()%>';

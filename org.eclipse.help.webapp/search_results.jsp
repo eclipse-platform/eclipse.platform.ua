@@ -82,7 +82,7 @@ setTimeout('refresh()', 2000);
 	<td align='left' class='label' nowrap>
 		<a id='a<%=i%>' 
 		   href='<%=hits[i].getHref()%>' 
-		   onclick='parent.parent.setToolbarTitle("<%=UrlUtil.JavaScriptEncode(hits[i].getTocLabel())%>")' 
+		   onclick='parent.parent.setContentToolbarTitle("<%=UrlUtil.JavaScriptEncode(hits[i].getTocLabel())%>")' 
 		   title="<%=UrlUtil.htmlEncode(hits[i].getTocLabel())%>">
 		   <%=UrlUtil.htmlEncode(hits[i].getLabel())%>
 		 </a>

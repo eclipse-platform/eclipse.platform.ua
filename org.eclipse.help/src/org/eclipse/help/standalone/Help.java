@@ -4,7 +4,10 @@
  */
 package org.eclipse.help.standalone;
 
+import java.io.File;
 import java.util.*;
+
+import org.eclipse.help.internal.standalone.StandaloneHelp;
 
 /**
  * This is a standalone help system. It takes care of 
@@ -22,16 +25,8 @@ import java.util.*;
  * <li> at the end, call shutdown(). </li>
  * </ul>
  */
-public class Help extends Infocenter {
-	// timout for .hostport file to apper since starting eclipse [ms]
-	private static final int STARTUP_TIMEOUT = 30 * 1000;
-	// number of retries to connectect to webapp
-	private static final int CONNECTION_RERIES = 2;
-	// time between retries to connectect to webapp [ms]
-	private static final int CONNECTION_RETRY_INTERVAL = 5 * 1000;
-	// ID of the application to run
-	private static final String HELP_APPLICATION_ID =
-		"org.eclipse.help.helpApplication";
+public class Help {
+	private StandaloneHelp help;
 	/**
 	* Constructs help system
 	* @param options array of String options and their values
@@ -42,11 +37,50 @@ public class Help extends Infocenter {
 	*  Additionally, most options accepted by Eclipse execuable are supported.
 	*/
 	public Help(List options) {
-		super(options, HELP_APPLICATION_ID);
-		startupTimeout = STARTUP_TIMEOUT;
-		connectionRetries = CONNECTION_RERIES;
-		connectionRetryInterval = CONNECTION_RETRY_INTERVAL;
+		help = new StandaloneHelp(options);
 	}
+	/**
+	 * This contstructs the stand alone help.
+	 * @param pluginsDir directory containing Eclipse plugins
+	 */
+	public Help(String pluginsDir) {
+		File plugins = new File(pluginsDir);
+		String install = plugins.getParent();
+		ArrayList options = new ArrayList(2);
+		if (install != null) {
+			options = new ArrayList(2);
+			options.add("-eclipseHome");
+			options.add(install);
+		}
+		help = new StandaloneHelp(options);
+	}
+	/**
+	 * Starts the infocenter application.
+	 */
+	public void start() {
+		help.start();
+	}
+	/**
+	 * Shuts-down the infocenter application.
+	 */
+	public void shutdown() {
+		help.shutdown();
+	}
+	/**
+	 * Displays help.
+	 */
+	public void displayHelp() {
+		help.displayHelp();
+	}
+
+	/**
+	 * Displays specified help resource.
+	 * @param href the href of the table of contents
+	 */
+	public void displayHelp(String href) {
+		help.displayHelp(href);
+	}
+
 	/**
 	 * Displays context sensitive help.
 	 * @param contextId context id
@@ -54,6 +88,7 @@ public class Help extends Infocenter {
 	 * @param y y coordinate
 	 */
 	public void displayContext(String contextId, int x, int y) {
+		help.displayContext(contextId, x, y);
 	}
 
 	/**
@@ -63,20 +98,7 @@ public class Help extends Infocenter {
 	 * @param y y coordinate
 	 */
 	public void displayContextInfopop(String contextId, int x, int y) {
-	}
-	/**
-	 * Displays help.
-	 */
-	public void displayHelp() {
-		sendHelpCommand("displayHelp", new String[0]);
-	}
-
-	/**
-	 * Displays specified help resource.
-	 * @param href the href of the table of contents
-	 */
-	public void displayHelp(String href) {
-		sendHelpCommand("displayHelp", new String[] { "href=" + href });
+		help.displayContextInfopop(contextId, x, y);
 	}
 
 	/**
@@ -94,76 +116,6 @@ public class Help extends Infocenter {
 	 *  <ul>
 	 */
 	public static void main(String[] args) {
-		// convert array of arguments to a list
-		List argsList = new ArrayList();
-		for (int i = 0; i < args.length; i++) {
-			argsList.add(args[i]);
-		}
-		// consume -command option
-		List helpCommands = removeEclipseOption("-command", argsList);
-		// Construct help
-		Help help = new Help(argsList);
-		// Execute help command
-		if (help.executeHelpCommand(helpCommands)) {
-			return;
-		}
-		printMainUsage();
-	}
-	/**
-	 * @return true if commands contained a known command
-	 *  and it was executed
-	 */
-	boolean executeHelpCommand(List helpCommands) {
-		if (super.executeHelpCommand(helpCommands)) {
-			return true;
-		}
-		if (helpCommands.size() <= 0) {
-			return false;
-		}
-		String command = (String) helpCommands.get(0);
-		if ("displayHelp".equalsIgnoreCase(command)) {
-			if (helpCommands.size() >= 2) {
-				displayHelp((String) helpCommands.get(1));
-
-			} else {
-				displayHelp();
-			}
-			return true;
-		} else if ("displayContext".equalsIgnoreCase(command)) {
-			if (helpCommands.size() >= 4) {
-				displayContext(
-					(String) helpCommands.get(1),
-					Integer.parseInt((String) helpCommands.get(2)),
-					Integer.parseInt((String) helpCommands.get(3)));
-
-				return true;
-			}
-		} else if ("displayContextInfopop".equalsIgnoreCase(command)) {
-			if (helpCommands.size() >= 4) {
-				displayContextInfopop(
-					(String) helpCommands.get(1),
-					Integer.parseInt((String) helpCommands.get(2)),
-					Integer.parseInt((String) helpCommands.get(3)));
-				return true;
-			}
-		}
-
-		return false;
-	}
-	/**
-	 * Prints usage of this class as a program.
-	 */
-	private static void printMainUsage() {
-		System.out.println("Parameters syntax:");
-		System.out.println();
-		System.out.println(
-			"-command start | shutdown | (displayHelp [href]) [-eclipsehome eclipseInstallPath] [platform options] [-vmargs [Java VM arguments]]");
-		System.out.println();
-		System.out.println("where:");
-		System.out.println(" href is the URL of the help resource to display,");
-		System.out.println(
-			" dir specifies Eclipse installation directory; it must be provided, when current directory is not the same as Eclipse installation directory,");
-		System.out.println(
-			" platform options are other options that are supported by Eclipse Executable.");
+		Help.main(args);
 	}
 }

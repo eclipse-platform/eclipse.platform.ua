@@ -72,6 +72,8 @@ public class EmbeddedBrowserFactory implements IBrowserFactory {
 					HelpUIPlugin.logError(HelpUIResources
 							.getString("EmbeddedBrowserFactory.error"), se); //$NON-NLS-1$
 				}
+			} catch (Exception e) {
+				// Browser not implemented
 			}
 			if (sh != null && !sh.isDisposed())
 				sh.dispose();

@@ -186,7 +186,7 @@ function fixHeights()
 function onloadHandler(e)
 {
 	var form = document.forms["searchForm"];
-	form.searchWord.value = '<%= request.getParameter("searchWord")!=null?request.getParameter("searchWord"):""%>';
+	form.searchWord.value = '<%=UrlUtil.JavaScriptEncode(data.getSearchWord())%>';
 	fixHeights();
 }
 

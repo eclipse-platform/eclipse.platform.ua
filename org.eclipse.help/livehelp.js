@@ -4,6 +4,22 @@
  */
 
 /**
+ * Private helper function for use by other (public) functions. 
+ */
+function findHelpTop() {
+	var helpTop;
+	for (helpTop=self; helpTop; helpTop = helpTop.parent){
+		if (helpTop.liveActionInternal){
+			break;
+		}
+		if (helpTop==helpTop.parent){
+			break;
+		}
+	}
+	return helpTop;
+}
+
+/**
  * Call this Javascript method to trigger a specified live help action
  * in the workbench. 
  * The parameters for liveAction  are:
@@ -14,13 +30,10 @@
 
 function liveAction(pluginId, className, argument)
 {
-	try{
-		// find top help frameset
-		var helpTop=findHelpTop();
-		if (helpTop != null && helpTop.liveActionInternal){
-			return helpTop.liveActionInternal(helpTop, pluginId, className, argument);
-		}
-	}catch(e){
+	// find top help frameset
+	var helpTop=findHelpTop();
+	if (helpTop != null && helpTop.liveActionInternal){
+		return helpTop.liveActionInternal(helpTop, pluginId, className, argument);
 	}
 }
 
@@ -35,27 +48,8 @@ function liveAction(pluginId, className, argument)
  *  showTopicInContents(window.location.href); 
  */
 function showTopicInContents(topic) {
-	try{
 		var helpTop=findHelpTop();
 		if (helpTop != null && helpTop.howTopicInContentsInternal){
 			return helpTop.showTopicInContents(helpTop, topic);
 		}
-	}catch(e){
-	}
-}
-
-/**
- * Private helper function for use by help system. 
- */
-function findHelpTop() {
-	var helpTop;
-	for (helpTop=self; helpTop; helpTop = helpTop.parent){
-		if (helpTop.liveActionInternal){
-			break;
-		}
-		if (helpTop==helpTop.parent){
-			break;
-		}
-	}
-	return helpTop;
 }

@@ -302,6 +302,14 @@ function highlightTopic(topic)
  */
 function selectTopic(topic)
 {
+	if (!topic)
+		return false;
+		
+	// remove the query, if any
+	var i = topic.indexOf('?');
+	if (i != -1)
+		topic = topic.substring(0, i);
+		
 	var links = document.getElementsByTagName("a");
 
 	for (var i=0; i<links.length; i++)

@@ -13,6 +13,7 @@ public class LayoutData extends RequestData {
 
 	private String query = "";
 	private WebappPreferences prefs;
+	private View[] views;
 
 	public LayoutData(ServletContext context, HttpServletRequest request) {
 		super(context, request);
@@ -61,11 +62,13 @@ public class LayoutData extends RequestData {
 	 * Return array of length 0 if no views
 	 */
 	public View[] getViews() {
-		View[] views = new View[] {
-			new View("toc", "toc.jsp", "images/contents_view.gif", true),
-			new View("search", "search_results.jsp", "images/search_results_view.gif", false),
-			new View("links", "links.jsp", "images/links_view.gif", false),
-			new View("bookmarks", "bookmarks.jsp", "images/bookmarks_view.gif", false)
+		if (views != null)
+			return views;
+		views = new View[] {
+			new View("toc", "toc.jsp", "images/contents_view.gif"),
+			new View("search", "search_results.jsp", "images/search_results_view.gif"),
+			new View("links", "links.jsp", "images/links_view.gif"),
+			new View("bookmarks", "bookmarks.jsp", "images/bookmarks_view.gif")
 		};
 		return views;
 	}

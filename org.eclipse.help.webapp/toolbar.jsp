@@ -80,7 +80,7 @@ function bookmarkPage(button)
 		parent.parent.NavFrame.showView("bookmarks");
 		
 		// use the url from plugin id only
-		var url = parent.ContentFrame.location.href;
+		var url = parent.ContentViewFrame.location.href;
 		var i = url.indexOf("content/help:/");
 		if (i >=0 )
 			url = url.substring(i+13);
@@ -89,7 +89,7 @@ function bookmarkPage(button)
 		if (i >= 0)
 			url = url.substring(0, i);
 			
-		var title = parent.ContentFrame.document.title;
+		var title = parent.ContentViewFrame.document.title;
 		if (title == null || title == "")
 			title = url;
 			
@@ -124,7 +124,7 @@ function resynch(button)
 {
 	try
 	{
-		var topic = parent.ContentFrame.window.location.href;
+		var topic = parent.ContentViewFrame.window.location.href;
 		parent.parent.NavFrame.displayTocFor(topic);
 	}
 	catch(e)

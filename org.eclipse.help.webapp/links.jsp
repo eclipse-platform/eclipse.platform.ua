@@ -3,6 +3,8 @@
 <% 
 	// calls the utility class to initialize the application
 	application.getRequestDispatcher("/servlet/org.eclipse.help.servlet.InitServlet").include(request,response);
+	
+	LinksData linksData = new LinksData(context, request);
 %>
 
 
@@ -71,7 +73,7 @@ TABLE {
 
 </style>
 
-<base target="ContentFrame">
+<base target="ContentViewFrame">
 <script language="JavaScript" src="list.js"></script>
 <script language="JavaScript">		
 var extraStyle = "";
@@ -87,47 +89,32 @@ document.write(extraStyle);
 <body>
  
 <%
-if(request.getParameter("contextId")!=null)
-{
-	// Load the links
-	ContentUtil content = new ContentUtil(application, request);
-	Element linksElement = content.loadLinks(request.getQueryString());
-	if (linksElement == null){
-		out.write(WebappResources.getString("Nothing_found", null));
-		return;
-	}
-	
-	// Generate list
-	NodeList topics = linksElement.getElementsByTagName("topic");
-	if (topics == null || topics.getLength() == 0){
-		out.write(WebappResources.getString("Nothing_found", null));
-		return;
-	}
+if(!linksData.isLinksRequest()) {
+	out.write(WebappResources.getString("pressF1", request));
+} else if (linksData.getLinks().length == 0){
+	out.write(WebappResources.getString("Nothing_found", null));
+} else {
+	Link[] links = linksData.getLinks();
 %>
 
 <table id='list'  cellspacing='0' >
 
 <%
-	for (int i = 0; i < topics.getLength(); i++) 
+	for (int i = 0; i < links.length; i++) 
 	{
-		Element topic = (Element)topics.item(i);
-		String tocLabel = topic.getAttribute("toclabel");
-		String label = topic.getAttribute("label");
-		String href = topic.getAttribute("href");
-		if (href != null && href.length() > 0) {
-			// external href
-			if (href.charAt(0) == '/')
-				href = "content/help:" + href;
-			else if (href.startsWith("file:/"))
-				href = "content/" + href;
-			if (href.indexOf('?') == -1)
-				href +="?toc="+URLEncoder.encode(topic.getAttribute("toc"));
-			else
-				href += "&toc="+URLEncoder.encode(topic.getAttribute("toc"));			
-
-		} else
-			href = "about:blank";
 %>
+
+<tr class='list' id='r<%=i%>'>
+	<td align='left' class='label' nowrap>
+		<a id='a<%=i%>' 
+		   href='<%=links[i].getHref()%>' 
+		   onclick='parent.parent.setToolbarTitle("<%=UrlUtil.JavaScriptEncode(links[i].getTocLabel())%>")' 
+		   title="<%=UrlUtil.htmlEncode(links[i].getTocLabel())%>">
+		   <img src="images/topic.gif">
+		   <%=UrlUtil.htmlEncode(links[i].getLabel())%>
+		 </a>
+	</td>
+</tr>
 
 <tr class='list' id='r<%=i%>'>
 	<td align='left' class='label' nowrap>
@@ -142,8 +129,6 @@ if(request.getParameter("contextId")!=null)
 </table>
 
 <%
-}else{
-	out.write(WebappResources.getString("pressF1", request));
 }
 
 // Highlight topic

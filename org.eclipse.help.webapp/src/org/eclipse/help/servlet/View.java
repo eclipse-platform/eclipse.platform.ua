@@ -8,13 +8,11 @@ public class View {
 	private String name;
 	private String url;
 	private String imageURL;
-	private boolean visible;
-	
-	public View(String name, String url, String imageURL, boolean visible) {
+
+	public View(String name, String url, String imageURL) {
 		this.name = name;
 		this.url = url;
 		this.imageURL = imageURL;
-		this.visible = visible;
 	}
 	
 	public String getName() {
@@ -27,9 +25,5 @@ public class View {
 	
 	public String getImageURL() {
 		return imageURL;
-	}
-	
-	public boolean isVisible() {
-		return visible;
 	}
 }

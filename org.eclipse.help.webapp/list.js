@@ -132,6 +132,7 @@ function selectTopic(topic)
 		{
 			highlightTopic(links[i]);
 			scrollIntoView(links[i]);
+			links[i].scrollIntoView(true);
 			return true;
 		}
 	}
@@ -153,23 +154,34 @@ function selectTopicById(id)
 	return false;
 }
 
+
 /**
  * Scrolls the page to show the specified element
  */
 function scrollIntoView(node)
-{      
-	// use the parent element for getting the offsetTop, as it appears
+{
+	var scroll = getVerticalScroll(node);
+	if (scroll != 0)
+		window.scrollBy(0, scroll);
+}
+
+/**
+ * Scrolls the page to show the specified element
+ */
+function getVerticalScroll(node)
+{
+	// Use the parent element for getting the offsetTop, as it appears
 	// that tables get their own layout measurements.
 
 	//var nodeTop = node.offsetTop;
 	var nodeTop = node.parentNode.offsetTop;
-	
+		
 	//var nodeBottom = nodeTop + node.offsetHeight;
 	var nodeBottom = nodeTop + node.parentNode.offsetHeight;
 	
 	var pageTop = 0;
 	var pageBottom = 0;
-	
+		
 	if (isIE)
 	{
 		pageTop = document.body.scrollTop; 
@@ -179,14 +191,14 @@ function scrollIntoView(node)
 	else if (isMozilla)
 	{
 		pageTop = window.pageYOffset;
-		pageBottom = pageTop + window.innerHeight - node.parentNode.offsetHeight;
+		pageBottom = pageTop + window.innerHeight - node.offsetHeight;
 	}
 	
 	var scroll = 0;
 	if (nodeTop >= pageTop )
-	{	
+	{
 		if (nodeBottom <= pageBottom)
-			return; // already in view
+			scroll = 0; // already in view
 		else
 			scroll = nodeBottom - pageBottom/2;
 	}
@@ -194,9 +206,10 @@ function scrollIntoView(node)
 	{
 		scroll = nodeTop - pageTop;
 	}
-
-	window.scrollBy(0, scroll);
+	
+	return scroll;
 }
+
 
 /**
  * display topic label in the status line on mouse over topic

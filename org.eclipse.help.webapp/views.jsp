@@ -102,7 +102,7 @@ function showView(view)
 <%
 	for (int i=0; i<views.length; i++) 
 	{
-		String className = views[i].isVisible() ? "visible" : "hidden";
+		String className = layout.getVisibleView().equals(views[i].getName()) ? "visible" : "hidden";
 %>
  	<iframe frameborder="0" 
  		    class="<%=className%>"  

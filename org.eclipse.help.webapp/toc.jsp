@@ -86,7 +86,7 @@ A.active:hover{
    
 </style>  
     
-<base target="ContentFrame">
+<base target="ContentViewFrame">
 <script language="JavaScript" src="toc.js"></script>
 <script language="JavaScript"> 
 

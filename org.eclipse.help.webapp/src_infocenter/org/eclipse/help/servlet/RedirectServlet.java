@@ -40,8 +40,12 @@ public class RedirectServlet extends HttpServlet {
 			} else {
 				query = "?" + queryString;
 			}
-			URL redirectURL =
-				new URL(helpServiceURL + servletPath + pathInfo + query);
+			String resource = servletPath + pathInfo + query;
+			if (resource.startsWith("/control.html")) {
+				resp.sendError(resp.SC_FORBIDDEN, "");
+				return;
+			}
+			URL redirectURL = new URL(helpServiceURL + resource);
 			HttpURLConnection conn =
 				(HttpURLConnection) redirectURL.openConnection();
 			conn.setInstanceFollowRedirects(false);

@@ -13,8 +13,7 @@ import org.eclipse.help.*;
 import org.eclipse.help.internal.HelpCore;
 /**
  * IContext Implementation that performs lazy lookup of
- * context ID and HelpContext instantiation.
- * when any of the IContext methods are called.
+ * context ID when any of the IContext methods are called.
  */
 public class ContextProxy implements IContext {
 	private String contextID;

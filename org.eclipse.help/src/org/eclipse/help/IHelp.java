@@ -28,6 +28,7 @@ package org.eclipse.help;
  * configured with more than one plug-in trying to extend this extension point.
  * @deprecated use org.eclipse.help.HelpSystem.getTocs()
  *  and org.eclipse.helpHelpSystem.getContext(java.lang.String) to obtain help resources.
+ * Use various display methods of org.eclipse.ui.help.WorkbenchHelp to display help resources.
  * </p>
  */
 public interface IHelp {

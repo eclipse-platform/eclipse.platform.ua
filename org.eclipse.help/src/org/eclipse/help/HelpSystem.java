@@ -14,6 +14,8 @@ import java.io.*;
 import java.net.*;
 
 import org.eclipse.core.boot.*;
+import org.eclipse.help.internal.*;
+import org.eclipse.help.internal.context.*;
 
 /**
  * This class provides general access to help content contributed to the 
@@ -42,14 +44,7 @@ public final class HelpSystem {
 	 * @return the context, or <code>null</code> if none
 	 */
 	public static IContext getContext(String contextId) {
-		return org
-			.eclipse
-			.help
-			.internal
-			.HelpCore
-			.getContextManager()
-			.getContext(
-			contextId);
+		return new ContextProxy(contextId);
 	}
 
 	/**
@@ -59,8 +54,7 @@ public final class HelpSystem {
 	 * @return an array of TOC's
 	 */
 	public static IToc[] getTocs() {
-		return org.eclipse.help.internal.HelpCore.getTocManager().getTocs(
-			BootLoader.getNL());
+		return HelpCore.getTocManager().getTocs(BootLoader.getNL());
 	}
 
 	/**

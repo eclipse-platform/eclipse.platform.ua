@@ -73,7 +73,6 @@ public class FormIntroPartImplementation extends
     }
 
     public void createPartControl(Composite container) {
-
         if (getModel().isDynamic())
             dynamicCreatePartControl(container);
         else {
@@ -478,14 +477,5 @@ public class FormIntroPartImplementation extends
         }
     }
 
-    /**
-     * Remove the provider page from the SWT UI forms cache.
-     * 
-     * @see org.eclipse.ui.intro.config.IIntroContentProviderSite#reflow(org.eclipse.ui.intro.config.IIntroContentProvider,
-     *      boolean)
-     */
-    public void reflow(IIntroContentProvider provider, boolean incremental) {
 
-        showPage(getModel().getCurrentPage());
-    }
 }

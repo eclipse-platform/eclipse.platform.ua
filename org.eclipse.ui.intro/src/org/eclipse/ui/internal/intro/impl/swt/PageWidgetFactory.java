@@ -16,7 +16,9 @@ import org.eclipse.ui.forms.events.*;
 import org.eclipse.ui.forms.widgets.*;
 import org.eclipse.ui.internal.intro.impl.*;
 import org.eclipse.ui.internal.intro.impl.model.*;
+import org.eclipse.ui.internal.intro.impl.model.loader.*;
 import org.eclipse.ui.internal.intro.impl.util.*;
+import org.eclipse.ui.intro.config.*;
 
 /**
  * Factory to create all UI forms widgets for the Forms intro presentation.
@@ -51,6 +53,7 @@ public class PageWidgetFactory {
 
     protected FormToolkit toolkit;
     protected PageStyleManager styleManager;
+    protected IIntroContentProviderSite site;
 
 
     /*
@@ -62,6 +65,9 @@ public class PageWidgetFactory {
         this.styleManager = styleManager;
     }
 
+    public void setContentProviderSite(IIntroContentProviderSite site) {
+        this.site = site;
+    }
 
     public void createIntroElement(Composite parent,
             AbstractIntroElement element) {
@@ -127,6 +133,11 @@ public class PageWidgetFactory {
             }
             if (c != null)
                 updateLayoutData(c, element);
+            break;
+        case AbstractIntroElement.CONTENT_PROVIDER:
+            IntroContentProvider provider = (IntroContentProvider) element;
+            c = createContentProvider(parent, provider);
+            updateLayoutData(c, element);
             break;
         default:
             break;
@@ -307,6 +318,27 @@ public class PageWidgetFactory {
         return ilabel;
     }
 
+
+    protected Control createContentProvider(Composite parent,
+            IntroContentProvider provider) {
+        // If we've already loaded the content provider for this element,
+        // retrieve it, otherwise load the class.
+        Composite container = toolkit.createComposite(parent);
+        TableWrapLayout layout = new TableWrapLayout();
+        IIntroContentProvider providerClass = ContentProviderManager.getInst()
+                .getContentProvider(provider);
+        if (providerClass == null)
+            // content provider never created before, create it.
+            providerClass = ContentProviderManager.getInst()
+                    .createContentProvider(provider, site);
+
+        if (providerClass != null) {
+            providerClass.createContent(provider.getId(), parent, toolkit);
+        }
+        Util.highlight(container, SWT.COLOR_DARK_YELLOW);
+        Util.highlight(parent, SWT.COLOR_BLUE);
+        return container;
+    }
 
     private void colorControl(Control elementControl,
             AbstractBaseIntroElement element) {

@@ -21,7 +21,7 @@ import org.eclipse.ui.intro.config.*;
 public class IntroHTMLGenerator {
 
     private AbstractIntroPage introPage;
-    private AbstractIntroPartImplementation presentation;
+    private IIntroContentProviderSite providerSite;
 
     /**
      * Generates the HTML code that will be presented in the browser widget for
@@ -33,11 +33,11 @@ public class IntroHTMLGenerator {
      *            the presentation associated with this page.
      */
     public HTMLElement generateHTMLforPage(AbstractIntroPage page,
-            AbstractIntroPartImplementation presentation) {
+            IIntroContentProviderSite providerSite) {
         if (page == null)
             return null;
         this.introPage = page;
-        this.presentation = presentation;
+        this.providerSite = providerSite;
 
         // generate and add the appropriate encoding to the top of the document
         // generateEncoding();
@@ -501,7 +501,7 @@ public class IntroHTMLGenerator {
         if (providerClass == null)
             // content provider never created before, create it.
             providerClass = ContentProviderManager.getInst()
-                    .createContentProvider(element, presentation);
+                    .createContentProvider(element, providerSite);
 
         if (providerClass != null) {
             StringWriter stringWriter = new StringWriter();
@@ -536,13 +536,11 @@ public class IntroHTMLGenerator {
      * <code>src</code> value.
      * 
      * <pre>
-     * 
      *  
      *      &lt;OBJECT type=&quot;text/html&quot; data=&quot;attrvalue&quot;&gt;
      *      alternative text in case the object can not be rendered
      *      &lt;/OBJECT&gt; 
      *   
-     *  
      * </pre>
      * 
      * @param element
@@ -615,10 +613,7 @@ public class IntroHTMLGenerator {
      * 
      * <pre>
      * 
-     *  
      *      &lt;style type=&quot;text/css&quot;&gt;HTML, IMG { border: 0px; } &lt;/style&gt;
-     * 
-     *  
      * </pre>
      * 
      * @param indentLevel

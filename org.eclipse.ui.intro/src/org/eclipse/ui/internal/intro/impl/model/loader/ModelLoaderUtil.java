@@ -261,10 +261,8 @@ public class ModelLoaderUtil {
             aObject = aClass.newInstance();
             return aObject;
         } catch (Exception e) {
-            Log
-                    .error(
-                            "Intro Could not instantiate: " + className + " in " + pluginId, //$NON-NLS-1$ //$NON-NLS-2$
-                            e);
+            Log.error("Intro Could not instantiate: " + className + " in " //$NON-NLS-1$ //$NON-NLS-2$
+                    + pluginId, e);
             return null;
         }
     }

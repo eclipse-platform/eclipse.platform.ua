@@ -280,7 +280,7 @@ public class FormIntroPartImplementation extends
         boolean pageisCached = showExistingPage(pageToShow);
 
         if (!pageisCached) {
-            // page has not been show before.
+            // page has not been shown before.
             // load style manager here to test for navigation.
             PageStyleManager styleManager = new PageStyleManager(pageToShow,
                     sharedStyleManager.getProperties());

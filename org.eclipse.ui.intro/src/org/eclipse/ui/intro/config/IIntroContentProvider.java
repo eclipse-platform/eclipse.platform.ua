@@ -17,9 +17,9 @@ import org.eclipse.ui.forms.widgets.*;
 
 /**
  * A content provider for dynamic intro content. It is initialized with the
- * content provider site because a typical a content provider would need to
- * update its contents dynamically at runtime. And so, the site can be informed
- * of a need to redraw its content through a call to its reflow method.
+ * content provider site because a typical content provider would need to update
+ * its contents dynamically at runtime. And so, the site can be informed of a
+ * need to redraw its content through a call to its reflow method.
  * <p>
  * The life cycle of an IIntroContentProvider is as follows:
  * <ul>
@@ -35,13 +35,29 @@ import org.eclipse.ui.forms.widgets.*;
  * 
  * This defines the content provider as part of the intro content for that page.
  * </li>
+ * <li>the content provider class is created when the page that contains this
+ * provider is loaded. It is only created once in the life cycle of an open
+ * Intro view, ie: the class instance is cached and only disposed of when the
+ * intro view is closed.
  * <li>init() is called to initialize the instance of the class on load of the
- * page. This is where the provider site can be cacched for later reuse.</li>
- * <li>then createContent is actually called to give the content provider a
- * chance to generate the dynamic content. This is when the dynamic content can
- * be cached for later reuse when the same page is shown again.</li>
- * <li>finally, when the intro view is closed, dispose will be called on all
- * this content provider to give it a chance to clean up.</li>
+ * page. This is where the provider site can be cached for later reuse.</li>
+ * <li>createContent() is then called to give the content provider a chance to
+ * generate the dynamic content. This is when the dynamic content can be cached
+ * for later reuse when the same page is shown again.</li>
+ * <li>it is important to note that there is a difference between when the
+ * createContent() is called in the case of SWT and HTML presentations. The HTML
+ * presentation is dynamic html generated on the fly each time an Intro page
+ * needs to be displayed. SWT presentation on the other hand, is based on SWT
+ * forms widgets, and for performance, each page is only created once and cached
+ * in a pageBook for re-use. With this in mind, createContent() is called every
+ * time a page is shown in the case of HTML presentation. Whereas it is only
+ * called once in the case of the SWT presentation. This is why createContent()
+ * should not be used as a means of refreshing content. Content should only be
+ * created once during this method call, and cached for later re-use. If a
+ * refresh is needed, then reflow() should be called on the contentProviderSite
+ * when the appropriate event happens.
+ * <li>finally, when the intro view is closed, dispose will be called on the
+ * content provider to give it a chance to dispose of any resources.</li>
  * 
  * @since 3.0.1
  */

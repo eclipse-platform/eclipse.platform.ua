@@ -286,7 +286,7 @@ public final class CustomizableIntroPart extends IntroPart implements
     }
 
     private Control getStandbyControl() {
-        // the Containet top control may have only one child if the stanndby
+        // the Container top control may have only one child if the standby
         // part is not created yet. This happens if the intro never goes into
         // standby. Doing this for performance.
         if (standbyPart != null)

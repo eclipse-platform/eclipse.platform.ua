@@ -41,7 +41,7 @@ public class IntroHTMLGenerator {
 
         // generate and add the appropriate encoding to the top of the document
         // generateEncoding();
-        // create the main HTML element, and all of its contents
+        // create the main HTML element, and all of its contents.
         return generateHTMLElement();
     }
 

@@ -142,7 +142,6 @@ public class PageContentForm implements IIntroConstants,
      */
     public void reflow(IIntroContentProvider provider, boolean incremental) {
         contentComposite.layout(true);
-
     }
 
 }

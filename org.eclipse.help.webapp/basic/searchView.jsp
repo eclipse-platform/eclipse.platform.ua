@@ -31,8 +31,6 @@ if (data.isProgressRequest()) {
 </head>
 
 <body bgcolor="#FFFFFF" text="#000000">
-<%@ include file="advanced.jsp"%>
-
 <%
 if (data.isProgressRequest()) {
 %>
@@ -58,19 +56,23 @@ if (data.isProgressRequest()) {
 </html>
 <%
 	return;
-} else if (data.isSearchRequest()) {
-	if (data.getHits().length == 0){
-		out.write(WebappResources.getString("Nothing_found", request));
-	} else {	
-		SearchHit[] hits = data.getHits();
+} else {
+%>
+	<%@ include file="advanced.jsp"%>
+<%
+	if (data.isSearchRequest()) {
+		if (data.getHits().length == 0){
+			out.write(WebappResources.getString("Nothing_found", request));
+		} else {	
+			SearchHit[] hits = data.getHits();
 %>
 
 <table border="0" cellpadding="0" cellspacing="0">
 
 <%
-	for (int i = 0; i < hits.length; i++) 
-	{
-		String title = hits[i].getToc() != null ? hits[i].getToc().getLabel() : "";
+		for (int i = 0; i < hits.length; i++) 
+		{
+			String title = hits[i].getToc() != null ? hits[i].getToc().getLabel() : "";
 %>
 
 <tr id='r<%=i%>'>
@@ -86,15 +88,15 @@ if (data.isProgressRequest()) {
 </tr>
 
 <%
-		}
+			}
 %>
 
 	</table>
 
 <%
+		}
 	}
 }
-
 %>
 </body>
 </html>

@@ -2,13 +2,6 @@
 
 	<table border="0" cellpadding="0" cellspacing="0">
 		<tr>
-			<td>
-				<b>
-				<%=WebappResources.getString("SearchExpression", request)%>
-				</b>
-			</td>
-		</tr>
-		<tr>
 			<td nowrap>
 				<input type="text" id="searchWord" name="searchWord" value='<%=data.getSearchWord()%>' maxlength=256 alt='<%=WebappResources.getString("SearchExpression", request)%>'>
           	  	<input type="hidden" name="maxHits" value="500" >

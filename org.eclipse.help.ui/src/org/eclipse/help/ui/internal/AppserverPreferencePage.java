@@ -14,6 +14,7 @@ import org.eclipse.help.internal.appserver.*;
 import org.eclipse.jface.preference.*;
 import org.eclipse.jface.resource.*;
 import org.eclipse.swt.*;
+import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
@@ -35,7 +36,7 @@ public class AppserverPreferencePage
 	 */
 	protected Control createContents(Composite parent) {
 		Font font = parent.getFont();
-		
+
 		WorkbenchHelp.setHelp(parent, IHelpUIConstants.PREF_PAGE_APPSERVER);
 
 		Composite mainComposite = new Composite(parent, SWT.NULL);
@@ -119,6 +120,29 @@ public class AppserverPreferencePage
 		data.horizontalSpan = 2;
 		textServerPort.setLayoutData(data);
 		textServerPort.setFont(font);
+
+		// Validation of port field
+		textServerPort.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				try {
+					int num =
+						Integer.valueOf(textServerPort.getText()).intValue();
+					if (0 <= num && num <= 0xFFFF) {
+						// port is valid
+						AppserverPreferencePage.this.setValid(true);
+						setErrorMessage(null);
+						return;
+					}
+
+					// port is invalid
+				} catch (NumberFormatException nfe) {
+				}
+				AppserverPreferencePage.this.setValid(false);
+				setErrorMessage(
+					HelpUIResources.getString(
+						"AppserverPreferencePage.invalidPort"));
+			}
+		});
 
 		// Spacer
 		label = new Label(mainComposite, SWT.NONE);

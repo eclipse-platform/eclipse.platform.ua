@@ -34,7 +34,7 @@ public class Infocenter {
 	*  of the interface that help server will use.
 	*  It overrides host name specified in the application server plugin preferences.
 	* <p>
-	*  Option <code>-eclipseHome dir</code> specifies port number
+	*  Option <code>-port helpServerPort</code> specifies port number
 	*  that help server will use.
 	*  It overrides port number specified in the application server plugin preferences.
 	* <p>

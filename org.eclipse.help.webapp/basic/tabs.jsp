@@ -19,19 +19,13 @@
 <base target="ViewsFrame">
 </head>
    
-<body>
-
-  <table>
-   <tr>
+<body bgcolor="#D4D0C8" text="#000000" link="#0000FF" vlink="#0000FF" alink="#0000FF">
+<b>
 <%
 	for (int i=0; i<views.length; i++) 
 	{
 		String title = WebappResources.getString(views[i].getName(), request);
 %>
-	<td  title="<%=views[i].getName()%>" 
-	     align="center"  
-	     id="<%=views[i].getName()%>"
-	     > 
 	     <a  href='<%="view.jsp?view="+views[i].getName()%>' 
 	         <img alt="<%=title%>" 
 	              title="<%=title%>" 
@@ -39,14 +33,11 @@
 	         >
 	     <%=title%>
 	     </a>
-	</td>
+	     &nbsp;
 <%
 	}
 %>
- 
-   </tr>
-   </table>
-
+</b>
 </body>
 </html>
 

@@ -30,12 +30,11 @@ if (data.isProgressRequest()) {
 <base target="ContentViewFrame">
 </head>
 
-<body >
+<body bgcolor="#FFFFFF" text="#000000">
+<%@ include file="advanced.jsp"%>
 
 <%
-if (!data.isSearchRequest()) {
-	out.write(WebappResources.getString("doSearch", request));
-} else if (data.isProgressRequest()) {
+if (data.isProgressRequest()) {
 %>
 
 <%=WebappResources.getString("Indexing", request)%>
@@ -80,11 +79,6 @@ if (!data.isSearchRequest()) {
 }
 
 %>
-
-<script language="JavaScript">
-	selectTopicById('<%=data.getSelectedTopicId()%>');
-</script>
-
 </body>
 </html>
 

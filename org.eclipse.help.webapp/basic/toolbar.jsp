@@ -17,8 +17,8 @@
 <title><%=WebappResources.getString("Toolbar", request)%></title>
 </head>
  
-<body>
-	&nbsp;<%=data.getTitle()%>
+<body bgcolor="#D4D0C8" text="#000000">
+	<b><%=data.getTitle()%></b>
     <iframe name="liveHelpFrame" frameborder="no" width="0" height="0" scrolling="no">
     </iframe>
 

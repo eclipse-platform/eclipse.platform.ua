@@ -16,9 +16,9 @@
 
 </head>
 
-<frameset id="helpFrameset" cols="25%,*">
-   <frame name="ViewsFrame" src='<%="view.jsp?view="+data.getVisibleView()+"&"+request.getQueryString()%>'>
-	<frame name="ContentViewFrame" src='<%=data.getContentURL()%>'>
+<frameset cols="25%,*">
+	<frame name="ViewsFrame" src='<%="view.jsp?view="+data.getVisibleView()+"&"+request.getQueryString()%>' marginwidth="0" marginheight="0" scrolling="no">
+	<frame name="ContentViewFrame" src='<%=data.getContentURL()%>' marginwidth="5" marginheight="5">
 </frameset>
 
 </html>

@@ -20,13 +20,13 @@
 </head>
 
 
-<body >
+<body bgcolor="#FFFFFF" text="#000000">
 <%
 	Element[] tocs = data.getTocs();
 	for (int i=0; i<tocs.length; i++) 
 	{
 %>
-		<b><nobr><img src="<%=prefs.getImagesDirectory()%>/toc_obj.gif"><a id="b<%=i%>" href="<%="tocView.jsp?toc="+data.getTocHref(tocs[i])%>" target='_self'><%=data.getTocLabel(tocs[i])%></a></nobr></b>
+		<b><nobr><img src="<%=prefs.getImagesDirectory()%>/toc_obj.gif"><a id="b<%=i%>" href="<%="tocView.jsp?toc="+data.getTocHref(tocs[i])%>" target='_self'>&nbsp;<%=data.getTocLabel(tocs[i])%></a></nobr></b>
 <%
 		// Only generate the selected toc
 		if (selectedToc != null &&

@@ -21,7 +21,7 @@
 </head>
 
 
-<body>
+<body bgcolor="#FFFFFF" text="#000000">
  
 <%
 if(!data.isLinksRequest()) {

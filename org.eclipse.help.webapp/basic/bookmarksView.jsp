@@ -22,7 +22,7 @@
 </head>
 
 
-<body>
+<body bgcolor="#FFFFFF" text="#000000">
  
 <table id='list'  cellspacing='0' >
 

@@ -17,9 +17,9 @@
 <title><%=WebappResources.getString(view.getName(), request)%></title>
 </head>
 
-<frameset  rows="44,*">
-	<frame name="ToolbarFrame" src='<%=view.getURL()+view.getName()+"Toolbar.jsp"%>'>
-	<frame name='ViewFrame' src='<%=view.getURL()+view.getName()+"View.jsp?"+request.getQueryString()%>'>
+<frameset  rows="30,*" >
+	<frame name="ToolbarFrame" src='<%=view.getURL()+view.getName()+"Toolbar.jsp"%>' frameborder="no" marginwidth="5" marginheight="3" scrolling="no">
+	<frame name='ViewFrame' src='<%=view.getURL()+view.getName()+"View.jsp?"+request.getQueryString()%>' frameborder="no" marginwidth="5" marginheight="5">
 </frameset>
 
 </html>

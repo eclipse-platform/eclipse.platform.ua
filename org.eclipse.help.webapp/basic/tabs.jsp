@@ -20,7 +20,7 @@
 </head>
    
 <body bgcolor="#D4D0C8" text="#000000" link="#0000FF" vlink="#0000FF" alink="#0000FF">
-	<table cellspacing='0' >
+	<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 
 <%

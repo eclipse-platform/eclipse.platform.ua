@@ -1,6 +1,6 @@
 <form action="searchView.jsp" method="get" accept-charset="UTF-8" target="_self">
 
-	<table id="searchTable" cellspacing=0 cellpading=0 border=0>
+	<table border="0" cellpadding="0" cellspacing="0">
 		<tr>
 			<td>
 				<b>
@@ -21,10 +21,12 @@
         		<%=WebappResources.getString("expression_label", request)%>
         	</td>
         </tr>
-    </table>
-
-  	<table id="filterTable" cellspacing=0 cellpading=0 border=0>
-  		<tr>
+		<tr>
+			<td>
+				<hr>
+			</td>
+		</tr>
+    	<tr>
   			<td>
   				<b>
 				<%=WebappResources.getString("Select", request)%>
@@ -46,5 +48,10 @@ for (int i=0; i<tocs.length; i++)
 <%
 }		
 %>
+		<tr>
+			<td>
+				<hr>
+			</td>
+		</tr>
 	</table>
  </form>

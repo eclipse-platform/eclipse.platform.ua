@@ -24,7 +24,7 @@
 
 <body bgcolor="#FFFFFF" text="#000000">
  
-<table id='list'  cellspacing='0' >
+<table border="0" cellpadding="0" cellspacing="0">
 
 <%
 	Topic[] bookmarks = data.getBookmarks();

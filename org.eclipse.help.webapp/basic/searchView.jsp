@@ -36,11 +36,26 @@ if (data.isProgressRequest()) {
 <%
 if (data.isProgressRequest()) {
 %>
-
-<%=WebappResources.getString("Indexing", request)%>
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td>
+			<%=WebappResources.getString("Indexing", request)%>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<%=data.getIndexedPercentage()%>% <%=WebappResources.getString("complete", request)%>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<br>
+			<%=WebappResources.getString("IndexingPleaseWait", request)%>
+		</td>
+	</tr>
+</TABLE>
 </body>
 </html>
-
 <%
 	return;
 } else if (data.isSearchRequest()) {
@@ -50,7 +65,7 @@ if (data.isProgressRequest()) {
 		SearchHit[] hits = data.getHits();
 %>
 
-<table id='list'  cellspacing='0' >
+<table border="0" cellpadding="0" cellspacing="0">
 
 <%
 	for (int i = 0; i < hits.length; i++) 
@@ -61,6 +76,7 @@ if (data.isProgressRequest()) {
 <tr id='r<%=i%>'>
 	<td align='right'><%=data.getFormattedScore(hits[i])%></td>
 	<td align='left' nowrap>
+	   &nbsp;
 		<a id='a<%=i%>' 
 		   href='<%=UrlUtil.getHelpURL(hits[i].getHref())%>' 
 		   title="<%=UrlUtil.htmlEncode(title)%>">

@@ -32,7 +32,7 @@ if(!data.isLinksRequest()) {
 	Link[] links = data.getLinks();
 %>
 
-<table id='list'  cellspacing='0' >
+<table border="0" cellpadding="0" cellspacing="0">
 
 <%
 	for (int i = 0; i < links.length; i++) 

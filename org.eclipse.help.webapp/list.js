@@ -316,6 +316,7 @@ function keyDownHandler(e)
   	return false;
 }
 
+
 // listen for events
 if (isMozilla) {
   document.addEventListener('click', mouseClickHandler, true);

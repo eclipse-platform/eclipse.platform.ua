@@ -74,6 +74,23 @@ TABLE {
 	margin-left:4px;
 }
 
+#menu {
+	background:ButtonFace;
+	border:2px outset;
+	margin:2px;
+}
+
+
+.selected {
+	background:Highlight;
+	color:HighlightText;
+}
+
+.unselected {
+	background:ButtonFace;
+	color:WindowText;
+}
+
 </style>
 
 <base target="ContentViewFrame">
@@ -87,7 +104,102 @@ if (isMozilla)
  
 document.write(extraStyle);
 
+ 
+// bookmark to remove
+var bookmark;
+
+
+/**
+ * Removes bookmark 
+ */
+function removeBookmark() 
+{
+	if (!bookmark) 
+		return;
+		
+	// Note: bookmark is an anchor "a"
+	var url = bookmark.href;
+	var i = url.indexOf("content/help:/");
+	if (i >=0 )
+		url = url.substring(i+13);
+	// remove any query string
+	i = url.indexOf("?");
+	if (i >= 0)
+		url = url.substring(0, i);
+		
+	var title = bookmark.title;
+	if (title == null || title == "")
+		title = url;
+			
+	window.location.replace("bookmarks.jsp?remove="+url+"&title="+escape(title));
+}
+
+/**
+ * Popup a menu on right click over a bookmark.
+ * This handler assumes the list.js script has been loaded.
+ */
+function mouseDownHandler(e)
+{
+	// hide popup if open
+	var menu = document.getElementById("menu");
+	if (menu.style.display == "block")
+		menu.style.display = "none";
+
+	if (isIE)
+		e = window.event;
+		
+	if (e.button != 2) // right click
+		return true;
+		
+  	var clickedNode;
+  	if (isMozilla)
+  		clickedNode = e.target;
+  	else if (isIE)
+   		clickedNode = e.srcElement;
+  	else 
+  		return true;
+
+  	if (!clickedNode)
+  		return true;
+  	
+  	if(clickedNode.tagName == "A")
+  		bookmark = clickedNode;
+  	else if (clickedNode.parentNode.tagName == "A")
+  		bookmark = clickedNode.parentNode;
+  	else
+  		return true;
+	
+	// show the menu
+	var x = 0;
+	var y = 0;
+	if (isIE) {
+		x = window.event.clientX;
+		y = window.event.clientY;
+		window.event.cancelBubble = true;
+	}
+	else if (isMozilla) {
+		x = e.clientX;
+		y = e.clientY;
+		e.cancelBubble = true;
+	}
+	
+	menu.style.left = x+1;
+	menu.style.top = y+1;
+	menu.style.display = "block";
+	
+	return false;
+}
+
+// listen for right click events
+if (isMozilla) {
+  document.addEventListener('onmousedown', mouseDownHandler, true);
+}
+else if (isIE){
+  document.onmousedown = mouseDownHandler;
+}
+
 </script>
+
 
 </head>
 
@@ -105,7 +217,14 @@ document.write(extraStyle);
 
 <tr class='list' id='r<%=i%>'>
 	<td align='left' class='label' nowrap>
-		<a id='a<%=i%>' href='<%=bookmarks[i].getHref()%>' onclick='parent.parent.setToolbarTitle(" ")' title="<%=UrlUtil.htmlEncode(bookmarks[i].getLabel())%>"><img src="images/bookmark_obj.gif"><%=UrlUtil.htmlEncode(bookmarks[i].getLabel())%></a>
+		<a id='a<%=i%>' 
+		   href='<%=bookmarks[i].getHref()%>' 
+		   onclick='parent.parent.setToolbarTitle(" ")' 
+		   xonmousedown="mouseDownHandler(event);return false;"
+		   title="<%=UrlUtil.htmlEncode(bookmarks[i].getLabel())%>">
+		   <img src="images/bookmark_obj.gif">
+		   		<%=UrlUtil.htmlEncode(bookmarks[i].getLabel())%>
+		</a>
 	</td>
 </tr>
 
@@ -115,9 +234,9 @@ document.write(extraStyle);
 
 </table>
 
-<%
-
-%>
+<div id="menu" style="position:absolute;display:none;">
+	<div id="removeBookmark" class="unselected" onmouseover="this.className='selected'" onmouseout="this.className='unselected'" onclick="removeBookmark()">Remove</div>
+</div>
 
 </body>
 </html>

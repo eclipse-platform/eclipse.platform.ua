@@ -22,7 +22,7 @@ public class WebappPreferences {
 	 * Constructor.
 	 */
 	public WebappPreferences() {
-		prefs = HelpPlugin.getDefault().getPluginPreferences();
+		prefs = HelpBasePlugin.getDefault().getPluginPreferences();
 	}
 	/**
 	 * @return String - URL of banner page or null

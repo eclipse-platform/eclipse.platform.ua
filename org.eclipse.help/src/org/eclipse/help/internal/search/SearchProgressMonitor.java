@@ -137,7 +137,7 @@ public class SearchProgressMonitor implements IProgressMonitor {
 			public void run() {
 				try {
 					HelpSystem.getSearchManager().search(
-						new SearchQuery(searchWord),
+						new SearchRequest(searchWord),
 						dummy_collector,
 						pm);
 				} catch (OperationCanceledException oce) {

@@ -55,7 +55,7 @@ public class SearchURL extends HelpURL {
 		try {
 			SearchProgressMonitor pm = getProgressMonitor();
 			if (pm.isDone()) {
-				SearchQuery sQuery = new SearchQuery(query.toString());
+				SearchRequest sQuery = new SearchRequest(query.toString());
 				SearchResults results =
 					new SearchResults(sQuery.getScope(), sQuery.getMaxHits(), sQuery.getLocale());
 
@@ -97,7 +97,7 @@ public class SearchURL extends HelpURL {
 						try {
 							HelpSystem
 								.getSearchManager()
-								.search(new SearchQuery(query.toString()), new ISearchHitCollector() {
+								.search(new SearchRequest(query.toString()), new ISearchHitCollector() {
 								public void addHits(Hits h, String s) {
 								}
 							}, (IProgressMonitor) progressMonitors.get(getLocale()));

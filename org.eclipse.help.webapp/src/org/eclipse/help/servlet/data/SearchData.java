@@ -69,8 +69,7 @@ public class SearchData extends RequestData {
 	 */
 	public boolean isSearchRequest() {
 		return (
-			request.getParameter("searchWord") != null
-				|| request.getParameter("searchWordJS13") != null);
+			request.getParameter("searchWord") != null);
 	}
 
 	/**
@@ -202,11 +201,6 @@ public class SearchData extends RequestData {
 
 	}
 	private ISearchQuery createSearchQuery(){
-		String searchWord=request.getParameter("searchWord");
-		if(searchWord==null){
-			searchWord="";
-		}
-		
 		String fieldSearchStr=request.getParameter("fieldSearch");
 		boolean fieldSearch=fieldSearchStr!=null?new Boolean(fieldSearchStr).booleanValue():false;
 		

@@ -10,12 +10,9 @@
  *******************************************************************************/
 package org.eclipse.help.internal.webapp.data;
 
- 
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.eclipse.help.internal.webapp.WebappResources;
-
 
 /**
  * Uses a resource bundle to load images and strings from
@@ -36,7 +33,7 @@ public class ServletResources {
 	 * @param request HttpServletRequest or null; default locale will be used if null passed
 	 */
 	public static String getString(String name, HttpServletRequest request) {
-		return WebappResources.getString(name, request.getLocale());
+		return WebappResources.getString(name, UrlUtil.getLocaleObj(request));
 	}
 
 	/**
@@ -44,7 +41,13 @@ public class ServletResources {
 	 * It uses 'name' as a the key to retrieve from the webapp.properties file.
 	 * @param request HttpServletRequest or null; default locale will be used if null passed
 	 */
-	public static String getString(String name, String replace0, HttpServletRequest request) {
-		return WebappResources.getString(name, request.getLocale(), replace0);
+	public static String getString(
+		String name,
+		String replace0,
+		HttpServletRequest request) {
+		return WebappResources.getString(
+			name,
+			UrlUtil.getLocaleObj(request),
+			replace0);
 	}
 }

@@ -9,11 +9,9 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.help.internal;
-import org.eclipse.core.runtime.*;
 import org.eclipse.help.*;
 import org.eclipse.help.internal.context.*;
 import org.eclipse.help.internal.toc.*;
-import org.eclipse.help.internal.util.*;
 
 /**
  * The actual implementation of the help system plugin.

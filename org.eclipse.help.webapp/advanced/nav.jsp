@@ -71,7 +71,7 @@ function displayTocFor(topic)
 		saveNavigation();
 		// we are using the full URL because this API is exposed to clients
 		// (content page may want to autosynchronize)
-		var tocURL = window.location.protocol + "//" +window.location.host  + "<%=request.getContextPath()%>" + "/tocView.jsp";
+		var tocURL = window.location.protocol + "//" +window.location.host  + "<%=request.getContextPath()%>" + "/advanced/tocView.jsp";
 		tocView.location.replace(tocURL + "?topic="+topic+"&synch=yes");			
 	}
 }

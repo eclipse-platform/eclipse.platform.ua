@@ -1,7 +1,10 @@
-package org.eclipse.help.servlet;
+package org.eclipse.help.servlet.data;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
+
+import org.eclipse.help.servlet.UrlUtil;
+import org.eclipse.help.servlet.WebappPreferences;
 import org.w3c.dom.*;
 
 /*

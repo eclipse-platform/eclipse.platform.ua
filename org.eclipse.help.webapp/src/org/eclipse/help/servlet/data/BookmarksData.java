@@ -1,4 +1,4 @@
-package org.eclipse.help.servlet;
+package org.eclipse.help.servlet.data;
 
 /*
  * (c) Copyright IBM Corp. 2002.
@@ -11,6 +11,7 @@ import javax.servlet.http.*;
 
 import org.eclipse.core.runtime.*;
 import org.eclipse.help.internal.*;
+import org.eclipse.help.servlet.UrlUtil;
 
 /**
  * This class calls eclipse API's directly, so it should only be

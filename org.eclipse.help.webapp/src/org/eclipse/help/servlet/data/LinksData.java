@@ -2,7 +2,7 @@
  * (c) Copyright IBM Corp. 2000, 2002.
  * All Rights Reserved.
  */
-package org.eclipse.help.servlet;
+package org.eclipse.help.servlet.data;
 import java.io.*;
 import java.text.NumberFormat;
 import java.util.*;
@@ -10,6 +10,7 @@ import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
+import org.eclipse.help.servlet.ContentUtil;
 import org.w3c.dom.*;
 
 /**

@@ -1,4 +1,6 @@
-package org.eclipse.help.servlet;
+package org.eclipse.help.servlet.data;
+
+import org.eclipse.help.servlet.UrlUtil;
 
 /*
  * (c) Copyright IBM Corp. 2000, 2002.

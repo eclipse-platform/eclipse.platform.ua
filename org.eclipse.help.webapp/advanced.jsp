@@ -86,16 +86,23 @@ FORM {
 	padding:0px;
 }
 
+<%
+if (data.isMozilla()) {
+%>
+input[type="checkbox"] {
+	border:2px solid WindowText; 
+	margin:0xp; 
+	padding:0px;	
+	height:12px;
+	width:12px;
+}
+<%
+}
+%>
 </style>
 
 <script language="JavaScript">
 
- var isMozilla = navigator.userAgent.toLowerCase().indexOf('mozilla') != -1 && parseInt(navigator.appVersion.substring(0,1)) >= 5;
- var extraStyle = "";
-  if (isMozilla)
-  	 document.write( '<style type="text/css">input[type="checkbox"] {border:2px solid WindowText; margin:0xp; padding:0px;	height:12px;width:12px;}</style>');
-
- 
 function doAdvancedSearch()
 {
 	try

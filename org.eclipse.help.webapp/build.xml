@@ -108,8 +108,6 @@
 <!-- custom begin -->
 		<!-- generate java code from JSPs -->
 		<path id="jasper.classpath" > 
-			<pathelement location="../org.apache.xerces/xmlParserAPIs.jar"/>
-			<pathelement location="../org.apache.xerces/xercesImpl.jar"/>
 			<pathelement location="../org.apache.ant/lib/ant.jar"/>
 			<pathelement location="../org.apache.ant/lib/optional.jar"/>
 			<pathelement location="../org.eclipse.tomcat/jasper-compiler.jar" />

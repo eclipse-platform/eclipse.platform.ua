@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.help.internal.context;
 import org.eclipse.help.*;
-import org.eclipse.help.internal.HelpCore;
+import org.eclipse.help.internal.HelpPlugin;
 /**
  * IContext Implementation that performs lazy lookup of
  * context ID when any of the IContext methods are called.
@@ -33,7 +33,7 @@ public class ContextProxy implements IContext {
 	 */
 	public IHelpResource[] getRelatedTopics() {
 		if (!used) {
-			context = HelpCore.getContextManager().getContext(contextID);
+			context = HelpPlugin.getContextManager().getContext(contextID);
 			used = true;
 		}
 		if (context == null)
@@ -47,7 +47,7 @@ public class ContextProxy implements IContext {
 	 */
 	public String getText() {
 		if (!used) {
-			context = HelpCore.getContextManager().getContext(contextID);
+			context = HelpPlugin.getContextManager().getContext(contextID);
 			used = true;
 		}
 		if (context == null)

@@ -54,7 +54,7 @@ public final class HelpSystem {
 	 * @return an array of TOC's
 	 */
 	public static IToc[] getTocs() {
-		return HelpCore.getTocManager().getTocs(BootLoader.getNL());
+		return HelpPlugin.getTocManager().getTocs(BootLoader.getNL());
 	}
 
 	/**

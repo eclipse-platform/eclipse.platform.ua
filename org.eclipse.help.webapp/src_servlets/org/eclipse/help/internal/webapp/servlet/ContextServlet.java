@@ -43,7 +43,7 @@ public class ContextServlet extends HttpServlet {
 		if (contextId == null || contextId.length() < 2)
 			throw new ServletException();
 		contextId = contextId.substring(1);
-		IContext context = HelpCore.getContextManager().getContext(contextId);
+		IContext context = HelpPlugin.getContextManager().getContext(contextId);
 		if (context == null)
 			throw new ServletException();
 		
@@ -122,7 +122,7 @@ public class ContextServlet extends HttpServlet {
 		 * or within a scope if specified
 		 */
 		IToc findTocForTopic(String href) {
-			IToc[] tocs = HelpCore.getTocManager().getTocs(locale);
+			IToc[] tocs = HelpPlugin.getTocManager().getTocs(locale);
 			for (int i = 0; i < tocs.length; i++) {
 				ITopic topic = tocs[i].getTopic(href);
 				if (topic != null)

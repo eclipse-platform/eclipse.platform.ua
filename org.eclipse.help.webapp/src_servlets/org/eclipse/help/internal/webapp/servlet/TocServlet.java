@@ -72,7 +72,7 @@ public class TocServlet extends HttpServlet {
 	 */
 	private void serializeToc(String tocID, HttpServletResponse resp)
 		throws ServletException, IOException {
-		IToc toc = (IToc) HelpCore.getTocManager().getToc(tocID, locale);
+		IToc toc = (IToc) HelpPlugin.getTocManager().getToc(tocID, locale);
 		serializeToc(toc, resp);
 	}
 	/**
@@ -93,7 +93,7 @@ public class TocServlet extends HttpServlet {
 	 */
 	private void serializeTocs(HttpServletResponse resp)
 		throws ServletException, IOException {
-		TocManager tocManager = HelpCore.getTocManager();
+		TocManager tocManager = HelpPlugin.getTocManager();
 		IToc[] tocs = tocManager.getTocs(locale);
 
 		TocWriter gen = new TocWriter(resp.getWriter());
@@ -144,7 +144,7 @@ public class TocServlet extends HttpServlet {
 		if (topic == null || topic.equals(""))
 			return null;
 
-		IToc[] tocs = HelpCore.getTocManager().getTocs(locale);
+		IToc[] tocs = HelpPlugin.getTocManager().getTocs(locale);
 		for (int i = 0; i < tocs.length; i++)
 			if (tocs[i].getTopic(topic) != null)
 				return tocs[i];

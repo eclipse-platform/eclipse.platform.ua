@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.help.internal;
 import org.eclipse.core.runtime.*;
+import org.eclipse.help.internal.context.*;
+import org.eclipse.help.internal.toc.*;
 /**
  * Simple plugin for help system.
  */
@@ -20,6 +22,12 @@ public class HelpPlugin extends Plugin {
 	public static boolean DEBUG_CONTEXT = false;
 	public static boolean DEBUG_PROTOCOLS = false;
 	protected static HelpPlugin plugin;
+
+	public final static String BASE_TOCS_KEY = "baseTOCS";
+
+	protected TocManager tocManager;
+	protected static Object tocManagerCreateLock=new Object();
+	protected ContextManager contextManager;
 	/** 
 	 * Logs an Error message with an exception. Note that the message should already 
 	 * be localized to proper locale.
@@ -134,4 +142,28 @@ public class HelpPlugin extends Plugin {
 			DEBUG_PROTOCOLS = "true".equalsIgnoreCase(Platform.getDebugOption(PLUGIN_ID + "/debug/protocols")); //$NON-NLS-1$
 		}
 	}
+	/**
+	 * Used to obtain Toc Naviagiont Manager
+	 * @return instance of TocManager
+	 */
+	public static TocManager getTocManager() {
+		if (getDefault().tocManager == null) {
+			synchronized (tocManagerCreateLock) {
+				if (getDefault().tocManager == null) {
+					getDefault().tocManager = new TocManager();
+				}
+			}
+		}
+		return getDefault().tocManager;
+	}
+	/**
+	 * Used to obtain Context Manager
+	 * returns an instance of ContextManager
+	 */
+	public static ContextManager getContextManager() {
+		if (getDefault().contextManager == null)
+		getDefault().contextManager = new ContextManager();
+		return getDefault().contextManager;
+	}
+
 }

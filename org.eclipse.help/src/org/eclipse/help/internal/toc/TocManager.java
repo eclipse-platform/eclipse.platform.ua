@@ -146,7 +146,7 @@ public class TocManager {
 		ArrayList orderedTocs = new ArrayList();
 		try {
 			Preferences pref = HelpPlugin.getDefault().getPluginPreferences();
-			String preferredTocs = pref.getString(HelpCore.BASE_TOCS_KEY);
+			String preferredTocs = pref.getString(HelpPlugin.BASE_TOCS_KEY);
 			if (preferredTocs != null) {
 				StringTokenizer suggestdOrderedInfosets =
 					new StringTokenizer(preferredTocs, " ;,");

@@ -80,6 +80,11 @@ TABLE {
 	margin:2px;
 }
 
+#removeBookmark {
+	width:80%;
+	margin-left:10px;
+	margin-right:2px;
+}
 
 .selected {
 	background:Highlight;
@@ -138,7 +143,7 @@ function removeBookmark()
  * Popup a menu on right click over a bookmark.
  * This handler assumes the list.js script has been loaded.
  */
-function mouseDownHandler(e)
+function contextMenuHandler(e)
 {
 	// hide popup if open
 	var menu = document.getElementById("menu");
@@ -147,9 +152,6 @@ function mouseDownHandler(e)
 
 	if (isIE)
 		e = window.event;
-		
-	if (e.button != 2) // right click
-		return true;
 		
   	var clickedNode;
   	if (isMozilla)
@@ -161,6 +163,9 @@ function mouseDownHandler(e)
 
   	if (!clickedNode)
   		return true;
+  	
+  	// call the click handler to select node
+  	mouseClickHandler(e);
   	
   	if(clickedNode.tagName == "A")
   		bookmark = clickedNode;
@@ -190,6 +195,7 @@ function mouseDownHandler(e)
 	return false;
 }
 
+/*
 // listen for right click events
 if (isMozilla) {
   document.addEventListener('onmousedown', mouseDownHandler, true);
@@ -197,6 +203,7 @@ if (isMozilla) {
 else if (isIE){
   document.onmousedown = mouseDownHandler;
 }
+*/
 
 </script>
 
@@ -220,7 +227,7 @@ else if (isIE){
 		<a id='a<%=i%>' 
 		   href='<%=bookmarks[i].getHref()%>' 
 		   onclick='parent.parent.setToolbarTitle(" ")' 
-		   xonmousedown="mouseDownHandler(event);return false;"
+		   oncontextmenu="contextMenuHandler(event);return false;"
 		   title="<%=UrlUtil.htmlEncode(bookmarks[i].getLabel())%>">
 		   <img src="images/bookmark_obj.gif">
 		   		<%=UrlUtil.htmlEncode(bookmarks[i].getLabel())%>

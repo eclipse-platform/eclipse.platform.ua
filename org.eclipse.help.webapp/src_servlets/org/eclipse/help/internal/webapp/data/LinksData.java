@@ -32,8 +32,8 @@ public class LinksData extends RequestData {
 	 * @param context
 	 * @param request
 	 */
-	public LinksData(ServletContext context, HttpServletRequest request) {
-		super(context, request);
+	public LinksData(ServletContext context, HttpServletRequest request, HttpServletResponse response) {
+		super(context, request, response);
 		this.topicHref = request.getParameter("topic");
 		if (topicHref != null && topicHref.length() == 0)
 			topicHref = null;

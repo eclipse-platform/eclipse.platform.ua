@@ -178,8 +178,9 @@ public class SearchData extends RequestData {
 	/**
 	 * Returns true if book is within a search scope
 	 */
-	public boolean isTocSelected(IToc toc) {
-		String href=toc.getHref();
+	public boolean isTocSelected(int toc) {
+		TocData tocData = new TocData(context, request);
+		String href=tocData.getTocHref(toc);
 		String[] books = UrlUtil.getRequestParameters(request, "scope");
 		for(int i=0; i<books.length; i++){
 			if(books[i].equals(href)){

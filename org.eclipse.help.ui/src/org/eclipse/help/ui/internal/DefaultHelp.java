@@ -60,7 +60,7 @@ public class DefaultHelp extends AbstractHelpUI {
 	 * </ul>
 	 */
 	public void displayHelpResource(String href) {
-		BaseHelpSystem.getHelpSupport().displayHelp(href);
+		BaseHelpSystem.getHelpSupport().displayHelpResource(href);
 	}
 	/**
 	 * Displays context-sensitive help for specified context

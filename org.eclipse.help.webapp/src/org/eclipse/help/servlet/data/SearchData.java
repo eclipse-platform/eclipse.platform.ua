@@ -52,14 +52,16 @@ public class SearchData extends RequestData {
 		searchWord = UrlUtil.getRequestParameter(sQuery, "searchWord");
 
 		// try loading search results or get the indexing progress info.
-		loadSearchResults();
+		if (isSearchRequest()) {
+			loadSearchResults();
 
-		if (!isProgressRequest()) {
-			for (int i = 0; i < hits.length; i++) {
-				// the following assume topic numbering as in searchView.jsp
-				if (hits[i].getHref().equals(topicHref)) {
-					selectedTopicId = "a" + i;
-					break;
+			if (!isProgressRequest()) {
+				for (int i = 0; i < hits.length; i++) {
+					// the following assume topic numbering as in searchView.jsp
+					if (hits[i].getHref().equals(topicHref)) {
+						selectedTopicId = "a" + i;
+						break;
+					}
 				}
 			}
 		}

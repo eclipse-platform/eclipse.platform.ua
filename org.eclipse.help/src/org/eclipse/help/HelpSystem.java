@@ -15,7 +15,6 @@ import java.net.*;
 
 import org.eclipse.core.boot.*;
 import org.eclipse.help.internal.*;
-import org.eclipse.help.internal.context.*;
 
 /**
  * This class provides general access to help content contributed to the 

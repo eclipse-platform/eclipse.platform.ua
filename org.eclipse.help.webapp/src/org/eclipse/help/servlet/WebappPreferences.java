@@ -20,6 +20,11 @@ public class WebappPreferences {
 	private String bookmarksView = null;
 	private String bookmarks = null;
 	private String linksView = null;
+	private String imagesDirectory = "images";
+	private String toolbarBackground = "ButtonFace";
+	private String toolbarFont = "icon";
+	private String viewBackground = "ButtonFace";
+	private String viewFont = "icon";
 
 	private ServletContext context;
 
@@ -51,6 +56,28 @@ public class WebappPreferences {
 		return "true".equals(linksView);
 	}
 
+	public String getImagesDirectory() {
+		return imagesDirectory;
+	}
+	
+	public String getToolbarBackground() {
+		return toolbarBackground;
+	}
+	
+	
+	public String getToolbarFont() {
+		return toolbarFont;
+	}
+	
+		
+	public String getViewBackground() {
+		return viewBackground;
+	}
+	
+	public String getViewFont() {
+		return viewFont;
+	}
+	
 	/**
 	 * Loads preferences 
 	 */
@@ -75,6 +102,16 @@ public class WebappPreferences {
 					bookmarks = pref.getAttribute("value");
 				else if (name.equals("linksView"))
 					linksView = pref.getAttribute("value");
+				else if (name.equals("imagesDirectory"))
+					imagesDirectory = pref.getAttribute("value");
+				else if (name.equals("toolbarBackground"))
+					toolbarBackground = pref.getAttribute("value");
+				else if (name.equals("toolbarFont"))
+					toolbarFont = pref.getAttribute("value");
+				else if (name.equals("viewBackground"))
+					viewBackground = pref.getAttribute("value");
+				else if (name.equals("viewFont"))
+					viewFont = pref.getAttribute("value");
 			}
 		}
 		if (banner != null) {
@@ -84,5 +121,7 @@ public class WebappPreferences {
 				banner = UrlUtil.getHelpURL(banner);
 		}
 
+		if (imagesDirectory != null && imagesDirectory.startsWith("/"))
+			imagesDirectory = UrlUtil.getHelpURL(imagesDirectory);
 	}
 }

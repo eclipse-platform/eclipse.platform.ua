@@ -4,6 +4,7 @@
 	// calls the utility class to initialize the application
 	application.getRequestDispatcher("/servlet/org.eclipse.help.servlet.InitServlet").include(request,response);
 	TocData tocData = new TocData(application, request);
+	WebappPreferences prefs = tocData.getPrefs();
 	Element selectedToc = tocData.getSelectedToc();
 %>
 
@@ -21,8 +22,8 @@
 <style type="text/css">
 
 BODY {
-	background-color: Window;
-	font: icon;
+	background-color: <%=prefs.getViewBackground()%>;
+	font: <%=prefs.getViewFont()%>;
 	margin:0;
 	padding:0;
 	border:0;
@@ -73,13 +74,13 @@ A:hover{
 }
 
 A.active{ 
-	background:ButtonFace;
+	background:<%=prefs.getToolbarBackground()%>;
 	width:100%;
 }
 
 A.active:hover{
 	text-decoration:underline; 
-	background:ButtonFace;
+	background:<%=prefs.getToolbarBackground()%>;
 	width:100%;
 }
   
@@ -154,7 +155,7 @@ function onloadHandler()
 	{
 %>
 		<li>
-		<nobr><img src="images/toc_obj.gif"><a id="b<%=i%>" style="font-weight: bold;" href="<%=tocData.getTocDescriptionTopic(tocs[i])%>" onclick='loadTOC("<%=tocData.getTocHref(tocs[i])%>")'><%=tocData.getTocLabel(tocs[i])%></a></nobr>
+		<nobr><img src="<%=prefs.getImagesDirectory()%>/toc_obj.gif"><a id="b<%=i%>" style="font-weight: bold;" href="<%=tocData.getTocDescriptionTopic(tocs[i])%>" onclick='loadTOC("<%=tocData.getTocHref(tocs[i])%>")'><%=tocData.getTocLabel(tocs[i])%></a></nobr>
 <%
 		// Only generate the selected toc
 		if (selectedToc != null &&

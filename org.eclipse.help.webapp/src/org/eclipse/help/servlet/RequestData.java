@@ -34,4 +34,10 @@ public class RequestData {
 		this.isMozilla  = (!isIE && (agent.indexOf("mozilla/5")!=-1));
 	}
 
+	/**
+	 * Returns the preferences object
+	 */
+	public WebappPreferences getPrefs() {
+		return (WebappPreferences)context.getAttribute("WebappPreferences");
+	}
 }

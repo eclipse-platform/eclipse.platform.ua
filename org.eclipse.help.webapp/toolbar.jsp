@@ -3,6 +3,7 @@
 <% 
 	// calls the utility class to initialize the application
 	application.getRequestDispatcher("/servlet/org.eclipse.help.servlet.InitServlet").include(request,response);
+	WebappPreferences prefs = (new RequestData(application,request)).getPrefs();
 %>
 
 
@@ -29,7 +30,7 @@ HTML {
  }
  
 BODY {
-	background:ButtonFace;
+	background:<%=prefs.getToolbarBackground()%>;
 }
 
 #titleText {
@@ -161,7 +162,7 @@ function setTitle(label)
 	<div id="textLayer" style="position:absolute; z-index:1; left:0; top:0; height:100%; width:100%;">
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%" style="padding-left:5;">
 			<tr>
-				<td style="font: icon;">
+				<td style="font: <%=prefs.getToolbarFont()%>">
 					<div id="titleText">&nbsp;
 					</div>
 				</td>
@@ -184,35 +185,34 @@ function setTitle(label)
 					&nbsp;
 				</td>
 				<td align="middle" width="22">
-					<a href="#" onclick="goBack(this);" onmouseover="window.status='<%=WebappResources.getString("back_tip", request)%>';return true;" onmouseout="window.status='';"><img src="images/back.gif" alt='<%=WebappResources.getString("back_tip", request)%>' border="0" name="back"></a>
+					<a href="#" onclick="goBack(this);" onmouseover="window.status='<%=WebappResources.getString("back_tip", request)%>';return true;" onmouseout="window.status='';"><img src="<%=prefs.getImagesDirectory()%>/back.gif" alt='<%=WebappResources.getString("back_tip", request)%>' border="0" name="back"></a>
 				</td>
 				<td align="middle" width="22">
-					<a href="#" onclick="goForward(this);" onmouseover="window.status='<%=WebappResources.getString("forward_tip", request)%>';return true;" onmouseout="window.status='';"><img src="images/forward.gif" alt='<%=WebappResources.getString("forward_tip", request)%>' border="0" name="forward"></a>
+					<a href="#" onclick="goForward(this);" onmouseover="window.status='<%=WebappResources.getString("forward_tip", request)%>';return true;" onmouseout="window.status='';"><img src="<%=prefs.getImagesDirectory()%>/forward.gif" alt='<%=WebappResources.getString("forward_tip", request)%>' border="0" name="forward"></a>
 				</td>
 				<td align="middle" valign="middle" width="9">
 				<!--
-					<img width="1" height=18 src="images/tool_separator.gif" alt='' border="0">
+					<img width="1" height=18 src="<%=prefs.getImagesDirectory()%>/tool_separator.gif" alt='' border="0">
 				-->
 				</td>
 				<td id="hide_nav" align="middle" width="22">
-					<a href="#" onclick="toggleNav(this);" onmouseover="window.status='<%=WebappResources.getString("Toggle", request)%>';return true;" onmouseout="window.status='';"><img src="images/hide_nav.gif" alt='<%=WebappResources.getString("Toggle", request)%>' border="0" name="hide_nav"></a>
+					<a href="#" onclick="toggleNav(this);" onmouseover="window.status='<%=WebappResources.getString("Toggle", request)%>';return true;" onmouseout="window.status='';"><img src="<%=prefs.getImagesDirectory()%>/hide_nav.gif" alt='<%=WebappResources.getString("Toggle", request)%>' border="0" name="hide_nav"></a>
 				</td>
 				<td align="middle" width="22">
-					<a  href="#" onclick="resynch(this);" onmouseover="window.status= '<%=WebappResources.getString("Synch", request)%>'; return true;" onmouseout="window.status='';"><img src="images/synch_toc_nav.gif" alt='<%=WebappResources.getString("Synch", request)%>' border="0" name="sync_nav"></a>
+					<a  href="#" onclick="resynch(this);" onmouseover="window.status= '<%=WebappResources.getString("Synch", request)%>'; return true;" onmouseout="window.status='';"><img src="<%=prefs.getImagesDirectory()%>/synch_toc_nav.gif" alt='<%=WebappResources.getString("Synch", request)%>' border="0" name="sync_nav"></a>
 				</td>
 <%
-	WebappPreferences prefs = (WebappPreferences)application.getAttribute("WebappPreferences");
 	if (prefs.isBookmarksView()) 
 	{
 %>
 				<td id="bookmark" align="middle" width="22">
-					<a href="#" onclick="bookmarkPage(this)" onmouseover="window.status='<%=WebappResources.getString("BookmarkPage", request)%>';return true;" onmouseout="window.status='';"><img src="images/bookmark_obj.gif" alt='<%=WebappResources.getString("BookmarkPage", request)%>' border="0" name="bookmark"></a>
+					<a href="#" onclick="bookmarkPage(this)" onmouseover="window.status='<%=WebappResources.getString("BookmarkPage", request)%>';return true;" onmouseout="window.status='';"><img src="<%=prefs.getImagesDirectory()%>/bookmark_obj.gif" alt='<%=WebappResources.getString("BookmarkPage", request)%>' border="0" name="bookmark"></a>
 				</td>
 <%
 	}
 %>
 				<td align="middle" width="22">
-					<a  href="#" onclick="printContent(this);" onmouseover="window.status='<%=WebappResources.getString("Print", request)%>' ;return true;"  onmouseout="window.status='';"><img  src="images/print_edit.gif" alt='<%=WebappResources.getString("Print", request)%>' border="0" name="print"></a>
+					<a  href="#" onclick="printContent(this);" onmouseover="window.status='<%=WebappResources.getString("Print", request)%>' ;return true;"  onmouseout="window.status='';"><img  src="<%=prefs.getImagesDirectory()%>/print_edit.gif" alt='<%=WebappResources.getString("Print", request)%>' border="0" name="print"></a>
 				</td>
 			</tr>
 		</table>

@@ -3,13 +3,9 @@
 <% 
 	// calls the utility class to initialize the application
 	application.getRequestDispatcher("/servlet/org.eclipse.help.servlet.InitServlet").include(request,response);
+	WebappPreferences prefs = (new RequestData(application,request)).getPrefs();
 %>
 
-<%
- String  ContentStr = WebappResources.getString("Content", request);
- String  SearchStr = WebappResources.getString("SearchResults", request);
- String  LinksStr = WebappResources.getString("Links", request);
- %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <!--
@@ -33,7 +29,7 @@ HTML {
  }
  
 BODY {
-	background:ButtonFace;
+	background:<%=prefs.getToolbarBackground()%>;
 }
 
 #titleText {
@@ -48,7 +44,7 @@ BODY {
 	<div id="textLayer" style="position:absolute; z-index:1; left:0; top:0; height:100%; width:100%;">
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%" style="padding-left:5;">
 			<tr>
-				<td style="font: icon;">
+				<td style="font: <%=prefs.getToolbarFont()%>;">
 					<div id="titleText">
 						<%=WebappResources.getString("Content", request)%>
 					</div>
@@ -74,7 +70,7 @@ BODY {
 				<!--
 				<td align="middle" width="20">
 					<a  href="#" onclick="parent.showBookshelf(this); this.blur();" onmouseover="window.status='<%=WebappResources.getString("Bookshelf", request)%>';return true;" onmouseout="window.status='';">
-						<img  id="bookshelfIcon" src="images/home_cont.gif" alt='<%=WebappResources.getString("Bookshelf", request)%>' border="0">
+						<img  id="bookshelfIcon" src="<%=prefs.getImagesDirectory()%>/home_cont.gif" alt='<%=WebappResources.getString("Bookshelf", request)%>' border="0">
 					</a>
 				</td>
 				-->

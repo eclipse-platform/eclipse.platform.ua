@@ -3,6 +3,9 @@
 <% 
 	// calls the utility class to initialize the application
 	application.getRequestDispatcher("/servlet/org.eclipse.help.servlet.InitServlet").include(request,response);
+	
+	SearchData searchData = new SearchData(application, request);
+	WebappPreferences prefs = searchData.getPrefs();
 %>
 
 <%
@@ -52,7 +55,7 @@ HTML {
  }
 
 BODY {
-	background-color:ButtonFace;
+	background:<%=prefs.getToolbarBackground()%>;
 	border:0px;
 	text:white;
 	height:100%;
@@ -60,14 +63,14 @@ BODY {
 
 TABLE {
 	font: icon;
-	background:ButtonFace;
+	background:<%=prefs.getToolbarBackground()%>;
 	margin:0;
 	padding:0;
 	height:100%;
 }
 
 FORM {
-	background:ButtonFace;
+	background:<%=prefs.getToolbarBackground()%>;
 	margin:0;
 }
 

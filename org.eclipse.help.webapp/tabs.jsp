@@ -5,6 +5,7 @@
 	application.getRequestDispatcher("/servlet/org.eclipse.help.servlet.InitServlet").include(request,response);
 
 	LayoutData layout = new LayoutData(application,request);
+	WebappPreferences prefs = layout.getPrefs();
 	View[] views = layout.getViews();
 %>
 
@@ -31,7 +32,7 @@ BODY {
 
 /* tabs at the bottom */
 .tab {
-	background:ButtonFace;
+	background:<%=prefs.getToolbarBackground()%>;
 	margin:0px;
 	padding:0px;
  	border-top:1px solid WindowText;
@@ -40,10 +41,10 @@ BODY {
 }
 
 .pressed {
-	background:Window;
+	background:<%=prefs.getViewBackground()%>;
 	margin:0px;
 	padding:0px;
-	border-top:1px Window solid;
+	border-top:1px <%=prefs.getViewBackground()%> solid;
 	cursor:default;
 	align:center;
 }

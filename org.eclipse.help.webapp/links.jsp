@@ -5,6 +5,7 @@
 	application.getRequestDispatcher("/servlet/org.eclipse.help.servlet.InitServlet").include(request,response);
 	
 	LinksData linksData = new LinksData(application, request);
+	WebappPreferences prefs = linksData.getPrefs();
 %>
 
 
@@ -23,8 +24,8 @@
 
 <style type="text/css">
 BODY {
-	background-color: Window;
-	font: icon;
+	background-color: <%=prefs.getViewBackground()%>;
+	font: <%=prefs.getViewFont()%>;
 	margin-top:5px;
 	margin-left:5px;
 	padding:0;
@@ -51,18 +52,18 @@ IMG {
 }
 
 TABLE {
-	background-color: Window;
-	font: icon;
+	background-color: <%=prefs.getViewBackground()%>;
+	font: <%=prefs.getViewFont()%>;
 	width:100%;
 }
 
 .list {
-	background-color: Window;
+	background-color: <%=prefs.getViewBackground()%>;
 	padding:2px;
 }
      
 .active { 
-	background:ButtonFace;
+	background:<%=prefs.getToolbarBackground()%>;
 	width:100%;
 	height:100%;
 }
@@ -110,7 +111,7 @@ if(!linksData.isLinksRequest()) {
 		   href='<%=links[i].getHref()%>' 
 		   onclick='parent.parent.setToolbarTitle("<%=UrlUtil.JavaScriptEncode(links[i].getTocLabel())%>")' 
 		   title="<%=UrlUtil.htmlEncode(links[i].getTocLabel())%>">
-		   <img src="images/topic.gif">
+		   <img src="<%=prefs.getImagesDirectory()%>/topic.gif">
 		   <%=UrlUtil.htmlEncode(links[i].getLabel())%>
 		 </a>
 	</td>

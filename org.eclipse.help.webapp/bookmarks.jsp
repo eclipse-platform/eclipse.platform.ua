@@ -5,6 +5,8 @@
 	application.getRequestDispatcher("/servlet/org.eclipse.help.servlet.InitServlet").include(request,response);
 
 	BookmarksData bookmarksData = new BookmarksData(application,request);
+	WebappPreferences prefs = bookmarksData.getPrefs();
+	
 	// see if anything is to be added
 	bookmarksData.addBookmark();
 	// see if anything is to be removd
@@ -26,8 +28,8 @@
 
 <style type="text/css">
 BODY {
-	background-color: Window;
-	font: icon;
+	background-color: <%=prefs.getViewBackground()%>;
+	font: <%=prefs.getViewFont()%>;
 	margin-top:5px;
 	margin-left:5px;
 	padding:0;
@@ -54,18 +56,18 @@ IMG {
 }
 
 TABLE {
-	background-color: Window;
-	font: icon;
+	background-color: <%=prefs.getViewBackground()%>;
+	font: <%=prefs.getViewFont()%>;
 	width:100%;
 }
 
 .list {
-	background-color: Window;
+	background-color: <%=prefs.getViewBackground()%>;
 	padding:2px;
 }
      
 .active { 
-	background:ButtonFace;
+	background:<%=prefs.getToolbarBackground()%>;
 	width:100%;
 	height:100%;
 }
@@ -77,7 +79,7 @@ TABLE {
 #menu {
 	position:absolute;
 	display:none;
-	background:ButtonFace;
+	background:<%=prefs.getToolbarBackground()%>;
 	border:2px outset;
 	padding:2px 0px;
 }
@@ -93,7 +95,7 @@ TABLE {
 }
 
 .unselected {
-	background:ButtonFace;
+	background:<%=prefs.getToolbarBackground()%>;
 	color:WindowText;
 }
 
@@ -220,7 +222,7 @@ function contextMenuHandler(e)
 		   onclick='parent.parent.setToolbarTitle(" ")' 
 		   oncontextmenu="contextMenuHandler(event);return false;"
 		   title="<%=UrlUtil.htmlEncode(bookmarks[i].getLabel())%>">
-		   <img src="images/bookmark_obj.gif">
+		   <img src="<%=prefs.getImagesDirectory()%>/bookmark_obj.gif">
 		   		<%=UrlUtil.htmlEncode(bookmarks[i].getLabel())%>
 		</a>
 	</td>

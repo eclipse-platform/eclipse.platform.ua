@@ -18,6 +18,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title><%=WebappResources.getString("Help", request)%></title>
+<script>var EclipseHelpSystem=true;</script>
 </head>
 
 <frameset rows="<%=layout.getBannerHeight()%>,24,*"  frameborder="0" framespacing="0" border=0 spacing=0 style="border:1px solid WindowText;">

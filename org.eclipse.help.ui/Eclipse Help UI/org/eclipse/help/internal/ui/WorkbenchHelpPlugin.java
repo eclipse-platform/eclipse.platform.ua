@@ -13,6 +13,8 @@ import org.eclipse.help.internal.util.*;
 import org.eclipse.help.internal.navigation.*;
 import org.eclipse.help.internal.ui.util.*;
 import org.eclipse.help.internal.HelpSystem;
+import org.eclipse.ui.*;
+import org.eclipse.ui.internal.*;
 
 /**
   * This class is a UI plugin. This may need to change to regular 
@@ -84,6 +86,10 @@ public class WorkbenchHelpPlugin extends AbstractUIPlugin {
 	public void startup() {
 		if(getWorkbench()!=null)
 			initializeFromStore();
+		// Set the order of infosets in NavigationManager
+		String infoSetIDs =	((Workbench)PlatformUI.getWorkbench()).getProductInfo().getInformationSetIds();
+		if(infoSetIDs!=null)
+			HelpSystem.setInformationSetIds(infoSetIDs);
 		HelpSystem.startup();
 	}
 }

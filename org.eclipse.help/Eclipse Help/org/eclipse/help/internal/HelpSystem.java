@@ -24,6 +24,8 @@ public final class HelpSystem {
 	protected ContextManager contextManager;
 	protected ISearchEngine searchManager;
 	protected Plugin plugin;
+	// Information Set order for Navigation Manager
+	protected String informationSetIds = null;
 
 	int debug_level;
 	private String browserPath;
@@ -89,6 +91,12 @@ public final class HelpSystem {
 	 */
 	public static int getDebugLevel() {
 		return getInstance().debug_level;
+	}
+	/**
+	 * Gets suggested order of information sets
+	 */
+	public static String getInformationSetIds(){
+		return getInstance().informationSetIds;
 	}
 	public static HelpSystem getInstance() {
 		return instance;
@@ -183,6 +191,13 @@ public final class HelpSystem {
 	public static void setDebugLevel(int debug_level) {
 		getInstance().debug_level = debug_level;
 		Logger.setDebugLevel(debug_level);
+	}
+	/**
+	 * Sets suggested order of information sets
+	 * @param IDs comma separated list of information set IDs
+	 */
+	public static void setInformationSetIds(String IDs){
+		getInstance().informationSetIds=IDs;
 	}
 	public static void setInstall(int install) {
 		int oldInstall = getInstance().install;

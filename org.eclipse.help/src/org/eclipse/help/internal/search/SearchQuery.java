@@ -57,7 +57,10 @@ public class SearchQuery implements ISearchQuery {
 		}
 	}
 	public String getSearchWord() {
-		return (String) terms.get("searchWord");
+		if (terms == null) 
+			return "";
+		else
+			return (String) terms.get("searchWord");
 	}
 	public int getMaxHits() {
 		try {

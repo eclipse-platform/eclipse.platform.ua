@@ -23,7 +23,6 @@ var rightCols = "75%";
 function toggleFrame(title)
 {
 	var frameset = document.getElementById("helpFrameset"); 
-	
 	var navFrameSize = frameset.getAttribute("cols");
 	var comma = navFrameSize.indexOf(',');
 	var left = navFrameSize.substring(0,comma);
@@ -33,9 +32,18 @@ function toggleFrame(title)
 		// restore frames
 		frameset.setAttribute("cols", leftCols+","+rightCols);
 	} else {
+		// the "cols" attribute is not always accurate, especially after resizing.
+		// offsetWidth is also not accurate, so we do a combination of both and 
+		// should get a reasonable behavior
+		var leftSize = NavFrame.document.body.offsetWidth;
+		var rightSize = ContentFrame.document.body.offsetWidth;
+		
+		leftCols = leftSize * 100 / (leftSize + rightSize);
+		rightCols = 100 - leftCols;
+
 		// maximize the frame.
-		leftCols = left;
-		rightCols = right;
+		//leftCols = left;
+		//rightCols = right;
 		// Assumption: the content toolbar does not have a default title.
 		if (title != "") // this is the left side
 			frameset.setAttribute("cols", "100%,*");

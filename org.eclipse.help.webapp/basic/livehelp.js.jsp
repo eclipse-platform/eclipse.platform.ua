@@ -10,7 +10,7 @@ function liveActionInternal(topHelpWindow, pluginId, className, argument)
 	RequestData data = new RequestData(application,request);
 	if(data.getMode() == data.MODE_INFOCENTER){
 %>
-	alert("You must run help locally to perform active help actions.");
+	alert("<%=UrlUtil.JavaScriptEncode(WebappResources.getString("noLiveHelpInInfocenter", request))%>");
 	return;
 <%
 	}else{

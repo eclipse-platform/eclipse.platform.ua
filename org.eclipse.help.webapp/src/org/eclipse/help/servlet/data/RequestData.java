@@ -15,7 +15,7 @@ import org.eclipse.help.servlet.*;
  * Helper class for contents.jsp initialization
  */
 public class RequestData {
-	public final static int MODE_WORBENCH = HelpSystem.MODE_WORBENCH;
+	public final static int MODE_WORKBENCH = HelpSystem.MODE_WORKBENCH;
 	public final static int MODE_INFOCENTER = HelpSystem.MODE_INFOCENTER;
 	public final static int MODE_STANDALONE = HelpSystem.MODE_STANDALONE;
 	

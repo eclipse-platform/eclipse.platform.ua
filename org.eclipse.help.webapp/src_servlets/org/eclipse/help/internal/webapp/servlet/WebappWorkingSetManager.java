@@ -14,7 +14,7 @@ import java.io.*;
 
 import javax.servlet.http.*;
 
-import org.eclipse.help.internal.*;
+import org.eclipse.help.internal.base.*;
 import org.eclipse.help.internal.workingset.*;
 
 /**

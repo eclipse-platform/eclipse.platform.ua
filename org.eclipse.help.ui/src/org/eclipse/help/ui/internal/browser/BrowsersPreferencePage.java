@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.help.ui.internal.browser;
 import org.eclipse.core.runtime.*;
-import org.eclipse.help.internal.*;
+import org.eclipse.help.internal.base.*;
 import org.eclipse.help.internal.browser.*;
 import org.eclipse.help.ui.internal.*;
 import org.eclipse.help.ui.internal.util.*;
@@ -139,7 +139,7 @@ public class BrowsersPreferencePage
 		customBrowserPath.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		customBrowserPath.setFont(font);
 		customBrowserPath.setText(
-			HelpPlugin.getDefault().getPluginPreferences().getString(
+			HelpBasePlugin.getDefault().getPluginPreferences().getString(
 				CustomBrowser.CUSTOM_BROWSER_PATH_KEY));
 
 		customBrowserBrowse = new Button(bPathComposite, SWT.NONE);
@@ -196,7 +196,7 @@ public class BrowsersPreferencePage
 			items[i].setChecked(browserID == defaultBrowserID);
 		}
 		customBrowserPath.setText(
-			HelpPlugin.getDefault().getPluginPreferences().getDefaultString(
+			HelpBasePlugin.getDefault().getPluginPreferences().getDefaultString(
 				CustomBrowser.CUSTOM_BROWSER_PATH_KEY));
 		super.performDefaults();
 	}
@@ -204,7 +204,7 @@ public class BrowsersPreferencePage
 	 * @see IPreferencePage
 	 */
 	public boolean performOk() {
-		Preferences pref = HelpPlugin.getDefault().getPluginPreferences();
+		Preferences pref = HelpBasePlugin.getDefault().getPluginPreferences();
 		TableItem[] items = browsersTable.getItems();
 		for (int i = 0; i < items.length; i++) {
 			if (items[i].getChecked()) {
@@ -223,7 +223,7 @@ public class BrowsersPreferencePage
 		pref.setValue(
 			CustomBrowser.CUSTOM_BROWSER_PATH_KEY,
 			customBrowserPath.getText());
-		HelpPlugin.getDefault().savePluginPreferences();
+		HelpBasePlugin.getDefault().savePluginPreferences();
 		return true;
 	}
 	/**
@@ -243,7 +243,7 @@ public class BrowsersPreferencePage
 		for (int i = 0; i < items.length; i++) {
 			if (items[i].getChecked()) {
 				boolean enabled =
-					(HelpPlugin.PLUGIN_ID + ".custombrowser").equals(
+					(HelpBasePlugin.PLUGIN_ID + ".custombrowser").equals(
 						BrowserManager
 							.getInstance()
 							.getBrowserDescriptors()[i]

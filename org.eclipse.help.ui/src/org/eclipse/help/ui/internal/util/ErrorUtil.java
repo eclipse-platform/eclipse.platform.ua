@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.help.ui.internal.util;
 import org.eclipse.help.internal.*;
+import org.eclipse.help.internal.base.util.*;
 import org.eclipse.help.internal.util.*;
 import org.eclipse.help.ui.internal.*;
 import org.eclipse.jface.dialogs.*;

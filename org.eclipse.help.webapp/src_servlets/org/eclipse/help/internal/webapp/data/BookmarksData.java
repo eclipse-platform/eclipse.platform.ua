@@ -17,7 +17,8 @@ import javax.servlet.http.*;
 
 import org.eclipse.core.runtime.*;
 import org.eclipse.help.internal.*;
-import org.eclipse.help.internal.util.*;
+import org.eclipse.help.internal.base.*;
+import org.eclipse.help.internal.base.util.*;
 
 /**
  * This class manages bookmarks.
@@ -51,7 +52,7 @@ public class BookmarksData extends RequestData {
 			if(title==null){
 				return;
 			}
-			Preferences prefs = HelpPlugin.getDefault().getPluginPreferences();
+			Preferences prefs = HelpBasePlugin.getDefault().getPluginPreferences();
 			String bookmarks = prefs.getString(HelpSystem.BOOKMARKS);
 
 			// separate the url and title by vertical bar
@@ -75,7 +76,7 @@ public class BookmarksData extends RequestData {
 			if(title==null){
 				return;
 			}
-			Preferences prefs = HelpPlugin.getDefault().getPluginPreferences();
+			Preferences prefs = HelpBasePlugin.getDefault().getPluginPreferences();
 			String bookmarks = prefs.getString(HelpSystem.BOOKMARKS);
 			String removeString =
 				"," + encode(bookmarkURL) + "|" + encode(title);
@@ -94,7 +95,7 @@ public class BookmarksData extends RequestData {
 		// sanity test for infocenter, but this could not work anyway...
 		if (HelpSystem.getMode() != HelpSystem.MODE_INFOCENTER) {
 			// this is workbench
-			Preferences prefs = HelpPlugin.getDefault().getPluginPreferences();
+			Preferences prefs = HelpBasePlugin.getDefault().getPluginPreferences();
 			String bookmarks = prefs.getString(HelpSystem.BOOKMARKS);
 			StringTokenizer tokenizer = new StringTokenizer(bookmarks, ",");
 			Topic[] topics = new Topic[tokenizer.countTokens()];

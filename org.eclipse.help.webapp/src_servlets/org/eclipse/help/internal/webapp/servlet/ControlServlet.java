@@ -16,7 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
 import org.eclipse.help.IHelp;
-import org.eclipse.help.internal.*;
+import org.eclipse.help.internal.base.*;
 import org.eclipse.help.internal.webapp.data.*;
 /**
  * Servlet to control Eclipse helpApplication from standalone application.

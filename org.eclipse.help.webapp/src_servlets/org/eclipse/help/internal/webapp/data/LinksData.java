@@ -9,11 +9,11 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.help.internal.webapp.data;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.*;
+import javax.servlet.http.*;
 
 import org.eclipse.help.*;
-import org.eclipse.help.internal.HelpCore;
+import org.eclipse.help.internal.*;
 
 /**
  * Helper class for linksView.jsp initialization

@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.help.ui.internal;
 import org.eclipse.help.*;
-import org.eclipse.help.internal.*;
+import org.eclipse.help.internal.base.*;
 import org.eclipse.help.ui.internal.util.*;
 
 /**

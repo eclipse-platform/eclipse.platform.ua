@@ -13,7 +13,7 @@ package org.eclipse.help.internal.webapp.data;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import org.eclipse.help.internal.*;
+import org.eclipse.help.internal.base.*;
 
 /**
  * Helper class for contents.jsp initialization

@@ -16,8 +16,8 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 
 import org.eclipse.help.internal.*;
+import org.eclipse.help.internal.base.*;
 import org.eclipse.help.internal.search.*;
-import org.eclipse.help.internal.util.*;
 import org.eclipse.help.internal.webapp.*;
 import org.eclipse.help.internal.webapp.servlet.*;
 import org.eclipse.help.internal.workingset.*;
@@ -250,7 +250,7 @@ public class SearchData extends RequestData {
 				hits = results.getSearchHits();
 				if (hits == null) {
 					HelpWebappPlugin.logError(
-						Resources.getString("index_is_busy"),
+						HelpBaseResources.getString("index_is_busy"),
 						null);
 				}
 				return;

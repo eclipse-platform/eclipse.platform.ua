@@ -11,7 +11,7 @@
 package org.eclipse.help.internal.webapp.data;
 
 import org.eclipse.core.runtime.*;
-import org.eclipse.help.internal.*;
+import org.eclipse.help.internal.base.*;
 
 /**
  * Preferences for availiable to webapp

@@ -15,7 +15,7 @@ import org.eclipse.core.boot.BootLoader;
 import org.eclipse.core.runtime.*;
 import org.eclipse.help.IToc;
 import org.eclipse.help.internal.*;
-import org.eclipse.help.internal.util.Resources;
+import org.eclipse.help.internal.util.*;
 
 /**
  * Manages the navigation model. It keeps track of all the tables of contents.

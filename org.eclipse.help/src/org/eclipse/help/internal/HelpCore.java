@@ -25,7 +25,6 @@ public final class HelpCore {
 
 	protected TocManager tocManager;
 	protected ContextManager contextManager;
-	private IErrorUtil defaultErrorMessenger;
 	private IHelp helpSupport = null;
 
 	/**
@@ -86,16 +85,6 @@ public final class HelpCore {
 	 */
 	public static void startup() {
 		try {
-			setDefaultErrorUtil(new IErrorUtil() {
-				public void displayError(String msg) {
-					System.out.println(msg);
-				}
-
-				public void displayError(String msg, Thread uiThread) {
-					System.out.println(msg);
-				}
-
-			});
 			HelpPlugin.getDefault().getPluginPreferences();
 		} catch (Exception e) {
 			HelpPlugin.getDefault().getLog().log(
@@ -112,21 +101,6 @@ public final class HelpCore {
 		if (HelpPlugin.DEBUG) {
 			System.out.println("Help System started.");
 		}
-	}
-	/**
-	 * Sets the error messenger
-	 */
-	public static void setDefaultErrorUtil(IErrorUtil em) {
-		getInstance().defaultErrorMessenger = em;
-	}
-
-	/**
-	 * Returns the default error messenger. When no UI is present, all
-	 * errors are sent to System.out.
-	 * @return IErrorMessenger
-	 */
-	public static IErrorUtil getDefaultErrorUtil() {
-		return getInstance().defaultErrorMessenger;
 	}
 
 }

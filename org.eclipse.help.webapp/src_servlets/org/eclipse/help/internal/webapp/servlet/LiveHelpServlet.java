@@ -17,7 +17,7 @@ import javax.servlet.http.*;
 
 import org.eclipse.core.runtime.*;
 import org.eclipse.help.ILiveHelpAction;
-import org.eclipse.help.internal.HelpSystem;
+import org.eclipse.help.internal.base.HelpSystem;
 
 /**
  * Servlet to handle live help action requests

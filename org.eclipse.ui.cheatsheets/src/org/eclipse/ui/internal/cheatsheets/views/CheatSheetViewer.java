@@ -84,7 +84,7 @@ public class CheatSheetViewer implements ICheatSheetViewer {
 		clearIcons(getViewItemArray());
 		collapseAllButtons(getViewItemArray());
 		if(isStarted)
-			getNewManager();
+			killDynamicData(getViewItemArray());
 
 		currentItemNum = 1;
 		
@@ -549,8 +549,8 @@ public class CheatSheetViewer implements ICheatSheetViewer {
 	}
 
 	private int getIndexOfItem(ViewItem item) {
-		for (int i = 1; i < viewItemList.size(); i++) {
-			if (item == viewItemList.get(i)) {
+		duckbreak : for (int i = 1; i < viewItemList.size(); i++) {
+			if (currentItem == viewItemList.get(i)) {
 				int index = i + 1;
 				return index;
 			}
@@ -567,13 +567,8 @@ public class CheatSheetViewer implements ICheatSheetViewer {
 
 	/*package*/ CheatSheetManager getManager() {
 		if (manager == null) {
-			getNewManager();
+			manager = new CheatSheetManager(contentElement);
 		}
-		return manager;
-	}
-
-	private CheatSheetManager getNewManager(){
-		manager = new CheatSheetManager(contentElement);
 		return manager;
 	}
 
@@ -640,6 +635,13 @@ public class CheatSheetViewer implements ICheatSheetViewer {
 			currentItem.getMainItemComposite().setFocus();
 	}
 	
+	private void killDynamicData(ViewItem[] myitems){
+		//TODO: perhaps this would be better?
+		// what to do when restarting cheatsheet vs. starting new cheatsheet?
+//		getCheatsheetManager().removeAllData();
+		manager = new CheatSheetManager(contentElement);
+	}
+
 	/**
 	* Read the contents of the welcome page
 	*/

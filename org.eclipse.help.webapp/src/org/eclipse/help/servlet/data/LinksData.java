@@ -3,14 +3,14 @@
  * All Rights Reserved.
  */
 package org.eclipse.help.servlet.data;
-import java.io.*;
-import java.text.NumberFormat;
-import java.util.*;
+import java.text.*;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import org.eclipse.help.servlet.ContentUtil;
+import org.eclipse.help.*;
+import org.eclipse.help.internal.*;
+import org.eclipse.help.servlet.*;
 import org.w3c.dom.*;
 
 /**
@@ -22,14 +22,11 @@ public class LinksData extends RequestData {
 	private String topicHref;
 	private String selectedTopicId = "";
 
-	// search results
-	Element linksElement;
-
-	// list of search results
-	Link[] links;
+	// list of related links
+	private IHelpResource[] links;
 
 	/**
-	 * Constructs the xml data for the search resuls page.
+	 * Constructs  data for the links page.
 	 * @param context
 	 * @param request
 	 */
@@ -39,8 +36,8 @@ public class LinksData extends RequestData {
 		if (topicHref != null && topicHref.length() == 0)
 			topicHref = null;
 
-		linksElement = loadLinks();
-		links = getLinks();
+		if (isLinksRequest())
+			loadLinks();
 	}
 
 	/**
@@ -48,57 +45,72 @@ public class LinksData extends RequestData {
 	 * @return boolean
 	 */
 	public boolean isLinksRequest() {
-		return (request.getParameter("contextId")!=null);
+		return (request.getParameter("contextId") != null);
 	}
 
-	private Element loadLinks() {
-		ContentUtil content = new ContentUtil(context, request);
-		return content.loadLinks(request.getQueryString());
-	}
-
-	public Link[] getLinks() {
-		if (links != null)
-			return links;
-			
-		// Generate results list
-		if (linksElement == null)
-			links = new Link[0];
-		else if (!linksElement.getTagName().equals("toc"))
-			links = new Link[0];
-		else {
-			NodeList topics = linksElement.getElementsByTagName("topic");
-			links = new Link[topics.getLength()];
-			for (int i = 0; i < topics.getLength(); i++) {
-				Element topic = (Element) topics.item(i);
-				
-				// the following assume topic numbering as in linksView.jsp
-				if (topic.getAttribute("href").equals(topicHref))
-					selectedTopicId = "a"+i;
-					
-				// obtain document score
-				String scoreString = topic.getAttribute("score");
-				try {
-					float score = Float.parseFloat(scoreString);
-					NumberFormat percentFormat =
-						NumberFormat.getPercentInstance(request.getLocale());
-					scoreString = percentFormat.format(score);
-				} catch (NumberFormatException nfe) {
-					// will display original score string
-				}
-
-				links[i] =
-					new Link(
-						topic.getAttribute("label"),
-						topic.getAttribute("href"),
-						topic.getAttribute("toc"),
-						topic.getAttribute("toclabel"));
-
-			}
-		}
-		return links;
+	/**
+	 * Return the number of links
+	 * @return int
+	 */
+	public int getLinksCount() {
+		return links.length;
 	}
 	
 	public String getSelectedTopicId() {
 		return selectedTopicId;
 	}
+
+	public String getTopicHref(int i) {
+		return UrlUtil.getHelpURL(links[i].getHref());
+	}
+
+	public String getTopicLabel(int i) {
+		return UrlUtil.htmlEncode(links[i].getLabel());
+	}
+
+	public String getTopicTocLabel(int i) {
+		IToc toc = findTocForTopic(links[i].getHref());
+		if (toc != null)
+			return UrlUtil.htmlEncode(toc.getLabel());
+		else
+			return "";
+	}
+
+	/**
+	 * Finds a topic in a toc
+	 * or within a scope if specified
+	 */
+	private IToc findTocForTopic(String href) {
+		IToc[] tocs = HelpSystem.getTocManager().getTocs(getLocale());
+		for (int i = 0; i < tocs.length; i++) {
+			ITopic topic = tocs[i].getTopic(href);
+			if (topic != null)
+				return tocs[i];
+		}
+		return null;
+	}
+
+	private void loadLinks() {
+
+		String contextId = request.getParameter("contextId");
+		IContext context = HelpSystem.getContextManager().getContext(contextId);
+		if (context == null) {
+			links = new IHelpResource[0];
+			return;
+		}
+		links = context.getRelatedTopics();
+		if (links == null) {
+			links = new IHelpResource[0];
+			return;
+		}
+
+		for (int i = 0; i < links.length; i++) {
+			// the following assume topic numbering as in linksView.jsp
+			if (links[i].getHref().equals(topicHref)) {
+				selectedTopicId = "a" + i;
+				break;
+			}
+		}
+	}
+
 }

@@ -54,49 +54,48 @@ if (data.isProgressRequest()) {
 </TABLE>
 </body>
 </html>
+
 <%
 	return;
 } else {
 %>
 	<%@ include file="advanced.jsp"%>
 <%
-	if (data.isSearchRequest()) {
-		if (data.getHits().length == 0){
+ 	if (data.isSearchRequest()) {
+		if (data.getResultsCount() == 0){
 			out.write(WebappResources.getString("Nothing_found", request));
 		} else {	
-			SearchHit[] hits = data.getHits();
 %>
 
 <table border="0" cellpadding="0" cellspacing="0">
 
 <%
-		for (int i = 0; i < hits.length; i++) 
-		{
-			String title = hits[i].getToc() != null ? hits[i].getToc().getLabel() : "";
+			for (int topic = 0; topic < data.getResultsCount(); topic++) 
+			{
 %>
 
-<tr id='r<%=i%>'>
-	<td align='right'><%=data.getFormattedScore(hits[i])%></td>
+<tr id='r<%=topic%>'>
+	<td align='right'><%=data.getTopicScore(topic)%></td>
 	<td align='left' nowrap>
-	   &nbsp;
-		<a id='a<%=i%>' 
-		   href='<%=UrlUtil.getHelpURL(hits[i].getHref())%>' 
-		   title="<%=UrlUtil.htmlEncode(title)%>">
-		   <%=UrlUtil.htmlEncode(hits[i].getLabel())%>
+		<a id='a<%=topic%>' 
+		   href='<%=data.getTopicHref(topic)%>' 
+		   title="<%=data.getTopicTocLabel(topic)%>">
+		   <%=data.getTopicLabel(topic)%>
 		 </a>
 	</td>
 </tr>
 
 <%
 			}
-%>
+%>	
 
 	</table>
 
 <%
-		}
+	   	}
 	}
 }
+
 %>
 </body>
 </html>

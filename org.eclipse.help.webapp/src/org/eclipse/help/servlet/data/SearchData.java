@@ -85,18 +85,49 @@ public class SearchData extends RequestData {
 	}
 
 	/**
+	 * Return the number of links
+	 * @return int
+	 */
+	public int getResultsCount() {
+		return hits.length;
+	}
+	
+	public String getSelectedTopicId() {
+		return selectedTopicId;
+	}
+
+	public String getTopicHref(int i) {
+		return UrlUtil.getHelpURL(hits[i].getHref());
+	}
+
+	public String getTopicLabel(int i) {
+		return UrlUtil.htmlEncode(hits[i].getLabel());
+	}
+
+	public String getTopicScore(int i) {
+		try {
+			float score = hits[i].getScore();
+			NumberFormat percentFormat =
+				NumberFormat.getPercentInstance(request.getLocale());
+			return percentFormat.format(score);
+		} catch (NumberFormatException nfe) {
+			// will display original score string
+			return String.valueOf(hits[i].getScore());
+		}
+	}
+	
+	public String getTopicTocLabel(int i) {
+		if (hits[i].getToc() != null)
+			return UrlUtil.htmlEncode(hits[i].getToc().getLabel());
+		else
+			return "";
+	}
+	
+	/**
 	 * Return indexed completion percentage
 	 */
 	public String getIndexedPercentage() {
 		return String.valueOf(indexCompletion);
-	}
-
-	public SearchHit[] getHits() {
-		return hits;
-	}
-
-	public String getSelectedTopicId() {
-		return selectedTopicId;
 	}
 
 	public String getSearchWordParamName() {
@@ -123,24 +154,7 @@ public class SearchData extends RequestData {
 			return searchWord;
 	}
 
-	public IToc[] getTocs() {
-		TocData tocData = new TocData(context, request);
-		return tocData.getTocs();
-	}
 
-	/**
-	 * Returns true if book is within a search scope
-	 */
-	public boolean isTocSelected(IToc toc) {
-		String href=toc.getHref();
-		String[] books = UrlUtil.getRequestParameters(request, "scope");
-		for(int i=0; i<books.length; i++){
-			if(books[i].equals(href)){
-				return true;
-			}
-		}
-		return false;
-	}
 	/**
 	 * Returns the list of selected TOC's as a comma-separated list
 	 */
@@ -161,16 +175,18 @@ public class SearchData extends RequestData {
 		return booksList.toString();
 	}
 
-	public String getFormattedScore(SearchHit hit) {
-		try {
-			float score = hit.getScore();
-			NumberFormat percentFormat =
-				NumberFormat.getPercentInstance(request.getLocale());
-			return percentFormat.format(score);
-		} catch (NumberFormatException nfe) {
-			// will display original score string
-			return String.valueOf(hit.getScore());
+	/**
+	 * Returns true if book is within a search scope
+	 */
+	public boolean isTocSelected(IToc toc) {
+		String href=toc.getHref();
+		String[] books = UrlUtil.getRequestParameters(request, "scope");
+		for(int i=0; i<books.length; i++){
+			if(books[i].equals(href)){
+				return true;
+			}
 		}
+		return false;
 	}
 
 	/**

@@ -5,8 +5,9 @@ package org.eclipse.help.servlet;
  */
 
 import javax.servlet.*;
-import javax.servlet.http.*;
-import org.w3c.dom.*;
+
+import org.eclipse.core.runtime.*;
+import org.eclipse.help.internal.*;
 
 /**
  * Uses a resource bundle to load images and strings from
@@ -59,61 +60,42 @@ public class WebappPreferences {
 	public String getImagesDirectory() {
 		return imagesDirectory;
 	}
-	
+
 	public String getToolbarBackground() {
 		return toolbarBackground;
 	}
-	
-	
+
 	public String getToolbarFont() {
 		return toolbarFont;
 	}
-	
-		
+
 	public String getViewBackground() {
 		return viewBackground;
 	}
-	
+
 	public String getViewFont() {
 		return viewFont;
 	}
-	
+
 	/**
 	 * Loads preferences 
 	 */
 	private void loadPreferences() {
-		ContentUtil content = new ContentUtil(context, null);
-		Element prefsElement = content.loadPreferences();
+		Preferences prefs = HelpPlugin.getDefault().getPluginPreferences();
+		String bookmarks = prefs.getString(HelpSystem.BOOKMARKS);
 
-		if (prefsElement != null) {
-			NodeList prefs = prefsElement.getElementsByTagName("pref");
-			for (int i = 0; i < prefs.getLength(); i++) {
-				Element pref = (Element) prefs.item(i);
-				String name = pref.getAttribute("name");
-				if (name.equals("banner"))
-					banner = pref.getAttribute("value");
-				else if (name.equals("banner_height"))
-					banner_height = pref.getAttribute("value");
-				else if (name.equals("help_home"))
-					help_home = pref.getAttribute("value");
-				else if (name.equals("bookmarksView"))
-					bookmarksView = pref.getAttribute("value");
-				else if (name.equals("bookmarks"))
-					bookmarks = pref.getAttribute("value");
-				else if (name.equals("linksView"))
-					linksView = pref.getAttribute("value");
-				else if (name.equals("imagesDirectory"))
-					imagesDirectory = pref.getAttribute("value");
-				else if (name.equals("toolbarBackground"))
-					toolbarBackground = pref.getAttribute("value");
-				else if (name.equals("toolbarFont"))
-					toolbarFont = pref.getAttribute("value");
-				else if (name.equals("viewBackground"))
-					viewBackground = pref.getAttribute("value");
-				else if (name.equals("viewFont"))
-					viewFont = pref.getAttribute("value");
-			}
-		}
+		banner = prefs.getString("banner");
+		banner_height = prefs.getString("banner_height");
+		help_home = prefs.getString("help_home");
+		bookmarksView = prefs.getString("bookmarksView");
+		bookmarks = prefs.getString("bookmarks");
+		linksView = prefs.getString("linksView");
+		imagesDirectory = prefs.getString("imagesDirectory");
+		toolbarBackground = prefs.getString("toolbarBackground");
+		toolbarFont = prefs.getString("toolbarFont");
+		viewBackground = prefs.getString("viewBackground");
+		viewFont = prefs.getString("viewFont");
+		
 		if (banner != null) {
 			if (banner.trim().length() == 0)
 				banner = null;

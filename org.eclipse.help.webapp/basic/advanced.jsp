@@ -28,27 +28,22 @@
 		</tr>
   				
 <% 
-IToc[] tocs = data.getTocs();
-for (int i=0; i<tocs.length; i++)
+TocData tocData = new TocData(application, request);
+for (int toc=0; toc<tocData.getTocCount(); toc++)
 {
-	String label = UrlUtil.htmlEncode(tocs[i].getLabel());
+	String label = tocData.getTocLabel(toc);
 	String checked="checked=\"yes\" ";
-	if( data.isSearchRequest() && !data.isTocSelected(tocs[i]) ){
+	if( data.isSearchRequest() && !data.isTocSelected(toc) ){
 		checked="";
 	}
 %>
   		<tr>
   			<td nowrap>
-				<input type="checkbox" name='scope' value='<%=tocs[i].getHref()%>' <%=checked%>alt="<%=label%>"><%=label%>
+				<input type="checkbox" name='scope' value='<%=tocData.getTocHref(toc)%>' <%=checked%> alt="<%=label%>"><%=label%>
 			</td>
 		</tr>
 <%
 }		
 %>
-		<tr>
-			<td>
-				<hr>
-			</td>
-		</tr>
 	</table>
  </form>

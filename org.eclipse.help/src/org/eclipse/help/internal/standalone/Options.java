@@ -11,9 +11,7 @@ import java.util.*;
 import org.eclipse.help.internal.standalone.*;
 
 /**
- * This program is used to start or stop Eclipse
- * Infocenter application.
- * It should be launched from command line.
+ * Options for starting stand alone help and infocenter.
  */
 public class Options {
 	// debugging
@@ -32,7 +30,10 @@ public class Options {
 	private static List helpCommand;
 	// input list of args
 	private static List argsList;
-	
+	// host to override appserver preferences
+	private static String host;
+	// port to override appserver preferences
+	private static String port;
 	/**
 	 * Initializes options.
 	 * @param appId eclipse application id
@@ -44,13 +45,13 @@ public class Options {
 	 *  Additionally, most options accepted by Eclipse execuable are supported.
 	 */
 	public static void init(String appId, String[] args) {
-		
+
 		// convert array of arguments to a list
 		argsList = new ArrayList();
 		for (int i = 0; i < args.length; i++) {
 			argsList.add(args[i]);
 		}
-		
+
 		init(appId, argsList);
 	}
 	/**
@@ -64,12 +65,12 @@ public class Options {
 	 *  Additionally, most options accepted by Eclipse execuable are supported.
 	 */
 	public static void init(String appId, List options) {
-		
+
 		argsList = options;
-		
+
 		// consume -command option
 		helpCommand = extractOption("-command");
-		
+
 		// read -debug option
 		if (getOption("-debug") != null) {
 			debug = true;
@@ -96,6 +97,18 @@ public class Options {
 		lockFile = new File(workspace, "/.metadata/.lock");
 		hostPortFile = new File(workspace, "/.metadata/.connection");
 
+		// consume -host option
+		List hosts = extractOption("-host");
+		if (hosts != null && hosts.size() > 0) {
+			host = (String) hosts.get(0);
+		}
+
+		// consume -port option
+		List ports = extractOption("-port");
+		if (ports != null && ports.size() > 0) {
+			port = (String) ports.get(0);
+		}
+
 		// modify the options for passing them to eclipse
 		eclipseArgs = prepareEclipseOptions(appId);
 	}
@@ -106,37 +119,35 @@ public class Options {
 	public static boolean isDebug() {
 		return debug;
 	}
-		
+
 	public static File getConnectionFile() {
 		return hostPortFile;
 	}
-	
+
 	public static File getLockFile() {
 		return lockFile;
 	}
-	
-		
+
 	public static File getEclipseHome() {
 		return eclipseHome;
 	}
-	
+
 	public static File getWorkspace() {
 		return workspace;
 	}
-	
+
 	public static List getHelpCommand() {
 		return helpCommand;
 	}
-	
+
 	public static List getEclipseArgs() {
 		return eclipseArgs;
 	}
-	
+
 	/**
 	 * Removes specified option and its list of values
 	 * from a list of options
 	 * @param optionName name of the option e.g. -data
-	 * @param options List of Eclipse options
 	 * @return List of String values of the specified option
 	 */
 	private static List extractOption(String optionName) {
@@ -160,7 +171,7 @@ public class Options {
 		}
 		return values;
 	}
-	
+
 	private static List prepareEclipseOptions(String appId) {
 		// add -vm option if not present
 		List vms = getOption("-vm");
@@ -192,9 +203,24 @@ public class Options {
 		extractOption("-nosplash");
 		argsList.add(0, "-nosplash");
 
+		// add server_host and/or port to -vmargs option
+		if (host != null || port != null) {
+			List vmargs = extractOption("-vmargs");
+			argsList.add("-vmargs");
+			for (Iterator i = vmargs.iterator(); i.hasNext();) {
+				argsList.add((String) i.next());
+			}
+			if (host != null) {
+				argsList.add("-Dserver_host=" + host);
+			}
+			if (port != null) {
+				argsList.add("-Dserver_port=" + port);
+			}
+		}
+
 		return argsList;
 	}
-	
+
 	/**
 	 * Obtains specified option and its list of values
 	 * from a list of options

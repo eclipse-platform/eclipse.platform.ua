@@ -58,48 +58,46 @@ if (data.isMozilla()) {
 var isMozilla = navigator.userAgent.indexOf('Mozilla') != -1 && parseInt(navigator.appVersion.substring(0,1)) >= 5;
 var isIE = navigator.userAgent.indexOf('MSIE') != -1;
 
-var navVisible = true;
-
-function toggleNav(button)
-{
-// Mozilla browser do not support this yet, waiting for a fix..
-
-	var frameset = parent.document.getElementById("helpFrameset"); 
-	var navFrameSize = frameset.getAttribute("cols");
-
-	if (navVisible)
-	{
-		parent.oldSize = navFrameSize;
-		frameset.setAttribute("cols", "*,100%");
-	}
-	else
-	{
-		frameset.setAttribute("cols", parent.oldSize);
-	}
-	navVisible = !navVisible;
-	if (isIE && button) button.blur();
-}
-
 function setTitle(label)
 {
 	if( label == null) label = "";
 	var title = document.getElementById("titleText");
 	var text = title.lastChild;
-	text.nodeValue = " "+label;
+	alert(text.nodeValue)
+	text.nodeValue = label;
 }
 
 
 /**
  * handler for double click: maximize/restore this view
+ * Note: Mozilla browsers do not support programmatic frame resizing well or at all.
  */
 function mouseDblClickHandler(e) {
-	toggleNav();
+	if (!isIE)
+		return;
+		
+	var target = window.event.srcElement;
+	if (target.tagName && (target.tagName == "A" || target.tagName == "IMG"))
+		return;
+		
+	// get to the frameset
+	var p = parent;
+	while (p && !p.toggleFrame)
+		p = p.parent;
+	
+	if (p!= null)
+		p.toggleFrame('<%=data.getTitle()%>');
+	
+	document.selection.clear;	
+	return false;
 }
 
-if (isMozilla)
-  document.addEventListener('dblclick', mouseDblClickHandler, true);
-else if (isIE)
-  document.ondblclick = mouseDblClickHandler;
+// Mozilla browsers do not support programmatic frame resizing well or at all.
+//if (isMozilla)
+//  document.addEventListener('dblclick', mouseDblClickHandler, true);
+//else 
+if (isIE)
+   document.ondblclick = mouseDblClickHandler;
 
 </script>
 

@@ -34,12 +34,6 @@
 	<jsp:param name="action"   value=""/>
 	<jsp:param name="script"   value=""/>
 	
-	<jsp:param name="name"     value="hide_nav"/>
-	<jsp:param name="tooltip"  value='Toggle'/>
-	<jsp:param name="image"    value="hide_nav.gif"/>
-	<jsp:param name="action"   value="toggleNav"/>
-	<jsp:param name="script"   value="actions.js"/>
-	
 	<jsp:param name="name"     value="synch"/>
 	<jsp:param name="tooltip"  value='Synch'/>
 	<jsp:param name="image"    value="synch_toc_nav.gif"/>
@@ -80,12 +74,6 @@
 	<jsp:param name="image"    value=""/>
 	<jsp:param name="action"   value=""/>
 	<jsp:param name="script"   value=""/>
-	
-	<jsp:param name="name"     value="hide_nav"/>
-	<jsp:param name="tooltip"  value='Toggle'/>
-	<jsp:param name="image"    value="hide_nav.gif"/>
-	<jsp:param name="action"   value="toggleNav"/>
-	<jsp:param name="script"   value="actions.js"/>
 	
 	<jsp:param name="name"     value="synch"/>
 	<jsp:param name="tooltip"  value='Synch'/>

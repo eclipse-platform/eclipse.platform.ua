@@ -49,27 +49,6 @@ function bookmarkPage(button)
 
 }
 
-function toggleNav(button)
-{
-// Mozilla browser do not support this yet, waiting for a fix..
-
-	var frameset = parent.parent.document.getElementById("helpFrameset"); 
-	var navFrameSize = frameset.getAttribute("cols");
-
-	if (navVisible)
-	{
-		parent.oldSize = navFrameSize;
-		frameset.setAttribute("cols", "*,100%");
-	}
-	else
-	{
-		frameset.setAttribute("cols", parent.oldSize);
-	}
-	navVisible = !navVisible;
-	if (isIE && button) button.blur();
-}
-
-
 function resynch(button)
 {
 	try

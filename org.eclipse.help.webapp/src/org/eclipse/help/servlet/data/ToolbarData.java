@@ -62,7 +62,7 @@ public class ToolbarData extends RequestData {
 	
 	public String getTitle() {
 		if (request.getParameter("view") == null)
-			return " ";
+			return "";
 		else 
 			return WebappResources.getString(request.getParameter("view"), request);
 	}

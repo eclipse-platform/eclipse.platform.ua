@@ -13,6 +13,37 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title><%=WebappResources.getString("Help", request)%></title>
+
+<script language="JavaScript">
+
+// vars to keep track of frame sizes before max/restore
+var leftCols = "25%";
+var rightCols = "75%";
+
+function toggleFrame(title)
+{
+	var frameset = document.getElementById("helpFrameset"); 
+	
+	var navFrameSize = frameset.getAttribute("cols");
+	var comma = navFrameSize.indexOf(',');
+	var left = navFrameSize.substring(0,comma);
+	var right = navFrameSize.substring(comma+1);
+
+	if (left == "*" || right == "*") {
+		// restore frames
+		frameset.setAttribute("cols", leftCols+","+rightCols);
+	} else {
+		// maximize the frame.
+		leftCols = left;
+		rightCols = right;
+		// Assumption: the content toolbar does not have a default title.
+		if (title != "") // this is the left side
+			frameset.setAttribute("cols", "100%,*");
+		else // this is the content toolbar
+			frameset.setAttribute("cols", "*,100%");
+	}
+}
+</script>
 </head>
 
 <frameset id="helpFrameset" cols="25%,*"  framespacing="1" border="1"  frameborder="1" spacing="1"  scrolling="no">

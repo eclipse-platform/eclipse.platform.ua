@@ -88,7 +88,7 @@ function showView(view)
 	{
 		// normally we would hide the views first, but mozilla needs all iframes to be visible to load 
 		// other frames
-		String className = data.getVisibleView().equals(views[i].getName()) ? "visible" : "visible";
+		String className = "visible"; // data.getVisibleView().equals(views[i].getName()) ? "visible" : "visible";
 %>
  	<iframe frameborder="0" 
  		    class="<%=className%>"  

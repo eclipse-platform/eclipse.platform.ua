@@ -63,9 +63,9 @@ function displayTocFor(topic)
 	showView("toc");
 	
 	var tocView = ViewsFrame.toc.ViewFrame;
-	
+
 	if (tocView.selectTopic && tocView.selectTopic(topic))
-		return
+		return;
 	else {
 		// save the current navigation, so we can retrieve it when synch does not work
 		saveNavigation();
@@ -80,14 +80,17 @@ function saveNavigation()
 {
 	/**** HARD CODED VIEW NAME *********/
 	var tocView = ViewsFrame.toc.ViewFrame;
-		
-	if (tocView.oldActive) 
+	
+	if (tocView.oldActive) {
 		tempActiveId = tocView.oldActive.id;
+		tocView.oldActive.className = tocView.oldActiveClass;
+		tocView.oldActive = null;
+	}
 		
 	if (isIE)
 		temp = tocView.document.body.innerHTML;
 	else if (isMozilla)
-		temp = tocView.getElementById("toc").contentDocument.documentElement.innerHTML;
+		temp = tocView.document.documentElement.innerHTML;
 }
 
 function restoreNavigation()

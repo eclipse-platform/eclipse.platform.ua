@@ -49,8 +49,7 @@ function showView(view)
 }
 
 var temp;
-var tempActive;
-var tempActiveClass;
+var tempActiveId;
 var tempView = "";
 
 /**
@@ -59,16 +58,15 @@ var tempView = "";
 function displayTocFor(topic)
 {
 	tempView = ViewsFrame.lastView;
+	
 	/******** HARD CODED VIEW NAME *********/
 	showView("toc");
-
-	var selected = false;
-	/**** HARD CODED VIEW NAME *********/
+	
 	var tocView = ViewsFrame.toc.ViewFrame;
-	if (tocView.selectTopic)
-		selected = tocView.selectTopic(topic);
-
-	if (!selected) {
+	
+	if (tocView.selectTopic && tocView.selectTopic(topic))
+		return
+	else {
 		// save the current navigation, so we can retrieve it when synch does not work
 		saveNavigation();
 		// we are using the full URL because this API is exposed to clients
@@ -83,30 +81,18 @@ function saveNavigation()
 	/**** HARD CODED VIEW NAME *********/
 	var tocView = ViewsFrame.toc.ViewFrame;
 		
-	if (tocView.oldActive) {
-		tempActive = tocView.oldActive;
-		tempActiveClass = tocView.oldActiveClass;
-	}
-	// on mozilla, we will not preserve selection, the object is no longer valid.
-	// in the future, we could look up the topic, but this should suffice for now
-	// Note: need newer mozilla version
-	if (isMozilla){
-		tempActive.className ="";
-		tempActive=null;
-	}
+	if (tocView.oldActive) 
+		tempActiveId = tocView.oldActive.id;
 		
 	if (isIE)
 		temp = tocView.document.body.innerHTML;
 	else if (isMozilla)
 		temp = tocView.getElementById("toc").contentDocument.documentElement.innerHTML;
-
 }
 
 function restoreNavigation()
 {	
-	// turn to the right tab
-	var oldTab = tempView;
-	
+	// switch to saved view
 	showView(tempView);
 
 	/**** HARD CODED VIEW NAME *********/	
@@ -119,12 +105,10 @@ function restoreNavigation()
 		else if (isMozilla10)
 			tocView.document.getElementById("toc").contentDocument.documentElement.innerHTML = temp;
 		
-		if (tempActive) {
-			tocView.oldActive = tempActive;
-			tocView.oldActiveClass = tempActiveClass;
-		}
+		if (tempActiveId)
+			tocView.selectTopicById(tempActiveId);
 	}else {
-		// Show bookshelf
+		// fail back case
 		tocView.location.replace("tocView.jsp");
 	}
 }

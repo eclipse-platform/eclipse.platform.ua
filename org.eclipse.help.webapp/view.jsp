@@ -17,7 +17,6 @@
 <title><%=WebappResources.getString(view.getName(), request)%></title>
 </head>
 
-
 <frameset  rows="24,*"  frameborder="0" framespacing="0" border=0 spacing=0 >
 	<frame name="ToolbarFrame" src='<%=view.getURL()+view.getName()+"Toolbar.jsp"%>'  marginwidth="0" marginheight="0" scrolling="no" frameborder="0" noresize=0>
 	<frame name='ViewFrame' src='<%=view.getURL()+view.getName()+"View.jsp"%>'  marginwidth="10" marginheight="0" frameborder="0" >

@@ -57,13 +57,11 @@ function removeBookmark()
 
 </script>
 
-
 </head>
 
 
 <body>
  
-
 <table id='list'  cellspacing='0' >
 
 <%

@@ -285,6 +285,7 @@ function highlightTopic(topic)
   		oldActiveClass = a.className;
   		a.className = "active";
   		// it looks like the onclick event is not handled in mozilla
+  		// *** TO DO: handle failed synchronization, do not select in that case
   		if (isMozilla && a.onclick) 
   			a.onclick()
   		//if (isIE)

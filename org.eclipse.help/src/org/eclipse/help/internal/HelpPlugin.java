@@ -131,8 +131,8 @@ public class HelpPlugin extends Plugin {
 		// Setup debugging options
 		DEBUG = isDebugging();
 		if (DEBUG) {
-			DEBUG_CONTEXT = "true".equalsIgnoreCase(Platform.getDebugOption("org.eclipse.help/debug/context")); //$NON-NLS-1$
-			DEBUG_PROTOCOLS = "true".equalsIgnoreCase(Platform.getDebugOption("org.eclipse.help/debug/protocols")); //$NON-NLS-1$
+			DEBUG_CONTEXT = "true".equalsIgnoreCase(Platform.getDebugOption(PLUGIN_ID + "/debug/context")); //$NON-NLS-1$
+			DEBUG_PROTOCOLS = "true".equalsIgnoreCase(Platform.getDebugOption(PLUGIN_ID + "/debug/protocols")); //$NON-NLS-1$
 		}
 
 		HelpCore.startup();

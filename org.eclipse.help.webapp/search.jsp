@@ -162,8 +162,9 @@ function doSearch(query)
 		query ="<%=searchWordParName%>="+escape(searchWord)+"&maxHits="+maxHits;
 	}
 		
-	var viewsFrame = parent.HelpFrame.NavFrame.ViewsFrame;
 	/******** HARD CODED VIEW NAME *********/
+	parent.HelpFrame.NavFrame.showView("search");
+	var viewsFrame = parent.HelpFrame.NavFrame.ViewsFrame;
 	if (isIE)
 		viewsFrame.document.search.location.replace("search_results.jsp?"+query);
 	else if (isMozilla)

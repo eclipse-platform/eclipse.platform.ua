@@ -9,22 +9,18 @@ import org.w3c.dom.*;
  * All Rights Reserved.
  */
 
-public class LayoutData {
+public class LayoutData extends RequestData {
 
 	private String query = "";
 	private WebappPreferences prefs;
 
-	private HttpServletRequest req;
-	private ServletContext context;
-
-	public LayoutData(ServletContext context, HttpServletRequest req) {
-		this.context = context;
-		this.req = req;
+	public LayoutData(ServletContext context, HttpServletRequest request) {
+		super(context, request);
 
 		prefs = (WebappPreferences) context.getAttribute("WebappPreferences");
 
 		// initialize the query string
-		String qs = req.getQueryString();
+		String qs = request.getQueryString();
 		if (qs != null && qs.length() > 0)
 			query = "?" + qs;
 	}
@@ -49,7 +45,7 @@ public class LayoutData {
 	}
 
 	public String getContentURL() {
-		ContentsData contents = new ContentsData(context, req);
+		ContentsData contents = new ContentsData(context, request);
 		String topic = contents.getSelectedTopic();
 		String help_home = prefs.getHelpHome();
 		
@@ -75,7 +71,7 @@ public class LayoutData {
 	}
 
 	public String getVisibleView() {
-		String view = req.getParameter("tab");
+		String view = request.getParameter("tab");
 		if (view != null && view.length() > 0)
 			if (view.equals("toc"))
 				return "content"; // compatibility with old code

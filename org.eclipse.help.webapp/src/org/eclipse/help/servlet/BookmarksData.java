@@ -16,20 +16,16 @@ import org.eclipse.help.internal.*;
  * This class calls eclipse API's directly, so it should only be
  * instantiated in the workbench scenario, not in the infocenter.
  */
-public class BookmarksData {
+public class BookmarksData extends RequestData {
 
-	private HttpServletRequest req;
-	private ServletContext context;
-
-	public BookmarksData(ServletContext context, HttpServletRequest req) {
-		this.context = context;
-		this.req = req;
+	public BookmarksData(ServletContext context, HttpServletRequest request) {
+		super(context, request);
 	}
 
 	public void addBookmark() {
-		String bookmarkURL = req.getParameter("add");
+		String bookmarkURL = request.getParameter("add");
 		if (bookmarkURL != null && bookmarkURL.length() > 0) {
-			String title = UrlUtil.getRequestParameter(req, "title");
+			String title = UrlUtil.getRequestParameter(request, "title");
 			Preferences prefs = HelpPlugin.getDefault().getPluginPreferences();
 			String bookmarks = prefs.getString(HelpSystem.BOOKMARKS);
 			// separate the url and title by vertical bar
@@ -40,9 +36,9 @@ public class BookmarksData {
 	}
 
 	public void removeBookmark() {
-		String bookmarkURL = req.getParameter("remove");
+		String bookmarkURL = request.getParameter("remove");
 		if (bookmarkURL != null && bookmarkURL.length() > 0) {
-			String title = UrlUtil.getRequestParameter(req, "title");
+			String title = UrlUtil.getRequestParameter(request, "title");
 			Preferences prefs = HelpPlugin.getDefault().getPluginPreferences();
 			String bookmarks = prefs.getString(HelpSystem.BOOKMARKS);
 			String removeString = "," + bookmarkURL + "|" + title;

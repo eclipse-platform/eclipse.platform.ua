@@ -14,9 +14,7 @@ import org.w3c.dom.*;
 /**
  * Helper class for contents.jsp initialization
  */
-public class ContentsData {
-	private ServletContext context;
-	private HttpServletRequest request;
+public class ContentsData extends RequestData {
 
 	// Request parameters
 	private String tocHref;
@@ -35,8 +33,8 @@ public class ContentsData {
 	 * @param request
 	 */
 	public ContentsData(ServletContext context, HttpServletRequest request) {
-		this.context = context;
-		this.request = request;
+		super(context, request);
+				
 		this.tocHref = request.getParameter("toc");
 		this.topicHref = request.getParameter("topic");
 		if (tocHref != null && tocHref.length() == 0)

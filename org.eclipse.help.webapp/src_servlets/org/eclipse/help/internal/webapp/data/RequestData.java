@@ -55,10 +55,6 @@ public class RequestData {
 		return UrlUtil.isIE(request);
 	}
 
-	public String getIEVersion() {
-		return UrlUtil.getIEVersion(request);
-	}
-
 	public boolean isKonqueror() {
 		return UrlUtil.isKonqueror(request);
 	}

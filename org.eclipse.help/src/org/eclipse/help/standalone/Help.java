@@ -58,13 +58,13 @@ public class Help {
 		help = new StandaloneHelp(args);
 	}
 	/**
-	 * Starts the infocenter application.
+	 * Starts the help system.
 	 */
 	public void start() {
 		help.start();
 	}
 	/**
-	 * Shuts-down the infocenter application.
+	 * Shuts-down the help system.
 	 */
 	public void shutdown() {
 		help.shutdown();

@@ -13,7 +13,6 @@ import org.eclipse.help.internal.standalone.*;
 /**
  * This program is used to start or stop Eclipse
  * Infocenter application.
- * It should be launched from command line.
  */
 public class StandaloneInfocenter extends EclipseController{
 	// ID of the application to run
@@ -30,7 +29,7 @@ public class StandaloneInfocenter extends EclipseController{
 	 *  Additionally, most options accepted by Eclipse execuable are supported.
 	 * @param applicationID ID of Eclipse help application
 	 */
-	StandaloneInfocenter(String[] args) {
+	public StandaloneInfocenter(String[] args) {
 		super(INFOCENTER_APPLICATION_ID, args);
 	}
 	

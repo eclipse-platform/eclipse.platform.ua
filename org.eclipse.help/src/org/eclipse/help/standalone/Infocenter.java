@@ -9,13 +9,41 @@ import org.eclipse.help.internal.standalone.StandaloneInfocenter;
 /**
  * This program is used to start or stop Eclipse
  * Infocenter application.
- * It should be launched from command line.
+ * This class can be used instantiated and used in a Java program,
+ * or can be launched from command line.
+ * 
+ * Usage as a Java component: 
+ * <ul>
+ * <li> create an instantance of this class</li>
+ * <li> call start() </li>
+ * <li> infocenter will run, when no longer needed call shutdown(). </li>
+ * </ul>
  */
 public class Infocenter {
+	private StandaloneInfocenter infocenter;
 	/**
-	 * Private constructor
+	* Constructs Infocenter
+	* @param options array of String options and their values
+	* 	Option <code>-eclipseHome dir</code> specifies Eclipse
+	*  installation directory.
+	*  It must be provided, when current directory is not the same
+	*  as Eclipse installation directory.
+	*  Additionally, most options accepted by Eclipse execuable are supported.
+	*/
+	public Infocenter(String[] options) {
+		infocenter = new StandaloneInfocenter(options);
+	}
+	/**
+	 * Starts the infocenter application.
 	 */
-	private Infocenter() {
+	public void start() {
+		infocenter.start();
+	}
+	/**
+	 * Shuts-down the infocenter application.
+	 */
+	public void shutdown() {
+		infocenter.shutdown();
 	}
 	/**
 	 * Controls start up and shut down of infocenter from command line.

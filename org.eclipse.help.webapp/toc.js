@@ -283,7 +283,9 @@ function highlightTopic(topic)
   		oldActive = a;
   		oldActiveClass = a.className;
   		a.className = "active";
-  
+  		// it looks like the onclick event is not handled in mozilla
+  		if (isMozilla && a.onclick) 
+  			a.onclick()
   		//if (isIE)
   		//	a.hideFocus = "true";
   	}
@@ -423,7 +425,6 @@ function mouseMoveHandler(e) {
  */
 function mouseClickHandler(e) {
   	var clickedNode = getTarget(e);
-  	if (!clickedNode) return;
 
   	if (isPlusMinus(clickedNode) )
   	{	

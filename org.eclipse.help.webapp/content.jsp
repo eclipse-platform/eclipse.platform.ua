@@ -15,6 +15,7 @@
 <title><%=WebappResources.getString("Help", request)%></title>
 </head>
 
+
 <frameset  rows="24,*"  frameborder="0" framespacing="0" border=0 spacing=0 >
 	<frame name="ToolbarFrame" src='<%="contentToolbar.jsp"+data.getQuery()%>'  marginwidth="0" marginheight="0" scrolling="no" frameborder="0" noresize=0>
 	<frame name="ContentViewFrame" src='<%=data.getContentURL()%>'  marginwidth="10" marginheight="0" frameborder="0" >

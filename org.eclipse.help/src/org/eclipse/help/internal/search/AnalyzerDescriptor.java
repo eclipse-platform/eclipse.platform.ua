@@ -150,12 +150,12 @@ public class AnalyzerDescriptor {
 		if (id.equals(analyzerId)) {
 			return true;
 		}
-		// analyzers in org.eclipse.help plugin 2.0.1 and 2.0.2, and 2.1
+		// analyzers in org.eclipse.help plugin 2.0.1 and 2.0.2, 2.1, 2.1.1
 		// are compatible (logic unchanged), index can be preserved between them
 		if (analyzerId.compareTo(HelpPlugin.PLUGIN_ID + "#2.0.1") >= 0
-			&& analyzerId.compareTo(HelpPlugin.PLUGIN_ID + "#2.1.0") <= 0
+			&& analyzerId.compareTo(HelpPlugin.PLUGIN_ID + "#2.1.1") <= 0
 			&& id.compareTo(HelpPlugin.PLUGIN_ID + "#2.0.1") >= 0
-			&& id.compareTo(HelpPlugin.PLUGIN_ID + "#2.1.0") <= 0) {
+			&& id.compareTo(HelpPlugin.PLUGIN_ID + "#2.1.1") <= 0) {
 			return true;
 		}
 		return false;

@@ -12,7 +12,8 @@ package org.eclipse.help.internal.context;
 import java.io.*;
 import java.text.*;
 
-import org.apache.xerces.parsers.*;
+import javax.xml.parsers.*;
+
 import org.eclipse.help.internal.*;
 import org.eclipse.help.internal.util.*;
 import org.xml.sax.*;
@@ -26,6 +27,8 @@ public class ContextsFileParser extends DefaultHandler {
 	boolean seenDescription = false;
 	ContextsFile contextsFile;
 	private ContextsBuilder builder;
+	private final static SAXParserFactory factory =
+		SAXParserFactory.newInstance();
 	public ContextsFileParser(ContextsBuilder builder) {
 		super();
 		this.builder = builder;
@@ -150,20 +153,15 @@ public class ContextsFileParser extends DefaultHandler {
 				+ contextsFile.getHref();
 		inputSource.setSystemId(file);
 		try {
-			SAXParser parser = new SAXParser();
-			parser.setFeature(
-				"http://apache.org/xml/features/nonvalidating/load-external-dtd",
-				false);
-			parser.setErrorHandler(this);
-			parser.setContentHandler(this);
-			parser.parse(inputSource);
+			SAXParser parser = factory.newSAXParser();
+			parser.parse(inputSource, this);
 			is.close();
+		} catch (ParserConfigurationException pce) {
+			HelpPlugin.logError(
+				HelpResources.getString("ContextsFileParser.PCE"),
+				pce);
 		} catch (SAXException se) {
-			if (!(se instanceof SAXParseException)) {
-				HelpPlugin.logError("", se);
-			} else {
-				// already logged
-			}
+			HelpPlugin.logError("", se);
 		} catch (IOException ioe) {
 			String msg = HelpResources.getString("E009", file);
 			HelpPlugin.logError(msg, ioe);
@@ -172,4 +170,18 @@ public class ContextsFileParser extends DefaultHandler {
 			RuntimeHelpStatus.getInstance().addParseError(msg, file);
 		}
 	}
+
+	/**
+	 * @see EntityResolver This method implementation prevents loading external
+	 *      entities instead of calling
+	 *      org.apache.xerces.parsers.SaxParser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd",false);
+	 */
+	public InputSource resolveEntity(String publicId, String systemId) {
+		InputSource source =
+			new InputSource(new ByteArrayInputStream(new byte[0]));
+		source.setPublicId(publicId);
+		source.setSystemId(systemId);
+		return source;
+	}
+
 }

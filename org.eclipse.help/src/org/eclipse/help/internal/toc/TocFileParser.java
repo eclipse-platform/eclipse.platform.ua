@@ -13,7 +13,8 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 
-import org.apache.xerces.parsers.*;
+import javax.xml.parsers.*;
+
 import org.eclipse.help.internal.*;
 import org.eclipse.help.internal.util.*;
 import org.xml.sax.*;
@@ -26,6 +27,7 @@ class TocFileParser extends DefaultHandler {
 	protected TocBuilder builder;
 	protected FastStack elementStack;
 	protected TocFile tocFile;
+	private static SAXParserFactory factory = SAXParserFactory.newInstance();
 	private static XMLParserPool parserPool = new XMLParserPool();
 	/**
 	 * Constructor
@@ -83,13 +85,15 @@ class TocFileParser extends DefaultHandler {
 		try {
 			SAXParser parser = parserPool.obtainParser();
 			try {
-				parser.setErrorHandler(this);
-				parser.setContentHandler(this);
-				parser.parse(inputSource);
+				parser.parse(inputSource, this);
 				is.close();
 			} finally {
 				parserPool.releaseParser(parser);
 			}
+		} catch (ParserConfigurationException pce) {
+			String msg = HelpResources.getString("TocFileParser.PCE");
+			//SAXParser implementation could not be loaded.
+			HelpPlugin.logError(msg, pce);
 		} catch (SAXException se) {
 			String msg = HelpResources.getString("E026", file);
 			//Error loading Table of Contents file %1.
@@ -140,22 +144,34 @@ class TocFileParser extends DefaultHandler {
 		throws SAXException {
 		elementStack.pop();
 	}
+
+	/**
+	 * @see EntityResolver This method implementation prevents loading external
+	 *      entities instead of calling
+	 *      org.apache.xerces.parsers.SaxParser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd",false);
+	 */
+	public InputSource resolveEntity(String publicId, String systemId) {
+		InputSource source =
+			new InputSource(new ByteArrayInputStream(new byte[0]));
+		source.setPublicId(publicId);
+		source.setSystemId(systemId);
+		return source;
+	}
+
 	/**
 	 * This class maintain pool of parsers that can be used for parsing TOC
 	 * files. The parsers should be returned to the pool for reuse.
 	 */
 	static class XMLParserPool {
 		private ArrayList pool = new ArrayList();
-		private SAXParser obtainParser() throws SAXException {
+		private SAXParser obtainParser()
+			throws ParserConfigurationException, SAXException {
 			SAXParser p;
 			int free = pool.size();
 			if (free > 0) {
 				p = (SAXParser) pool.remove(free - 1);
 			} else {
-				p = new SAXParser();
-				p.setFeature(
-					"http://apache.org/xml/features/nonvalidating/load-external-dtd",
-					false);
+				p = factory.newSAXParser();
 			}
 			return p;
 		}

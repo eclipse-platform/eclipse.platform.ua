@@ -10,6 +10,8 @@ import java.util.*;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
+import org.eclipse.help.internal.HelpSystem;
+
 public class UrlUtil {
 	// XML escaped characters mapping
 	private static final String invalidXML[] = { "&", ">", "<", "\"" };
@@ -287,7 +289,7 @@ public class UrlUtil {
 	public static boolean validate (String fileURL, HttpServletRequest req, ServletContext context)
 	{
 		// first check if we are running outside the workbench
-		if (context.getAttribute("org.eclipse.help.servlet.eclipse") != null)
+		if (HelpSystem.isInfocenter())
 			return false;
 		
 		// check that the request IP is a local IP

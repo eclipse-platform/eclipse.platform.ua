@@ -147,6 +147,14 @@ public class EclipseConnector {
 			}
 		}
 		URL helpURL = new URL(url);
+		String protocol = helpURL.getProtocol();
+		if (!("help".equals(protocol)
+			|| "search".equals(protocol)
+			|| "links".equals(protocol)
+			|| "file".equals(protocol)
+			|| "livehelp".equals(protocol))) {
+			throw new IOException();
+		}
 		con = helpURL.openConnection();
 
 		con.setAllowUserInteraction(false);

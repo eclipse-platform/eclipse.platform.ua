@@ -19,16 +19,21 @@ package org.eclipse.ui.intro.config;
  * reflow.
  * <p>
  * This interface is not intended to be implemented or extended by clients.
+ * 
+ * @since 3.0.1
  */
 public interface IIntroContentProviderSite {
     /**
      * This method will be called when the IIntroContentProvider is notified
-     * that it's content has become stale. For an HTML presentation, the whole
+     * that its content has become stale. For an HTML presentation, the whole
      * page should be regenerated. An SWT presentation should cause the page's
      * layout to be updated.
      * 
-     * @param provider
-     * @param incremental
+     * @param provider the content provider that requests a reflow
+     * @param incremental if <code>true</code>, an attempt should be made
+     * to incrementally reflow the page. Otherwise, the page should
+     * be recreated from scratch. This is just a hint and the implementation
+     * of the interface can ignore it.
      */
     public void reflow(IIntroContentProvider provider, boolean incremental);
 }

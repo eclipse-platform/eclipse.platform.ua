@@ -275,8 +275,6 @@ public final class BaseHelpSystem {
 	public static String getProductName() {
 		IPlatformConfiguration c = BootLoader.getCurrentPlatformConfiguration();
 		String primaryFeatureId = c.getPrimaryFeatureIdentifier();
-		if (primaryFeatureId == null)
-			return ""; // no primary feature installed
 		IPluginDescriptor pfd =
 			Platform.getPluginRegistry().getPluginDescriptor(primaryFeatureId);
 		if (pfd == null)

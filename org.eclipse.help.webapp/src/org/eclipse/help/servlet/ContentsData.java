@@ -17,21 +17,23 @@ import org.w3c.dom.*;
 public class ContentsData {
 	private ServletContext context;
 	private HttpServletRequest request;
-	
+
 	// Request parameters
 	private String tocHref;
 	private String topicHref;
-	
+
 	// Selected TOC
 	private Element selectedToc;
-	private boolean selectedTocLoaded = false;
-		
+	private Element loadedToc;
+
 	// List of TOC's
 	private Element[] tocs;
 
-
 	/**
-	 * Constructs the xml data for the contents page.	 * @param context	 * @param request	 */
+	 * Constructs the xml data for the contents page.
+	 * @param context
+	 * @param request
+	 */
 	public ContentsData(ServletContext context, HttpServletRequest request) {
 		this.context = context;
 		this.request = request;
@@ -45,7 +47,9 @@ public class ContentsData {
 
 	/**
 	 * Returns a list of all the TOC's as xml elements.
-	 * Individual TOC's are not loaded yet.	 * @return Element[]	 */
+	 * Individual TOC's are not loaded yet.
+	 * @return Element[]
+	 */
 	public Element[] getTocs() {
 		if (tocs == null) {
 
@@ -62,37 +66,83 @@ public class ContentsData {
 	}
 
 	/**
-	 * Returns the selected TOC. If not loaded, it will load it first.	 * @return Element	 */
+	 * Returns the selected TOC, without loading its content.
+	 * @return Element
+	 */
 	public Element getSelectedToc() {
-		if (!selectedTocLoaded) {
-			ContentUtil content = new ContentUtil(context, request);
-			if (tocHref == null){
-				// load TOC that contains specified topic
-				selectedToc = content.loadTOCcontainingTopic(topicHref);
-				if (selectedToc == null) topicHref = null;
+
+		if (selectedToc == null) {
+
+			// Find the requested TOC
+			if (tocHref != null && tocHref.length() > 0) {
+				Element[] tocs = getTocs();
+				for (int i = 0; selectedToc == null && i < tocs.length; i++)
+					if (tocHref.equals(tocs[i].getAttribute("href")))
+						selectedToc = tocs[i];
 			} else {
-				selectedToc = content.loadTOC(tocHref);
-			}	
-			selectedTocLoaded = true;
+				// try obtaining the TOC from the topic
+				ContentUtil content = new ContentUtil(context, request);
+				Element tocsElement =
+					content.loadTocsContainingTopic(topicHref);
+				if (tocsElement != null) {
+					NodeList tocsElements =
+						tocsElement.getElementsByTagName("toc");
+					if (tocsElements.getLength() > 0)
+						selectedToc = (Element) tocsElements.item(0);
+				}
+			}
 		}
 		return selectedToc;
 	}
 
 	/**
-	 * Returns the href of the selected topic. 
-	 * If nothing is selected, it returns the href of the TOC description topic	 * @return String	 */
-	public String getSelectedTopic() {
-		return UrlUtil.getHelpURL(topicHref);
+	 * Returns the selected TOC. If not loaded, it will load it first.
+	 * @return Element
+	 */
+	public Element loadSelectedToc() {
+		if (loadedToc == null) {
+			Element toc = getSelectedToc();
+			if (toc != null) {
+				ContentUtil content = new ContentUtil(context, request);
+				// load TOC that contains specified topic
+				loadedToc = content.loadTOC(toc.getAttribute("href"));
+			}
+		}
+		return loadedToc;
 	}
-	
+
 	/**
-	 * Returns the href of the specified TOC.	 * @param toc	 * @return String	 */
+	 * Returns the topic to display.
+	 * If there is a TOC, return its topic description.
+	 * Return null if no topic is specified and there is no toc description.
+	 * @return String
+	 */
+	public String getSelectedTopic() {
+		if (topicHref != null && topicHref.length() > 0)
+			return UrlUtil.getHelpURL(topicHref);
+		else {
+			Element toc = getSelectedToc();
+			if (toc == null)
+				return null;
+			String tocDescription = toc.getAttribute("topic");
+			return UrlUtil.getHelpURL(tocDescription);
+		}
+	}
+
+	/**
+	 * Returns the href of the specified TOC.
+	 * @param toc
+	 * @return String
+	 */
 	public String getTocHref(Element toc) {
 		return toc.getAttribute("href");
 	}
-	
+
 	/**
-	 * Returns the description topic for specified TOC.	 * @param toc	 * @return String	 */
+	 * Returns the description topic for specified TOC.
+	 * @param toc
+	 * @return String
+	 */
 	public String getTocDescriptionTopic(Element toc) {
 		if (toc == null)
 			return "about:blank"; // should this return the help home ?
@@ -101,23 +151,33 @@ public class ContentsData {
 	}
 
 	/**
-	 * Returns the label (title) of the specified TOC	 * @param toc	 * @return String	 */
+	 * Returns the label (title) of the specified TOC
+	 * @param toc
+	 * @return String
+	 */
 	public String getTocLabel(Element toc) {
 		return toc.getAttribute("label");
 	}
 
 	/**
-	 * Generates the HTML code (a tree) for a TOC.	 * @param toc	 * @param out	 * @throws IOException	 */
+	 * Generates the HTML code (a tree) for a TOC.
+	 * @param toc
+	 * @param out
+	 * @throws IOException
+	 */
 	public void generateToc(Element toc, Writer out) throws IOException {
 		// Only generate the selected toc
 		if (getSelectedToc() == null)
 			return;
-			
-		if (!toc.getAttribute("href").equals(getSelectedToc().getAttribute("href")))
+		if (!getSelectedToc().getAttribute("href").equals(toc.getAttribute("href")))
 			return;
-		
+
+		// load the toc first
+		if (loadSelectedToc() == null)
+			return;
+
 		// Note: if we were to generate all the TOCS, then we have to load them first
-		NodeList topics = getSelectedToc().getChildNodes();
+		NodeList topics = loadedToc.getChildNodes();
 		for (int i = 0; i < topics.getLength(); i++) {
 			Node n = topics.item(i);
 			if (n.getNodeType() == Node.ELEMENT_NODE)
@@ -156,7 +216,8 @@ public class ContentsData {
 			out.write("</ul>");
 		} else {
 			out.write("<nobr>");
-			out.write("<img src='images/plus.gif' style='visibility:hidden;' >");
+			out.write(
+				"<img src='images/plus.gif' style='visibility:hidden;' >");
 			out.write(
 				"<a href='"
 					+ UrlUtil.getHelpURL(topic.getAttribute("href"))

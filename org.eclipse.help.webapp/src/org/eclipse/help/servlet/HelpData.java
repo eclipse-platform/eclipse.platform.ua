@@ -49,8 +49,8 @@ public class HelpData {
 	}
 
 	public String getContentURL() {
-		HomeData home = new HomeData(context, req);
-		String topic = home.getTopicHref();
+		ContentsData contents = new ContentsData(context, req);
+		String topic = contents.getSelectedTopic();
 		String help_home = prefs.getHelpHome();
 		
 		if (topic != null)

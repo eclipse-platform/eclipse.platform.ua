@@ -32,10 +32,14 @@ IToc[] tocs = data.getTocs();
 for (int i=0; i<tocs.length; i++)
 {
 	String label = UrlUtil.htmlEncode(tocs[i].getLabel());
+	String checked="checked=\"yes\" ";
+	if( data.isSearchRequest() && !data.isTocSelected(tocs[i]) ){
+		checked="";
+	}
 %>
   		<tr>
   			<td nowrap>
-				<input type="checkbox" name='scope' value='<%=tocs[i].getHref()%>' alt="<%=label%>"><%=label%>
+				<input type="checkbox" name='scope' value='<%=tocs[i].getHref()%>' <%=checked%>alt="<%=label%>"><%=label%>
 			</td>
 		</tr>
 <%

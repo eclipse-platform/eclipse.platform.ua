@@ -129,6 +129,19 @@ public class SearchData extends RequestData {
 	}
 
 	/**
+	 * Returns true if book is within a search scope
+	 */
+	public boolean isTocSelected(IToc toc) {
+		String href=toc.getHref();
+		String[] books = UrlUtil.getRequestParameters(request, "scope");
+		for(int i=0; i<books.length; i++){
+			if(books[i].equals(href)){
+				return true;
+			}
+		}
+		return false;
+	}
+	/**
 	 * Returns the list of selected TOC's as a comma-separated list
 	 */
 	public String getSelectedTocsList() {

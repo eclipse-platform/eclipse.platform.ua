@@ -37,7 +37,7 @@
 	              title="<%=title%>" 
 	              src="<%=views[i].getImageURL()%>"
 	         >
-	     <%=views[i].getName()%>
+	     <%=title%>
 	     </a>
 	</td>
 <%

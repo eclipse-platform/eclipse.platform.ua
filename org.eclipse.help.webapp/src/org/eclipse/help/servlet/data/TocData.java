@@ -274,7 +274,7 @@ public class TocData extends RequestData {
 					+ "'>");
 			out.write("<img src='");
 			out.write(imagesDirectory);
-			out.write("/container_obj.gif'>");
+			out.write("/container_obj.gif' border=0>");
 			out.write(UrlUtil.htmlEncode(topic.getAttribute("label")));
 			out.write("</a>");
 			out.write("</nobr>");
@@ -299,7 +299,7 @@ public class TocData extends RequestData {
 					+ "'>");
 			out.write("<img src='");
 			out.write(imagesDirectory);
-			out.write("/topic.gif'>");
+			out.write("/topic.gif' border=0>");
 			out.write(UrlUtil.htmlEncode(topic.getAttribute("label")));
 			out.write("</a>");
 			out.write("</nobr>");

@@ -26,9 +26,6 @@ function bookmarkPage(button)
 	// exception is thrown. We need to catch it and ignore it.
 	try
 	{
-		/********** HARD CODED VIEW NAME *************/
-		parent.parent.NavFrame.showView("bookmarks");
-		
 		// use the url from plugin id only
 		var url = parent.ContentViewFrame.location.href;
 		var i = url.indexOf("content/help:/");
@@ -43,6 +40,7 @@ function bookmarkPage(button)
 		if (title == null || title == "")
 			title = url;
 
+		/********** HARD CODED VIEW NAME *************/
 		parent.parent.NavFrame.ViewsFrame.bookmarks.ViewFrame.location.replace("bookmarksView.jsp?add="+url+"&title="+escape(title));
 	}catch (e) {}
 	if (isIE && button) button.blur();

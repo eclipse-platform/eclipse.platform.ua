@@ -32,27 +32,26 @@
 <%
 if(!data.isLinksRequest()) {
 	out.write(WebappResources.getString("pressF1", request));
-} else if (data.getLinks().length == 0){
+} else if (data.getLinksCount() == 0){
 	out.write(WebappResources.getString("Nothing_found", null));
 } else {
-	Link[] links = data.getLinks();
 %>
 
 <table id='list'  cellspacing='0' >
 
 <%
-	for (int i = 0; i < links.length; i++) 
+	for (int topic = 0; topic < data.getLinksCount(); topic++) 
 	{
 %>
 
-<tr class='list' id='r<%=i%>'>
+<tr class='list' id='r<%=topic%>'>
 	<td align='left' class='label' nowrap>
-		<a id='a<%=i%>' 
-		   href='<%=links[i].getHref()%>' 
-		   onclick='parent.parent.parent.setContentToolbarTitle("<%=UrlUtil.JavaScriptEncode(links[i].getTocLabel())%>")' 
-		   title="<%=UrlUtil.htmlEncode(links[i].getTocLabel())%>">
+		<a id='a<%=topic%>' 
+		   href='<%=data.getTopicHref(topic)%>' 
+		   onclick='parent.parent.parent.setContentToolbarTitle(this.title)'
+		   title="<%=data.getTopicTocLabel(topic)%>">
 		   <img src="<%=prefs.getImagesDirectory()%>/topic.gif">
-		   <%=UrlUtil.htmlEncode(links[i].getLabel())%>
+		   <%=data.getTopicLabel(topic)%>
 		 </a>
 	</td>
 </tr>

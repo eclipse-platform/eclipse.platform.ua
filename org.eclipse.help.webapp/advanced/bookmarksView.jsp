@@ -77,7 +77,7 @@ function removeBookmark()
 		   onclick='parent.parent.parent.setContentToolbarTitle(" ")' 
 		   oncontextmenu="contextMenuHandler(event);return false;"
 		   title="<%=UrlUtil.htmlEncode(bookmarks[i].getLabel())%>">
-		   <img src="<%=prefs.getImagesDirectory()%>/bookmark_obj.gif">
+		   <img src="<%=prefs.getImagesDirectory()%>/topic.gif">
 		   		<%=UrlUtil.htmlEncode(bookmarks[i].getLabel())%>
 		</a>
 	</td>

@@ -64,29 +64,26 @@ setTimeout('refresh()', 2000);
 
 <%
 	return;
-} else if (data.getHits().length == 0){
+} else if (data.getResultsCount() == 0){
 	out.write(WebappResources.getString("Nothing_found", request));
 } else {
-		
-	SearchHit[] hits = data.getHits();
 %>
 
 <table id='list'  cellspacing='0' >
 
 <%
-	for (int i = 0; i < hits.length; i++) 
+	for (int topic = 0; topic < data.getResultsCount(); topic++) 
 	{
-		String title = hits[i].getToc() != null ? hits[i].getToc().getLabel() : "";
 %>
 
-<tr class='list' id='r<%=i%>'>
-	<td class='score' align='right'><%=data.getFormattedScore(hits[i])%></td>
+<tr class='list' id='r<%=topic%>'>
+	<td class='score' align='right'><%=data.getTopicScore(topic)%></td>
 	<td align='left' class='label' nowrap>
-		<a id='a<%=i%>' 
-		   href='<%=UrlUtil.getHelpURL(hits[i].getHref())%>' 
-		   onclick='parent.parent.parent.setContentToolbarTitle("<%=UrlUtil.JavaScriptEncode(title)%>")' 
-		   title="<%=UrlUtil.htmlEncode(title)%>">
-		   <%=UrlUtil.htmlEncode(hits[i].getLabel())%>
+		<a id='a<%=topic%>' 
+		   href='<%=data.getTopicHref(topic)%>' 
+		   onclick='parent.parent.parent.setContentToolbarTitle(this.title)' 
+		   title="<%=data.getTopicTocLabel(topic)%>">
+		   <%=data.getTopicLabel(topic)%>
 		 </a>
 	</td>
 </tr>

@@ -215,7 +215,7 @@ public class BrowserIntroPartImplementation extends
             standbyPage = homePage;
 
         if (standby) {
-            generateDynamicContentForPage(getModel().getStandbyPage());
+            generateDynamicContentForPage(standbyPage);
         } else {
             // REVISIT: If cached page is the standby page and we are not
             // initially in standby mode, it means standby was forced on

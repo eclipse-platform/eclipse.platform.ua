@@ -10,19 +10,24 @@
  *******************************************************************************/
 package org.eclipse.help.internal;
 import org.eclipse.core.runtime.*;
+import org.eclipse.help.internal.context.*;
+import org.eclipse.help.internal.toc.*;
 /**
- * Simple plugin for help system.
+ * Help System Core plug-in
  */
 public class HelpPlugin extends Plugin {
 	public final static String PLUGIN_ID = "org.eclipse.help";
 	// debug options
 	public static boolean DEBUG = false;
-	public static boolean DEBUG_CONSOLELOG = false;
 	public static boolean DEBUG_CONTEXT = false;
 	public static boolean DEBUG_PROTOCOLS = false;
-	public static boolean DEBUG_SEARCH = false;
-
 	protected static HelpPlugin plugin;
+
+	public final static String BASE_TOCS_KEY = "baseTOCS";
+
+	protected TocManager tocManager;
+	protected static Object tocManagerCreateLock=new Object();
+	protected ContextManager contextManager;
 	/** 
 	 * Logs an Error message with an exception. Note that the message should already 
 	 * be localized to proper locale.
@@ -56,7 +61,7 @@ public class HelpPlugin extends Plugin {
 	}
 
 	/**
-	 * HelpViewerPlugin constructor. It is called as part of plugin
+	 * Plugin constructor. It is called as part of plugin
 	 * activation.
 	 */
 	public HelpPlugin(IPluginDescriptor descriptor) {
@@ -64,7 +69,7 @@ public class HelpPlugin extends Plugin {
 		plugin = this;
 	}
 	/**
-	 * @return the singleton instance of the help plugin
+	 * @return the singleton instance of the plugin
 	 */
 	public static HelpPlugin getDefault() {
 		return plugin;
@@ -97,7 +102,6 @@ public class HelpPlugin extends Plugin {
 	 *   this plug-in 
 	 */
 	public void shutdown() throws CoreException {
-		HelpSystem.shutdown();
 	}
 	/**
 	 * Starts up this plug-in.
@@ -134,31 +138,32 @@ public class HelpPlugin extends Plugin {
 		// Setup debugging options
 		DEBUG = isDebugging();
 		if (DEBUG) {
-			DEBUG_CONSOLELOG = "true".equalsIgnoreCase(Platform.getDebugOption("org.eclipse.help/debug/consolelog")); //$NON-NLS-1$
-			DEBUG_CONTEXT = "true".equalsIgnoreCase(Platform.getDebugOption("org.eclipse.help/debug/context")); //$NON-NLS-1$
-			DEBUG_PROTOCOLS = "true".equalsIgnoreCase(Platform.getDebugOption("org.eclipse.help/debug/protocols")); //$NON-NLS-1$
-			DEBUG_SEARCH = "true".equalsIgnoreCase(Platform.getDebugOption("org.eclipse.help/debug/search")); //$NON-NLS-1$
+			DEBUG_CONTEXT = "true".equalsIgnoreCase(Platform.getDebugOption(PLUGIN_ID + "/debug/context")); //$NON-NLS-1$
+			DEBUG_PROTOCOLS = "true".equalsIgnoreCase(Platform.getDebugOption(PLUGIN_ID + "/debug/protocols")); //$NON-NLS-1$
 		}
-
-		HelpSystem.startup();
 	}
-
 	/**
-	* Initializes the default preferences settings for this plug-in.
-	* 
-	* @since 2.0
-	*/
-	protected void initializeDefaultPluginPreferences() {
-		Preferences prefs = getPluginPreferences();
-
-		String os = System.getProperty("os.name").toLowerCase();
-		boolean isWindows = os.indexOf("windows") != -1;
-
-		if (isWindows)
-			prefs.setDefault(
-				"custom_browser_path",
-				"\"C:\\Program Files\\Internet Explorer\\IEXPLORE.EXE\" %1");
-		else
-			prefs.setDefault("custom_browser_path", "mozilla %1");
+	 * Used to obtain Toc Naviagiont Manager
+	 * @return instance of TocManager
+	 */
+	public static TocManager getTocManager() {
+		if (getDefault().tocManager == null) {
+			synchronized (tocManagerCreateLock) {
+				if (getDefault().tocManager == null) {
+					getDefault().tocManager = new TocManager();
+				}
+			}
+		}
+		return getDefault().tocManager;
 	}
+	/**
+	 * Used to obtain Context Manager
+	 * returns an instance of ContextManager
+	 */
+	public static ContextManager getContextManager() {
+		if (getDefault().contextManager == null)
+		getDefault().contextManager = new ContextManager();
+		return getDefault().contextManager;
+	}
+
 }

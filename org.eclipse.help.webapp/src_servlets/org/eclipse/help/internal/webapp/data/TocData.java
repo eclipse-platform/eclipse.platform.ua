@@ -154,7 +154,7 @@ public class TocData extends RequestData {
 	}
 
 	private void loadTocs() {
-		tocs = HelpSystem.getTocManager().getTocs(getLocale());
+		tocs = HelpPlugin.getTocManager().getTocs(getLocale());
 		// Find the requested TOC
 		selectedToc = -1;
 		if (tocHref != null && tocHref.length() > 0) {

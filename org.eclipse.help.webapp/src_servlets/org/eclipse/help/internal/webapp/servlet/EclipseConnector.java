@@ -17,7 +17,7 @@ import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import org.eclipse.help.internal.*;
+import org.eclipse.help.internal.base.*;
 import org.eclipse.help.internal.webapp.data.*;
 
 /**
@@ -65,7 +65,7 @@ public class EclipseConnector {
 				if (i != -1)
 					url = url.substring(0, i);
 				// ensure the file is only accessed from a local installation
-				if (HelpSystem.getMode() == HelpSystem.MODE_INFOCENTER
+				if (BaseHelpSystem.getMode() == BaseHelpSystem.MODE_INFOCENTER
 					|| !UrlUtil.isLocalRequest(req)) {
 					return;
 				}
@@ -151,7 +151,7 @@ public class EclipseConnector {
 		//System.out.println("help content for: " + url);
 
 		URLConnection con = null;
-		if (HelpSystem.getMode() == HelpSystem.MODE_INFOCENTER) {
+		if (BaseHelpSystem.getMode() == BaseHelpSystem.MODE_INFOCENTER) {
 			// it is an infocentre, add client locale to url
 			String locale = UrlUtil.getLocale(request);
 			if (url.indexOf('?') >= 0) {

@@ -90,7 +90,7 @@ public class ContextsFileParser extends DefaultHandler {
 		String param3 = ex.getMessage();
 		String message =
 			MessageFormat.format(
-				Resources.getString(messageID),
+				HelpResources.getString(messageID),
 				new Object[] { param0, param1, param2, param3 });
 		return message;
 	}
@@ -159,9 +159,13 @@ public class ContextsFileParser extends DefaultHandler {
 			parser.parse(inputSource);
 			is.close();
 		} catch (SAXException se) {
-			HelpPlugin.logError("", se);
+			if (!(se instanceof SAXParseException)) {
+				HelpPlugin.logError("", se);
+			} else {
+				// already logged
+			}
 		} catch (IOException ioe) {
-			String msg = Resources.getString("E009", file);
+			String msg = HelpResources.getString("E009", file);
 			HelpPlugin.logError(msg, ioe);
 			// now pass it to the RuntimeHelpStatus object explicitly because we
 			// still need to display errors even if Logging is turned off.

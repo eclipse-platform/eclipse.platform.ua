@@ -65,7 +65,7 @@
 			<fileset dir="src/" excludes="**/*.java"			/>
 		</copy>
 <!-- custom begin -->
-		<copy file="${temp.folder}/webapp.jar.bin/webapp.properties" tofile="${temp.folder}/webapp.jar.bin/webapp_en.properties" />
+		<copy file="${temp.folder}/webapp.jar.bin/org/eclipse/help/internal/webapp/WebappResources.properties" tofile="${temp.folder}/webapp.jar.bin/org/eclipse/help/internal/webapp/WebappResources_en.properties" />
 <!-- custom end -->
 		<mkdir dir="${build.result.folder}"/>
 		<jar jarfile="${build.result.folder}/webapp.jar" basedir="${temp.folder}/webapp.jar.bin"/>

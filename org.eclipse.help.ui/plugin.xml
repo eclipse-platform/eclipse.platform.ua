@@ -7,7 +7,7 @@
    class="org.eclipse.help.ui.internal.HelpUIPlugin">
 
    <runtime>
-      <library name="helpworkbench.jar">
+      <library name="helpui.jar">
          <export name="*"/>
          <packages prefixes="org.eclipse.help.ui"/>
       </library>

@@ -45,8 +45,8 @@ public class LayoutData extends RequestData {
 	}
 
 	public String getContentURL() {
-		ContentsData contents = new ContentsData(context, request);
-		String topic = contents.getSelectedTopic();
+		TocData tocData = new TocData(context, request);
+		String topic = tocData.getSelectedTopic();
 		String help_home = prefs.getHelpHome();
 		
 		if (topic != null)
@@ -62,7 +62,7 @@ public class LayoutData extends RequestData {
 	 */
 	public View[] getViews() {
 		View[] views = new View[] {
-			new View("content", "contents.jsp", "images/contents_view.gif", true),
+			new View("toc", "toc.jsp", "images/contents_view.gif", true),
 			new View("search", "search_results.jsp", "images/search_results_view.gif", false),
 			new View("links", "links.jsp", "images/links_view.gif", false),
 			new View("bookmarks", "bookmarks.jsp", "images/bookmarks_view.gif", false)
@@ -73,11 +73,8 @@ public class LayoutData extends RequestData {
 	public String getVisibleView() {
 		String view = request.getParameter("tab");
 		if (view != null && view.length() > 0)
-			if (view.equals("toc"))
-				return "content"; // compatibility with old code
-			else
-				return view;
+			return view;
 		else
-			return "content";
+			return "toc";
 	}
 }

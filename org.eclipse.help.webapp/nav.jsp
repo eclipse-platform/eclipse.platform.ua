@@ -54,7 +54,7 @@ function displayTocFor(topic)
 {
 	tempView = ViewsFrame.lastView;
 	/******** HARD CODED VIEW NAME *********/
-	showView("content");
+	showView("toc");
 	// remove the query, if any
 	var i = topic.indexOf('?');
 	if (i != -1)
@@ -70,7 +70,7 @@ function displayTocFor(topic)
 		saveNavigation();
 		// we are using the full URL because this API is exposed to clients
 		// (content page may want to autosynchronize)
-		var tocURL = window.location.protocol + "//" +window.location.host  + "<%=request.getContextPath()%>" + "/contents.jsp";
+		var tocURL = window.location.protocol + "//" +window.location.host  + "<%=request.getContextPath()%>" + "/toc.jsp";
 		ViewsFrame.content.location.replace(tocURL + "?topic="+topic+"&synch=yes");			
 	}
 }
@@ -122,7 +122,7 @@ function restoreNavigation()
 		}
 	}else {
 		// Show bookshelf
-		ViewsFrame.content.location.replace("contents.jsp");
+		ViewsFrame.content.location.replace("toc.jsp");
 	}
 }
 

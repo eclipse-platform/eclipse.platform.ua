@@ -12,9 +12,9 @@ import javax.servlet.http.*;
 import org.w3c.dom.*;
 
 /**
- * Helper class for contents.jsp initialization
+ * Helper class for toc.jsp initialization
  */
-public class ContentsData extends RequestData {
+public class TocData extends RequestData {
 
 	// Request parameters
 	private String tocHref;
@@ -32,7 +32,7 @@ public class ContentsData extends RequestData {
 	 * @param context
 	 * @param request
 	 */
-	public ContentsData(ServletContext context, HttpServletRequest request) {
+	public TocData(ServletContext context, HttpServletRequest request) {
 		super(context, request);
 				
 		this.tocHref = request.getParameter("toc");

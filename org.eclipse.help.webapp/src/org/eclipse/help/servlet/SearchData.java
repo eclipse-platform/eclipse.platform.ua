@@ -4,6 +4,7 @@
  */
 package org.eclipse.help.servlet;
 import java.io.*;
+import java.text.NumberFormat;
 import java.util.*;
 
 import javax.servlet.*;
@@ -14,16 +15,19 @@ import org.w3c.dom.*;
 /**
  * Helper class for search_results.jsp initialization
  */
-public class SearchData extends RequestData{
+public class SearchData extends RequestData {
 
 	// Request parameters
 	private String topicHref;
 
-	// List of TOC's
-	private Element[] tocs;
+	// search results
+	Element resultsElement;
+
+	// list of search results
+	Hit[] hits;
 
 	/**
-	 * Constructs the xml data for the contents page.
+	 * Constructs the xml data for the search resuls page.
 	 * @param context
 	 * @param request
 	 */
@@ -32,10 +36,14 @@ public class SearchData extends RequestData{
 		this.topicHref = request.getParameter("topic");
 		if (topicHref != null && topicHref.length() == 0)
 			topicHref = null;
+
+		resultsElement = loadSearchResults();
 	}
 
 	/**
-	 * Returns true when there is a search request	 * @return boolean	 */
+	 * Returns true when there is a search request
+	 * @return boolean
+	 */
 	public boolean isSearchRequest() {
 		return (
 			request.getParameter("searchWord") != null
@@ -43,21 +51,74 @@ public class SearchData extends RequestData{
 	}
 
 	/**
-	 * Returns the topic to display.
-	 * If there is a TOC, return its topic description.
-	 * Return null if no topic is specified and there is no toc description.
-	 * @return String
+	 * Returns true when there are search results.
 	 */
-	public String getSelectedTopic() {
-		if (topicHref != null && topicHref.length() > 0)
-			return UrlUtil.getHelpURL(topicHref);
-		else {
-			Element toc = getSelectedToc();
-			if (toc == null)
-				return null;
-			String tocDescription = toc.getAttribute("topic");
-			return UrlUtil.getHelpURL(tocDescription);
-		}
+	public boolean hasResults() {
+		return resultsElement != null;
 	}
 
+	/**
+	 * Return indexed completion percentage
+	 */
+	public String getIndexedPercentage() {
+		if (resultsElement == null)
+			return "0"; // this should not happen
+
+		if (!resultsElement.getTagName().equals("toc"))
+			return resultsElement.getAttribute("indexed");
+		else
+			return "100";
+	}
+
+	private Element loadSearchResults() {
+		// Load the results
+		ContentUtil content = new ContentUtil(context, request);
+		String sQuery = request.getQueryString();
+		sQuery =
+			UrlUtil.changeParameterEncoding(
+				sQuery,
+				"searchWordJS13",
+				"searchWord");
+		sQuery = UrlUtil.changeParameterEncoding(sQuery, "scopeJS13", "scope");
+		return content.loadSearchResults(sQuery);
+
+	}
+
+	public Hit[] getHits() {
+		if (hits != null)
+			return hits;
+			
+		// Generate results list
+		if (resultsElement == null)
+			hits = null;
+		else if (!resultsElement.getTagName().equals("toc"))
+			hits = null;
+		else {
+			NodeList topics = resultsElement.getElementsByTagName("topic");
+			hits = new Hit[topics.getLength()];
+			for (int i = 0; i < topics.getLength(); i++) {
+				Element topic = (Element) topics.item(i);
+				// obtain document score
+				String scoreString = topic.getAttribute("score");
+				try {
+					float score = Float.parseFloat(scoreString);
+					NumberFormat percentFormat =
+						NumberFormat.getPercentInstance(request.getLocale());
+					scoreString = percentFormat.format(score);
+				} catch (NumberFormatException nfe) {
+					// will display original score string
+				}
+
+				hits[i] =
+					new Hit(
+						topic.getAttribute("label"),
+						topic.getAttribute("href"),
+						scoreString,
+						topic.getAttribute("toc"),
+						topic.getAttribute("toclabel"));
+
+			}
+		}
+		return hits;
+	}
 }

@@ -14,6 +14,7 @@ package org.eclipse.help.internal.util;
 import java.util.ArrayList;
 
 import org.eclipse.core.runtime.Status;
+import org.eclipse.help.internal.*;
 import org.xml.sax.SAXParseException;
 
 /**
@@ -91,7 +92,7 @@ public class RuntimeHelpStatus {
 	public synchronized String toString() {
 		StringBuffer fullText = new StringBuffer();
 		if (!errorList.isEmpty()) {
-			fullText.append(Resources.getString("E006"));
+			fullText.append(HelpResources.getString("E006"));
 			fullText.append("******************** \n");
 			for (int i = 0; i < errorList.size(); i++) {
 				fullText.append(((Status) (errorList.get(i))).getMessage());
@@ -104,7 +105,7 @@ public class RuntimeHelpStatus {
 
 		if (!parserErrorMessagesList.isEmpty()) {
 			// display the files that failed to parse
-			fullText.append(Resources.getString("E007"));
+			fullText.append(HelpResources.getString("E007"));
 			fullText.append("********************  \n");
 			for (int i = 0; i < badFilesList.size(); i++) {
 				fullText.append(((String) (badFilesList.get(i))));
@@ -114,7 +115,7 @@ public class RuntimeHelpStatus {
 			fullText.append("\n");
 
 			// and the parse error message
-			fullText.append(Resources.getString("E008"));
+			fullText.append(HelpResources.getString("E008"));
 			fullText.append("********************  \n");
 			for (int i = 0; i < parserErrorMessagesList.size(); i++) {
 				fullText.append(((String) (parserErrorMessagesList.get(i))));

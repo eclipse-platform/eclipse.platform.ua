@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.help.internal.util;
+package org.eclipse.help.internal;
 
 import java.text.*;
 import java.util.*;
@@ -19,15 +19,15 @@ import org.eclipse.core.boot.*;
  * Uses a resource bundle to load images and strings from
  * a property file.
  */
-public class Resources {
+public class HelpResources {
 	private static ResourceBundle resBundle;
 	static {
-		resBundle = ResourceBundle.getBundle("help", getDefaultLocale());
+		resBundle = ResourceBundle.getBundle(HelpResources.class.getName());
 	}
 	/**
 	 * Resources constructor.
 	 */
-	public Resources() {
+	public HelpResources() {
 		super();
 	}
 	/**

@@ -8,24 +8,22 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.help.ui.internal.util;
+package org.eclipse.help.ui.internal;
 import java.net.*;
 import java.text.*;
 import java.util.*;
-
-import org.eclipse.help.ui.internal.*;
 /**
  * Uses a resource bundle to load images and strings from
  * a property file.
  * This class needs to properly use the desired locale.
  */
-public class WorkbenchResources {
+public class HelpUIResources {
 	//*** NOTE: change this to properly load a resource bundle help.properties
 	//***       for a desired locale....
 	private static ResourceBundle resBundle;
 	private static URL imageURL;
 	static {
-		resBundle = ResourceBundle.getBundle("helpworkbench", Locale.getDefault());
+		resBundle = ResourceBundle.getBundle(HelpUIResources.class.getName());
 		try {
 			imageURL =
 				new URL(
@@ -37,7 +35,7 @@ public class WorkbenchResources {
 	/**
 	 * WorkbenchResources constructor comment.
 	 */
-	public WorkbenchResources() {
+	public HelpUIResources() {
 		super();
 	}
 	/**

@@ -11,7 +11,6 @@
 package org.eclipse.help.ui.internal;
 import org.eclipse.core.runtime.*;
 import org.eclipse.help.internal.appserver.*;
-import org.eclipse.help.ui.internal.util.*;
 import org.eclipse.jface.preference.*;
 import org.eclipse.jface.resource.*;
 import org.eclipse.swt.*;
@@ -49,7 +48,7 @@ public class AppserverPreferencePage
 
 		Label label = new Label(mainComposite, SWT.NONE);
 		label.setText(
-			WorkbenchResources.getString("AppserverPreferencePage.description"));
+			HelpUIResources.getString("AppserverPreferencePage.description"));
 		GridData data = new GridData();
 		data.horizontalSpan = 2;
 		label.setLayoutData(data);
@@ -65,7 +64,7 @@ public class AppserverPreferencePage
 		label = new Label(mainComposite, SWT.NONE);
 		label.setFont(font);
 		label.setText(
-			WorkbenchResources.getString(
+			HelpUIResources.getString(
 				"AppserverPreferencePage.hostDescription"));
 		data = new GridData();
 		data.horizontalSpan = 2;
@@ -97,7 +96,7 @@ public class AppserverPreferencePage
 		label = new Label(mainComposite, SWT.NONE);
 		label.setFont(font);
 		label.setText(
-			WorkbenchResources.getString(
+			HelpUIResources.getString(
 				"AppserverPreferencePage.portDescription"));
 		data = new GridData();
 		data.horizontalSpan = 2;
@@ -130,7 +129,7 @@ public class AppserverPreferencePage
 
 		label = new Label(mainComposite, SWT.NONE);
 		label.setText(
-			WorkbenchResources.getString("AppserverPreferencePage.Note"));
+			HelpUIResources.getString("AppserverPreferencePage.Note"));
 		label.setFont(JFaceResources.getBannerFont());
 		data = new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
 		//data.horizontalSpan = 2;
@@ -138,7 +137,7 @@ public class AppserverPreferencePage
 
 		label = new Label(mainComposite, SWT.NONE);
 		label.setText(
-			WorkbenchResources.getString(
+			HelpUIResources.getString(
 				"AppserverPreferencePage.requireRestart"));
 		data = new GridData();
 		//data.horizontalSpan = 2;

@@ -13,7 +13,6 @@ package org.eclipse.help.ui.internal;
 
 import org.eclipse.help.*;
 import org.eclipse.help.internal.base.*;
-import org.eclipse.help.ui.internal.util.*;
 import org.eclipse.jface.resource.*;
 import org.eclipse.swt.*;
 import org.eclipse.swt.accessibility.*;
@@ -163,7 +162,7 @@ public class ContextHelpDialog {
 		// Create the text field.    
 		String styledText = context.getText();
 		if (styledText == null) // no description found in context objects.
-			styledText = WorkbenchResources.getString("WW002");
+			styledText = HelpUIResources.getString("WW002");
 		StyledText text =
 			new StyledText(
 				parent,
@@ -272,7 +271,7 @@ public class ContextHelpDialog {
 			}
 		} catch (Throwable e) {
 			HelpUIPlugin.logError(
-				WorkbenchResources.getString("ContextHelpDialog.open"),
+				HelpUIResources.getString("ContextHelpDialog.open"),
 				e);
 		}
 	}
@@ -282,7 +281,7 @@ public class ContextHelpDialog {
 			imgRegistry.put(
 				IHelpUIConstants.IMAGE_KEY_F1TOPIC,
 				ImageDescriptor.createFromURL(
-					WorkbenchResources.getImagePath(
+					HelpUIResources.getImagePath(
 						IHelpUIConstants.IMAGE_FILE_F1TOPIC)));
 		}
 		return imgRegistry.get(IHelpUIConstants.IMAGE_KEY_F1TOPIC);

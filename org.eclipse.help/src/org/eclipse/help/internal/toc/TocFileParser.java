@@ -64,7 +64,7 @@ class TocFileParser extends DefaultHandler {
 		String param3 = ex.getMessage();
 		String message =
 			MessageFormat.format(
-				Resources.getString(messageID),
+				HelpResources.getString(messageID),
 				new Object[] { param0, param1, param2, param3 });
 		return message;
 	}
@@ -91,11 +91,11 @@ class TocFileParser extends DefaultHandler {
 				parserPool.releaseParser(parser);
 			}
 		} catch (SAXException se) {
-			String msg = Resources.getString("E026", file);
+			String msg = HelpResources.getString("E026", file);
 			//Error loading Table of Contents file %1.
 			HelpPlugin.logError(msg, se);
 		} catch (IOException ioe) {
-			String msg = Resources.getString("E026", file);
+			String msg = HelpResources.getString("E026", file);
 			//Error loading Table of Contents file %1.
 			HelpPlugin.logError(msg, ioe);
 			// now pass it to the RuntimeHelpStatus object explicitly because we

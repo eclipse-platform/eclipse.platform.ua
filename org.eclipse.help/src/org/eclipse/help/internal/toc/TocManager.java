@@ -11,11 +11,10 @@
 package org.eclipse.help.internal.toc;
 import java.util.*;
 
-import org.eclipse.core.boot.BootLoader;
+import org.eclipse.core.boot.*;
 import org.eclipse.core.runtime.*;
-import org.eclipse.help.IToc;
+import org.eclipse.help.*;
 import org.eclipse.help.internal.*;
-import org.eclipse.help.internal.util.*;
 
 /**
  * Manages the navigation model. It keeps track of all the tables of contents.
@@ -156,7 +155,7 @@ public class TocManager {
 				}
 			}
 		} catch (Exception e) {
-			HelpPlugin.logError(Resources.getString("E039"), e);
+			HelpPlugin.logError(HelpResources.getString("E039"), e);
 		}
 		return orderedTocs;
 	}

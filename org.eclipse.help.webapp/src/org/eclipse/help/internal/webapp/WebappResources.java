@@ -23,12 +23,6 @@ public class WebappResources {
 
 	// resource bundles indexed by locale
 	private static HashMap resourceBundleTable = new HashMap();
-	/**
-	 * Resources constructor.
-	 */
-	protected WebappResources() {
-		super();
-	}
 
 	/**
 	 * Returns a string from a property file.
@@ -36,22 +30,13 @@ public class WebappResources {
 	 * @param request HttpServletRequest or null; default locale will be used if null passed
 	 */
 	public static String getString(String name, Locale locale) {
-		if (locale == null)
-			locale = getDefaultLocale();
 
-		// check cache
-		ResourceBundle bundle =
-			(ResourceBundle) resourceBundleTable.get(locale);
-
-		// load bundle
+		// get bundle
+		ResourceBundle bundle = getBundle(locale);
 		if (bundle == null) {
-			bundle = ResourceBundle.getBundle("webapp", locale);
-			if (bundle != null) {
-				resourceBundleTable.put(locale, bundle);
-			} else {
-				return name;
-			}
+			return name;
 		}
+
 		// get value
 		try {
 			return bundle.getString(name);
@@ -63,23 +48,17 @@ public class WebappResources {
 	/**
 	 * Returns a string from a property file
 	 */
-	public static String getString(String name, Locale locale, String replace0) {
-		if (locale == null)
-			locale = getDefaultLocale();
+	public static String getString(
+		String name,
+		Locale locale,
+		String replace0) {
 
-		// check cache
-		ResourceBundle bundle =
-			(ResourceBundle) resourceBundleTable.get(locale);
-
-		// load bundle
+		// get bundle
+		ResourceBundle bundle = getBundle(locale);
 		if (bundle == null) {
-			bundle = ResourceBundle.getBundle("webapp", locale);
-			if (bundle != null) {
-				resourceBundleTable.put(locale, bundle);
-			} else {
-				return name;
-			}
+			return name;
 		}
+
 		// get value
 		try {
 			String stringFromPropertiesFile = bundle.getString(name);
@@ -92,6 +71,32 @@ public class WebappResources {
 			return name;
 		}
 
+	}
+	/**
+	 * Obtains resource bundle for specified locale.
+	 * Loads bundle if necessary
+	 * @param locale Locale or null to use default locale
+	 * @return ResourceBundle or null if not found
+	 */
+	private static ResourceBundle getBundle(Locale locale) {
+		if (locale == null)
+			locale = getDefaultLocale();
+
+		// check cache
+		ResourceBundle bundle =
+			(ResourceBundle) resourceBundleTable.get(locale);
+
+		// load bundle
+		if (bundle == null) {
+			bundle =
+				ResourceBundle.getBundle(
+					WebappResources.class.getName(),
+					locale);
+			if (bundle != null) {
+				resourceBundleTable.put(locale, bundle);
+			}
+		}
+		return bundle;
 	}
 	private static Locale getDefaultLocale() {
 		String nl = BootLoader.getNL();

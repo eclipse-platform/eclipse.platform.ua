@@ -40,7 +40,7 @@ public class ErrorUtil implements IErrorUtil {
 	 * msg error message to display and log.
 	 */
 	public static void displayErrorDialog(String msg) {
-		String title = WorkbenchResources.getString("Help_Error");
+		String title = HelpUIResources.getString("Help_Error");
 		IWorkbenchWindow workbenchWindow = getActiveWorkbenchWindow();
 		Shell shell;
 		if (workbenchWindow != null) {
@@ -58,7 +58,7 @@ public class ErrorUtil implements IErrorUtil {
 	 * ex  the exception to be passed to Logger.logError()
 	 */
 	public static void displayErrorDialog(String msg, Throwable ex) {
-		String title = WorkbenchResources.getString("Help_Error");
+		String title = HelpUIResources.getString("Help_Error");
 		IWorkbenchWindow workbenchWindow = getActiveWorkbenchWindow();
 		Shell shell;
 		if (workbenchWindow != null) {
@@ -75,7 +75,7 @@ public class ErrorUtil implements IErrorUtil {
 	 * msg error message to display and log.
 	 */
 	public static void displayInfoDialog(String msg) {
-		String title = WorkbenchResources.getString("Help_Info");
+		String title = HelpUIResources.getString("Help_Info");
 		IWorkbenchWindow workbenchWindow = getActiveWorkbenchWindow();
 		Shell shell;
 		if (workbenchWindow != null) {
@@ -94,7 +94,7 @@ public class ErrorUtil implements IErrorUtil {
 	 * returns which button(Yes/No) was pressed by user
 	 */
 	public static boolean displayQuestionDialog(String msg) {
-		String title = WorkbenchResources.getString("Help_Question");
+		String title = HelpUIResources.getString("Help_Question");
 		IWorkbenchWindow workbenchWindow = getActiveWorkbenchWindow();
 		Shell shell;
 		if (workbenchWindow != null) {
@@ -111,8 +111,8 @@ public class ErrorUtil implements IErrorUtil {
 	public static void displayStatus() {
 		// show error dialog box if errors have occurred
 		if (RuntimeHelpStatus.getInstance().errorsExist()) {
-			String title = WorkbenchResources.getString("Help_Error");
-			String msg = WorkbenchResources.getString("WE005");
+			String title = HelpUIResources.getString("Help_Error");
+			String msg = HelpUIResources.getString("WE005");
 			//Errors encountered while displaying help.
 			String errorMessage = RuntimeHelpStatus.getInstance().toString();
 			Shell parent = getActiveWorkbenchWindow().getShell();

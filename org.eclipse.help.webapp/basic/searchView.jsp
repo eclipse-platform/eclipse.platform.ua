@@ -26,7 +26,6 @@ if (data.isProgressRequest()) {
 %>
 
 <title><%=WebappResources.getString("SearchResults", request)%></title>
-
 <base target="ContentViewFrame">
 </head>
 
@@ -43,18 +42,18 @@ if (data.isProgressRequest()) {
 
 <%
 	return;
-} else if (data.getHits().length == 0){
-	out.write(WebappResources.getString("Nothing_found", request));
-} else {
-		
-	Hit[] hits = data.getHits();
+} else if (data.isSearchRequest()) {
+	if (data.getHits().length == 0){
+		out.write(WebappResources.getString("Nothing_found", request));
+	} else {	
+		Hit[] hits = data.getHits();
 %>
 
 <table id='list'  cellspacing='0' >
 
 <%
-	for (int i = 0; i < hits.length; i++) 
-	{
+		for (int i = 0; i < hits.length; i++) 
+		{
 %>
 
 <tr id='r<%=i%>'>
@@ -69,13 +68,13 @@ if (data.isProgressRequest()) {
 </tr>
 
 <%
-	}
+		}
 %>
 
-</table>
+	</table>
 
 <%
-
+	}
 }
 
 %>

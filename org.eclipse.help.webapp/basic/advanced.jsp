@@ -1,28 +1,50 @@
 <form action="searchView.jsp" method="get" accept-charset="UTF-8" target="_self">
-	<b>
-		<%=WebappResources.getString("SearchExpression", request)%>
-	</b>
-	<br>
+
+	<table id="searchTable" cellspacing=0 cellpading=0 border=0>
+		<tr>
+			<td>
+				<b>
+				<%=WebappResources.getString("SearchExpression", request)%>
+				</b>
+			</td>
+		</tr>
+		<tr>
+			<td nowrap>
 				<input type="text" id="searchWord" name="searchWord" value='<%=data.getSearchWord()%>' maxlength=256 alt='<%=WebappResources.getString("SearchExpression", request)%>'>
           	  	<input type="hidden" name="maxHits" value="500" >
+          	  	<input type="hidden" name="scopedSearch" value="true" >
 				<input id="searchButton" type="submit" value='<%=WebappResources.getString("Search", request)%>' alt='<%=WebappResources.getString("Search", request)%>'>
-	<br>
+        	</td>
+        </tr>
+        <tr>
+        	<td>
         		<%=WebappResources.getString("expression_label", request)%>
-    <br>
-  	<br>
-    <b>
+        	</td>
+        </tr>
+    </table>
+
+  	<table id="filterTable" cellspacing=0 cellpading=0 border=0>
+  		<tr>
+  			<td>
+  				<b>
 				<%=WebappResources.getString("Select", request)%>
-    </b>
-    <br>
+				</b>
+			</td>
+		</tr>
+  				
 <% 
 Element[] tocs = data.getTocs();
 for (int i=0; i<tocs.length; i++)
 {
 	String label = UrlUtil.htmlEncode(tocs[i].getAttribute("label"));
 %>
-				<input type="checkbox" name='<%=tocs[i].getAttribute("href")%>' alt="<%=label%>"><%=label%>
-			<br>
+  		<tr>
+  			<td nowrap>
+				<input type="checkbox" name='scope' value='<%=tocs[i].getAttribute("href")%>' alt="<%=label%>"><%=label%>
+			</td>
+		</tr>
 <%
 }		
 %>
+	</table>
  </form>

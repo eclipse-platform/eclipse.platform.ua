@@ -20,8 +20,7 @@
 <%
 if (data.isProgressRequest()) {
 %>
- <meta HTTP-EQUIV="REFRESH" CONTENT="2;
- URL=<%="searchView.jsp?"+request.getQueryString()%>">
+ <meta HTTP-EQUIV="REFRESH" CONTENT="2;URL=<%="searchView.jsp?"+request.getQueryString()%>">
 <%
 }
 %>
@@ -51,7 +50,7 @@ if (data.isProgressRequest()) {
 			<%=WebappResources.getString("IndexingPleaseWait", request)%>
 		</td>
 	</tr>
-</TABLE>
+</table>
 </body>
 </html>
 

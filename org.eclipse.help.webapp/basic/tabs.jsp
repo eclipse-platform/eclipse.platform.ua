@@ -57,7 +57,7 @@
 	</tr>
 	</table>
 	<iframe name="liveHelpFrame" frameborder="no" width="0" height="0" scrolling="no">
-	<layer name="liveHelpFrame" frameborder="no" width="0" height="0" scrolling="no"></ilayer>
+	<layer name="liveHelpFrame" frameborder="no" width="0" height="0" scrolling="no"></layer>
 	</iframe>
 </body>
 </html>

@@ -24,7 +24,7 @@
 	if("search".equals(request.getParameter("view"))){
 		title=WebappResources.getString("Search", request);
 	}
-	%>
+%>
 	<b>
 	<%=title%>
 	</b>

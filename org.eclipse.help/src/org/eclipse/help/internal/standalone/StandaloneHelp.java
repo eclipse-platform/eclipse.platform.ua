@@ -22,7 +22,7 @@ import java.util.*;
  * <li> at the end, call shutdown(). </li>
  * </ul>
  */
-public class StandaloneHelp extends StandaloneInfocenter {
+public class StandaloneHelp extends EclipseController {
 	// timout for .hostport file to apper since starting eclipse [ms]
 	private static final int STARTUP_TIMEOUT = 30 * 1000;
 	// number of retries to connectect to webapp
@@ -32,14 +32,40 @@ public class StandaloneHelp extends StandaloneInfocenter {
 	// ID of the application to run
 	private static final String HELP_APPLICATION_ID =
 		"org.eclipse.help.helpApplication";
+		
 	/**
-	 * @see org.eclipse.help.standalone.Help#Help(java.util.List)
+	 * Constructs help system
+	 * @param args array of String options and their values
+	 * 	Option <code>-eclipseHome dir</code> specifies Eclipse
+	 *  installation directory.
+	 *  It must be provided, when current directory is not the same
+	 *  as Eclipse installation directory.
+	 *  Additionally, most options accepted by Eclipse execuable are supported.
+	 * @param applicationID ID of Eclipse help application
 	 */
-	public StandaloneHelp(List options) {
-		super(options, HELP_APPLICATION_ID);
-		startupTimeout = STARTUP_TIMEOUT;
-		connectionRetries = CONNECTION_RETRIES;
-		connectionRetryInterval = CONNECTION_RETRY_INTERVAL;
+	public StandaloneHelp(String[] args) {
+		super(HELP_APPLICATION_ID, args);
+	}
+	
+	/**
+	 * @see org.eclipse.help.standalone.Infocenter#main(String[])
+	 */
+	public static void main(String[] args) {
+		StandaloneHelp help = new StandaloneHelp(args);
+		
+		List helpCommand = Options.getHelpCommand();
+
+		if (help.executeCommand(helpCommand)) {
+			return;
+		} else
+			printMainUsage();
+	}
+	
+	/**
+	 * Overrides the initialization of the connection to pass retry parameters.
+	 */
+	protected EclipseConnection initConnection() {
+		return new EclipseConnection(STARTUP_TIMEOUT, CONNECTION_RETRIES, CONNECTION_RETRY_INTERVAL);
 	}
 	/**
 	 * @see org.eclipse.help.standalone.Help#displayContext(java.lang.String,int,int)
@@ -67,40 +93,25 @@ public class StandaloneHelp extends StandaloneInfocenter {
 	}
 
 	/**
-	 * @see org.eclipse.help.standalone.Help#main(java.lang.String[])
-	 */
-	public static void main(String[] args) {
-		// convert array of arguments to a list
-		List argsList = new ArrayList();
-		for (int i = 0; i < args.length; i++) {
-			argsList.add(args[i]);
-		}
-		// consume -command option
-		List helpCommands = removeEclipseOption("-command", argsList);
-		// Construct help
-		StandaloneHelp help = new StandaloneHelp(argsList);
-		// Execute help command
-		if (help.executeHelpCommand(helpCommands)) {
-			return;
-		}
-		printMainUsage();
-	}
-	/**
 	 * @return true if commands contained a known command
 	 *  and it was executed
 	 */
-	boolean executeHelpCommand(List helpCommands) {
-		if (super.executeHelpCommand(helpCommands)) {
-			return true;
-		}
+	private boolean executeCommand(List helpCommands) {
+
 		if (helpCommands.size() <= 0) {
 			return false;
 		}
 		String command = (String) helpCommands.get(0);
-		if ("displayHelp".equalsIgnoreCase(command)) {
+
+		if ("start".equalsIgnoreCase(command)) {
+			start();
+			return true;
+		} else if ("shutdown".equalsIgnoreCase(command)) {
+			shutdown();
+			return true;
+		} else if ("displayHelp".equalsIgnoreCase(command)) {
 			if (helpCommands.size() >= 2) {
 				displayHelp((String) helpCommands.get(1));
-
 			} else {
 				displayHelp();
 			}

@@ -27,6 +27,7 @@ import org.eclipse.help.internal.standalone.StandaloneHelp;
  */
 public class Help {
 	private StandaloneHelp help;
+	
 	/**
 	* Constructs help system
 	* @param options array of String options and their values
@@ -36,7 +37,7 @@ public class Help {
 	*  as Eclipse installation directory.
 	*  Additionally, most options accepted by Eclipse execuable are supported.
 	*/
-	public Help(List options) {
+	public Help(String[] options) {
 		help = new StandaloneHelp(options);
 	}
 	/**
@@ -52,7 +53,9 @@ public class Help {
 			options.add("-eclipseHome");
 			options.add(install);
 		}
-		help = new StandaloneHelp(options);
+		String[] args = new String[options.size()];
+		options.toArray(args);
+		help = new StandaloneHelp(args);
 	}
 	/**
 	 * Starts the infocenter application.
@@ -116,6 +119,6 @@ public class Help {
 	 *  <ul>
 	 */
 	public static void main(String[] args) {
-		Help.main(args);
+		StandaloneHelp.main(args);
 	}
 }

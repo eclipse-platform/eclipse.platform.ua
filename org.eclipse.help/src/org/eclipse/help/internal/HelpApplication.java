@@ -82,7 +82,7 @@ public class HelpApplication
 		p.put("port", "" + AppServer.getPort());
 
 		File workspace = Platform.getLocation().toFile();
-		File hostPortFile = new File(workspace, ".metadata/.hostport");
+		File hostPortFile = new File(workspace, ".metadata/.connection");
 		hostPortFile.deleteOnExit();
 		FileOutputStream out = null;
 		try {

@@ -24,7 +24,7 @@
 	for (int toc=0; toc<data.getTocCount(); toc++) 
 	{
 %>
-		<b><nobr><img src="<%=prefs.getImagesDirectory()%>/toc_obj.gif"><a id="b<%=toc%>" href="<%="tocView.jsp?toc="+data.getTocHref(toc)%>" target='_self'>&nbsp;<%=data.getTocLabel(toc)%></a></nobr></b>
+		<b><nobr><img src="<%=prefs.getImagesDirectory()%>/toc_obj.gif"><a href="<%="tocView.jsp?toc="+data.getTocHref(toc)%>" target='_self'>&nbsp;<%=data.getTocLabel(toc)%></a></nobr></b>
 <%
 		// Only generate the selected toc
 		if (data.getSelectedToc() != -1 && data.getTocHref(data.getSelectedToc()).equals(data.getTocHref(toc)))

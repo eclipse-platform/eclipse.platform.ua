@@ -74,11 +74,11 @@ if (data.isProgressRequest()) {
 			{
 %>
 
-<tr id='r<%=topic%>'>
+<tr>
 	<td align='right'><%=data.getTopicScore(topic)%></td>
 	<td align='left' nowrap>
-		<a id='a<%=topic%>' 
-		   href='<%=data.getTopicHref(topic)%>' 
+		&nbsp;
+		<a href='<%=data.getTopicHref(topic)%>' 
 		   title="<%=data.getTopicTocLabel(topic)%>">
 		   <%=data.getTopicLabel(topic)%>
 		 </a>

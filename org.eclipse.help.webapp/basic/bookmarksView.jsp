@@ -32,11 +32,9 @@
 	{
 %>
 
-<tr id='r<%=i%>'>
+<tr>
 	<td align='left' nowrap>
-		<a id='a<%=i%>' 
-		   href='<%=bookmarks[i].getHref()%>' 
-		   title="<%=UrlUtil.htmlEncode(bookmarks[i].getLabel())%>">
+		<a href='<%=bookmarks[i].getHref()%>'>
 		   <img src="<%=prefs.getImagesDirectory()%>/bookmark_obj.gif" border=0>
 		   		<%=UrlUtil.htmlEncode(bookmarks[i].getLabel())%>
 		</a>

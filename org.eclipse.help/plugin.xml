@@ -35,7 +35,6 @@
 		<handler protocol="help" class="org.eclipse.help.internal.protocols.URLHandler"/> 
 		<handler protocol="search" class="org.eclipse.help.internal.protocols.URLHandler"/> 
 		<handler protocol="links" class="org.eclipse.help.internal.protocols.URLHandler"/> 
-		<handler protocol="livehelp" class="org.eclipse.help.internal.protocols.URLHandler"/> 
 	</extension> 
 	
 	<!-- Stand-alone infocenter application -->

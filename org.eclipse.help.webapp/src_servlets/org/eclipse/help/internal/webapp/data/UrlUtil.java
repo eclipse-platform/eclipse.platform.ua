@@ -121,21 +121,21 @@ public class UrlUtil {
 	}
 
 	public static boolean isBot(HttpServletRequest request) {
-        String agent = request.getHeader("User-Agent").toLowerCase(); //$NON-NLS-1$
+        String agent = request.getHeader("User-Agent").toLowerCase(Locale.ENGLISH); //$NON-NLS-1$
 		// sample substring Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
 		return agent.indexOf("bot") >= 0 || agent.indexOf("crawl") >= 0//$NON-NLS-1$ //$NON-NLS-2$
                 || request.getParameter("bot") != null;//$NON-NLS-1$
     }
 
 	public static boolean isGecko(HttpServletRequest request) {
-		String agent = request.getHeader("User-Agent").toLowerCase(); //$NON-NLS-1$
+		String agent = request.getHeader("User-Agent").toLowerCase(Locale.ENGLISH); //$NON-NLS-1$
 		// sample substring Gecko/20020508
 		// search for "gecko/" not to react to "like Gecko"
 		return agent.indexOf("gecko/") >= 0; //$NON-NLS-1$
 	}
 
 	public static boolean isIE(HttpServletRequest request) {
-		String agent = request.getHeader("User-Agent").toLowerCase(); //$NON-NLS-1$
+		String agent = request.getHeader("User-Agent").toLowerCase(Locale.ENGLISH); //$NON-NLS-1$
 
 		// When accessing with Bobby identified Bobby return 5.5 to allow
 		// testing advanced UI as bobby cannot identifiy as IE >=5.5
@@ -148,7 +148,7 @@ public class UrlUtil {
 	}
 
 	public static String getIEVersion(HttpServletRequest request) {
-		String agent = request.getHeader("User-Agent").toLowerCase(); //$NON-NLS-1$
+		String agent = request.getHeader("User-Agent").toLowerCase(Locale.ENGLISH); //$NON-NLS-1$
 
 		// When accessing with Bobby identified Bobby return 5.5 to allow
 		// testing advanced UI as bobby cannot identifiy as IE >=5.5
@@ -167,17 +167,17 @@ public class UrlUtil {
 	}
 
 	public static boolean isKonqueror(HttpServletRequest request) {
-		String agent = request.getHeader("User-Agent").toLowerCase(); //$NON-NLS-1$
+		String agent = request.getHeader("User-Agent").toLowerCase(Locale.ENGLISH); //$NON-NLS-1$
 		return agent.indexOf("konqueror") >= 0; //$NON-NLS-1$
 	}
 
 	public static boolean isMozilla(HttpServletRequest request) {
-		String agent = request.getHeader("User-Agent").toLowerCase(); //$NON-NLS-1$
+		String agent = request.getHeader("User-Agent").toLowerCase(Locale.ENGLISH); //$NON-NLS-1$
 		return agent.indexOf("mozilla/5") >= 0; //$NON-NLS-1$
 	}
 
 	public static String getMozillaVersion(HttpServletRequest request) {
-		String agent = request.getHeader("User-Agent").toLowerCase(); //$NON-NLS-1$
+		String agent = request.getHeader("User-Agent").toLowerCase(Locale.ENGLISH); //$NON-NLS-1$
 		if (agent.indexOf("mozilla/5") < 0) //$NON-NLS-1$
 			return "0"; //$NON-NLS-1$
 		int start = agent.indexOf("rv:") + "rv:".length(); //$NON-NLS-1$ //$NON-NLS-2$
@@ -190,18 +190,18 @@ public class UrlUtil {
 	}
 
 	public static boolean isOpera(HttpServletRequest request) {
-		String agent = request.getHeader("User-Agent").toLowerCase(); //$NON-NLS-1$
+		String agent = request.getHeader("User-Agent").toLowerCase(Locale.ENGLISH); //$NON-NLS-1$
 		return agent.indexOf("opera") >= 0; //$NON-NLS-1$
 	}
 
 	public static boolean isSafari(HttpServletRequest request) {
-		String agent = request.getHeader("User-Agent").toLowerCase(); //$NON-NLS-1$
+		String agent = request.getHeader("User-Agent").toLowerCase(Locale.ENGLISH); //$NON-NLS-1$
 		return agent.indexOf("safari/") >= 0; //$NON-NLS-1$
 	}
 
 	public static String getSafariVersion(HttpServletRequest request) {
 		String version = "0"; //$NON-NLS-1$
-		String agent = request.getHeader("User-Agent").toLowerCase(); //$NON-NLS-1$
+		String agent = request.getHeader("User-Agent").toLowerCase(Locale.ENGLISH); //$NON-NLS-1$
 		Matcher m = safariPatern.matcher(agent);
 		boolean matched = m.find();
 		if (matched) {
@@ -403,11 +403,11 @@ public class UrlUtil {
 			for (Iterator it = infocenterLocales.iterator(); it.hasNext();) {
 				String locale = (String) it.next();
 				if (locale.length() >= 5) {
-					locales.add(locale.substring(0, 2).toLowerCase() + "_" //$NON-NLS-1$
-							+ locale.substring(3, 5).toUpperCase());
+					locales.add(locale.substring(0, 2).toLowerCase(Locale.ENGLISH) + "_" //$NON-NLS-1$
+							+ locale.substring(3, 5).toUpperCase(Locale.ENGLISH));
 
 				} else if (locale.length() >= 2) {
-					locales.add(locale.substring(0, 2).toLowerCase());
+					locales.add(locale.substring(0, 2).toLowerCase(Locale.ENGLISH));
 				}
 			}
 		}

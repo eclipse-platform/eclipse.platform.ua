@@ -49,7 +49,7 @@ public class ErrorUtil implements IErrorUtil {
 			shell = new Shell();
 		}
 		MessageDialog.openError(shell, title, msg);
-		WorkbenchHelpPlugin.logError(msg, null);
+		HelpUIPlugin.logError(msg, null);
 	}
 	/**
 	 * Immidiately displays error dialog with a given string,
@@ -67,7 +67,7 @@ public class ErrorUtil implements IErrorUtil {
 			shell = new Shell();
 		}
 		MessageDialog.openError(shell, title, msg);
-		WorkbenchHelpPlugin.logError(msg, ex);
+		HelpUIPlugin.logError(msg, ex);
 	}
 	/**
 	 * Immidiately displays an Information dialog with a given string,

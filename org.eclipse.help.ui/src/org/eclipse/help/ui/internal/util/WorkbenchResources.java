@@ -29,7 +29,7 @@ public class WorkbenchResources {
 		try {
 			imageURL =
 				new URL(
-					WorkbenchHelpPlugin.getDefault().getDescriptor().getInstallURL(),
+					HelpUIPlugin.getDefault().getDescriptor().getInstallURL(),
 					"icons/");
 		} catch (MalformedURLException e) {
 		}

@@ -20,7 +20,7 @@ import org.eclipse.ui.plugin.*;
   * This class is a UI plugin. This may need to change to regular 
   * plugin if the plugin class is moved into the base help.
   */
-public class WorkbenchHelpPlugin extends AbstractUIPlugin {
+public class HelpUIPlugin extends AbstractUIPlugin {
 	public final static String PLUGIN_ID = "org.eclipse.help.ui";
 	// debug options
 	public static boolean DEBUG = false;
@@ -28,7 +28,7 @@ public class WorkbenchHelpPlugin extends AbstractUIPlugin {
 	public static boolean DEBUG_IE_ADAPTER_IN_PROCESS = false;
 	public static boolean DEBUG_INFOPOP = false;
 
-	private static WorkbenchHelpPlugin plugin;
+	private static HelpUIPlugin plugin;
 	/** 
 	 * Logs an Error message with an exception. Note that the message should already 
 	 * be localized to proper locale.
@@ -65,14 +65,14 @@ public class WorkbenchHelpPlugin extends AbstractUIPlugin {
 	 * WorkbenchHelpPlugin constructor. It is called as part of plugin
 	 * activation.
 	 */
-	public WorkbenchHelpPlugin(IPluginDescriptor descriptor) {
+	public HelpUIPlugin(IPluginDescriptor descriptor) {
 		super(descriptor);
 		plugin = this;
 	}
 	/**
 	 * @return HelpViewerPlugin
 	 */
-	public static WorkbenchHelpPlugin getDefault() {
+	public static HelpUIPlugin getDefault() {
 		return plugin;
 	}
 	/**

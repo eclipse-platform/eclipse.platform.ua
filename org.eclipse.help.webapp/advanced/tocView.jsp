@@ -7,7 +7,7 @@
 <% 
 	TocData data = new TocData(application,request);
 	WebappPreferences prefs = data.getPrefs();
-	Element selectedToc = data.getSelectedToc();
+	IToc selectedToc = data.getSelectedToc();
 %>
 
 <html>
@@ -58,7 +58,7 @@ function onloadHandler()
 	if (data.getSelectedToc() != null)
 	{
 %>
-	tocTitle = '<%=UrlUtil.JavaScriptEncode(data.getTocLabel(data.getSelectedToc()))%>';
+	tocTitle = '<%=UrlUtil.JavaScriptEncode(data.getSelectedToc().getLabel())%>';
 	
 	// set title on the content toolbar
 	parent.parent.parent.setContentToolbarTitle(tocTitle);
@@ -92,16 +92,16 @@ function onloadHandler()
 <body onload="onloadHandler()">
 	<ul class='expanded' id='root'>
 <%
-	Element[] tocs = data.getTocs();
+	IToc[] tocs = data.getTocs();
 	for (int i=0; i<tocs.length; i++) 
 	{
 %>
 		<li>
-		<nobr><img src="<%=prefs.getImagesDirectory()%>/toc_obj.gif"><a id="b<%=i%>" style="font-weight: bold;" href="<%=data.getTocDescriptionTopic(tocs[i])%>" onclick='loadTOC("<%=data.getTocHref(tocs[i])%>")'><%=data.getTocLabel(tocs[i])%></a></nobr>
+		<nobr><img src="<%=prefs.getImagesDirectory()%>/toc_obj.gif"><a id="b<%=i%>" style="font-weight: bold;" href="<%=UrlUtil.getHelpURL(tocs[i].getTopic(null).getHref())%>" onclick='loadTOC("<%=tocs[i].getHref()%>")'><%=tocs[i].getLabel()%></a></nobr>
 <%
 		// Only generate the selected toc
 		if (selectedToc != null &&
-		    selectedToc.getAttribute("href").equals(tocs[i].getAttribute("href")))
+		    selectedToc.getHref().equals(tocs[i].getHref()))
 		{
 			data.generateToc(tocs[i], out);
 			// keep track of the selected toc id

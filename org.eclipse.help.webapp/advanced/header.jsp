@@ -3,7 +3,7 @@
  All Rights Reserved.
 --%>
 
-<%@ page import="java.util.*,org.eclipse.help.servlet.*,org.eclipse.help.servlet.data.*,org.w3c.dom.*" errorPage="/advanced/err.jsp" contentType="text/html; charset=UTF-8"%>
+<%@ page import="java.util.*,org.eclipse.help.*,org.eclipse.help.servlet.*,org.eclipse.help.servlet.data.*" errorPage="/advanced/err.jsp" contentType="text/html; charset=UTF-8"%>
 
 <% 
 	// calls the utility class to initialize the application

@@ -3,6 +3,7 @@
  All Rights Reserved.
 --%>
 <%@ include file="header.jsp"%>
+<%@ page import="org.eclipse.help.internal.search.*"%>
 
 <% 
 	SearchData data = new SearchData(application, request);
@@ -67,7 +68,7 @@ setTimeout('refresh()', 2000);
 	out.write(WebappResources.getString("Nothing_found", request));
 } else {
 		
-	Hit[] hits = data.getHits();
+	SearchHit[] hits = data.getHits();
 %>
 
 <table id='list'  cellspacing='0' >
@@ -75,15 +76,16 @@ setTimeout('refresh()', 2000);
 <%
 	for (int i = 0; i < hits.length; i++) 
 	{
+		String title = hits[i].getToc() != null ? hits[i].getToc().getLabel() : "";
 %>
 
 <tr class='list' id='r<%=i%>'>
-	<td class='score' align='right'><%=hits[i].getScore()%></td>
+	<td class='score' align='right'><%=data.getFormattedScore(hits[i])%></td>
 	<td align='left' class='label' nowrap>
 		<a id='a<%=i%>' 
-		   href='<%=hits[i].getHref()%>' 
-		   onclick='parent.parent.parent.setContentToolbarTitle("<%=UrlUtil.JavaScriptEncode(hits[i].getTocLabel())%>")' 
-		   title="<%=UrlUtil.htmlEncode(hits[i].getTocLabel())%>">
+		   href='<%=UrlUtil.getHelpURL(hits[i].getHref())%>' 
+		   onclick='parent.parent.parent.setContentToolbarTitle("<%=UrlUtil.JavaScriptEncode(title)%>")' 
+		   title="<%=UrlUtil.htmlEncode(title)%>">
 		   <%=UrlUtil.htmlEncode(hits[i].getLabel())%>
 		 </a>
 	</td>

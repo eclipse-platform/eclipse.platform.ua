@@ -4,15 +4,17 @@
  */
 package org.eclipse.help.servlet.data;
 import java.io.*;
-import java.text.NumberFormat;
-import java.util.*;
+import java.text.*;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import org.eclipse.help.servlet.ContentUtil;
-import org.eclipse.help.servlet.UrlUtil;
-import org.w3c.dom.*;
+import org.eclipse.core.runtime.*;
+import org.eclipse.help.*;
+import org.eclipse.help.internal.*;
+import org.eclipse.help.internal.search.*;
+import org.eclipse.help.internal.util.*;
+import org.eclipse.help.servlet.*;
 
 /**
  * Helper class for searchView.jsp initialization
@@ -25,10 +27,10 @@ public class SearchData extends RequestData {
 	private String searchWord;
 
 	// search results
-	Element resultsElement;
+	SearchHit[] hits;
 
-	// list of search results
-	Hit[] hits;
+	// percentage of indexing completion
+	private int indexCompletion = 100;
 
 	/**
 	 * Constructs the xml data for the search resuls page.
@@ -41,12 +43,26 @@ public class SearchData extends RequestData {
 		if (topicHref != null && topicHref.length() == 0)
 			topicHref = null;
 
-		resultsElement = loadSearchResults();
-		hits = getHits();
-		
-		String sQuery=request.getQueryString();
-		sQuery=UrlUtil.changeParameterEncoding(sQuery, "searchWordJS13", "searchWord");
-		searchWord=UrlUtil.getRequestParameter(sQuery, "searchWord");
+		String sQuery = request.getQueryString();
+		sQuery =
+			UrlUtil.changeParameterEncoding(
+				sQuery,
+				"searchWordJS13",
+				"searchWord");
+		searchWord = UrlUtil.getRequestParameter(sQuery, "searchWord");
+
+		// try loading search results or get the indexing progress info.
+		loadSearchResults();
+
+		if (!isProgressRequest()) {
+			for (int i = 0; i < hits.length; i++) {
+				// the following assume topic numbering as in searchView.jsp
+				if (hits[i].getHref().equals(topicHref)) {
+					selectedTopicId = "a" + i;
+					break;
+				}
+			}
+		}
 	}
 
 	/**
@@ -63,92 +79,30 @@ public class SearchData extends RequestData {
 	 * Return indexed completion percentage
 	 */
 	public boolean isProgressRequest() {
-		if (resultsElement == null)
-			return false; 
-		else 
-			return (resultsElement.getTagName().equals("progress"));
+		return (hits == null && indexCompletion != 100);
 	}
 
 	/**
 	 * Return indexed completion percentage
 	 */
 	public String getIndexedPercentage() {
-		if (resultsElement == null)
-			return "0"; // this should not happen
-
-		if (!resultsElement.getTagName().equals("toc"))
-			return resultsElement.getAttribute("indexed");
-		else
-			return "100";
+		return String.valueOf(indexCompletion);
 	}
 
-	private Element loadSearchResults() {
-		// Load the results
-		ContentUtil content = new ContentUtil(context, request);
-		String sQuery = request.getQueryString();
-		sQuery =
-			UrlUtil.changeParameterEncoding(
-				sQuery,
-				"searchWordJS13",
-				"searchWord");
-		sQuery = UrlUtil.changeParameterEncoding(sQuery, "scopeJS13", "scope");
-		return content.loadSearchResults(sQuery);
-
-	}
-
-	public Hit[] getHits() {
-		if (hits != null)
-			return hits;
-			
-		// Generate results list
-		if (resultsElement == null)
-			hits = new Hit[0];
-		else if (!resultsElement.getTagName().equals("toc"))
-			hits = new Hit[0];
-		else {
-			NodeList topics = resultsElement.getElementsByTagName("topic");
-			hits = new Hit[topics.getLength()];
-			for (int i = 0; i < topics.getLength(); i++) {
-				Element topic = (Element) topics.item(i);
-				
-				// the following assume topic numbering as in searchView.jsp
-				if (topic.getAttribute("href").equals(topicHref))
-					selectedTopicId = "a"+i;
-					
-				// obtain document score
-				String scoreString = topic.getAttribute("score");
-				try {
-					float score = Float.parseFloat(scoreString);
-					NumberFormat percentFormat =
-						NumberFormat.getPercentInstance(request.getLocale());
-					scoreString = percentFormat.format(score);
-				} catch (NumberFormatException nfe) {
-					// will display original score string
-				}
-
-				hits[i] =
-					new Hit(
-						topic.getAttribute("label"),
-						topic.getAttribute("href"),
-						scoreString,
-						topic.getAttribute("toc"),
-						topic.getAttribute("toclabel"));
-
-			}
-		}
+	public SearchHit[] getHits() {
 		return hits;
 	}
-	
+
 	public String getSelectedTopicId() {
 		return selectedTopicId;
 	}
-	
+
 	public String getSearchWordParamName() {
 		if (isMozilla)
 			return "searchWord";
 		else
 			return "searchWordJS13";
-	}	
+	}
 
 	public String getScopeParamName() {
 		if (isMozilla)
@@ -156,27 +110,27 @@ public class SearchData extends RequestData {
 		else
 			return "scopeJS13";
 	}
-	
+
 	/**
 	 * Returns the search query
 	 */
 	public String getSearchWord() {
-		if (searchWord == null)	
+		if (searchWord == null)
 			return "";
 		else
 			return searchWord;
 	}
-	
-	public Element[] getTocs() {
+
+	public IToc[] getTocs() {
 		TocData tocData = new TocData(context, request);
 		return tocData.getTocs();
 	}
-	
+
 	/**
 	 * Returns the list of selected TOC's as a comma-separated list
 	 */
 	public String getSelectedTocsList() {
-		String[] books = UrlUtil.getRequestParameters(request, "scope");			
+		String[] books = UrlUtil.getRequestParameters(request, "scope");
 		StringBuffer booksList = new StringBuffer();
 		if (books.length > 0) {
 			booksList.append('"');
@@ -191,4 +145,68 @@ public class SearchData extends RequestData {
 		}
 		return booksList.toString();
 	}
+
+	public String getFormattedScore(SearchHit hit) {
+		try {
+			float score = hit.getScore();
+			NumberFormat percentFormat =
+				NumberFormat.getPercentInstance(request.getLocale());
+			return percentFormat.format(score);
+		} catch (NumberFormatException nfe) {
+			// will display original score string
+			return String.valueOf(hit.getScore());
+		}
+	}
+
+	/**
+	* Call the search engine, and get results or the percentage of 
+	* indexed documents.
+	*/
+	private void loadSearchResults() {
+		// Load the results
+		String query = request.getQueryString();
+		query =
+			UrlUtil.changeParameterEncoding(
+				query,
+				"searchWordJS13",
+				"searchWord");
+		query = UrlUtil.changeParameterEncoding(query, "scopeJS13", "scope");
+
+		// create a SearchURL directly. 
+		// *** this code should eventually be cleaned ***
+		//return content.loadSearchResults(sQuery);
+
+		// The url string should contain the search parameters.
+		try {
+			SearchProgressMonitor pm =
+				SearchProgressMonitor.getProgressMonitor(
+					searchWord,
+					getLocale());
+			if (pm.isDone()) {
+				this.indexCompletion = 100;
+
+				SearchQuery sQuery = new SearchQuery(query);
+				SearchResults results =
+					new SearchResults(
+						sQuery.getScope(),
+						sQuery.getMaxHits(),
+						getLocale());
+
+				HelpSystem.getSearchManager().search(sQuery, results, pm);
+				hits = results.getSearchHits();
+				if (hits == null) {
+					Logger.logError(Resources.getString("index_is_busy"), null);
+				}
+				return;
+			} else {
+				// progress
+				this.indexCompletion = pm.getPercentage();
+				return;
+			}
+		} catch (Exception e) {
+			this.indexCompletion = 0;
+		}
+
+	}
+
 }

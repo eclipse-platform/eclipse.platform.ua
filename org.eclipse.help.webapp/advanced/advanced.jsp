@@ -197,12 +197,12 @@ function onloadHandler()
 		<tr><td>
 			<div id="booksContainer">
 <% 
-Element[] tocs = data.getTocs();
+IToc[] tocs = data.getTocs();
 for (int i=0; i<tocs.length; i++)
 {
-	String label = UrlUtil.htmlEncode(tocs[i].getAttribute("label"));
+	String label = UrlUtil.htmlEncode(tocs[i].getLabel());
 %>
-				<div class="book"><input class="checkbox" type="checkbox" name='<%=tocs[i].getAttribute("href")%>' alt="<%=label%>"><%=label%></div>
+				<div class="book"><input class="checkbox" type="checkbox" name='<%=tocs[i].getHref()%>' alt="<%=label%>"><%=label%></div>
 <%
 }		
 %>

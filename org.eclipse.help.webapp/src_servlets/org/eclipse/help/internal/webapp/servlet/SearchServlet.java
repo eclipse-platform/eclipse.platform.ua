@@ -82,6 +82,8 @@ public class SearchServlet extends HttpServlet {
 				results,
 				pm);
 			hits = results.getSearchHits();
+		} catch (QueryTooComplexException qe) {
+			hits = new SearchHit[0];
 		} catch (Exception e) {
 			HelpWebappPlugin.logError("", e);
 		} finally {

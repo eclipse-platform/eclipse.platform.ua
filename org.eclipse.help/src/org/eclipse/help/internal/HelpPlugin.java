@@ -13,7 +13,7 @@ import org.eclipse.core.runtime.*;
 import org.eclipse.help.internal.context.*;
 import org.eclipse.help.internal.toc.*;
 /**
- * Simple plugin for help system.
+ * Help System Core plug-in
  */
 public class HelpPlugin extends Plugin {
 	public final static String PLUGIN_ID = "org.eclipse.help";
@@ -61,7 +61,7 @@ public class HelpPlugin extends Plugin {
 	}
 
 	/**
-	 * HelpViewerPlugin constructor. It is called as part of plugin
+	 * Plugin constructor. It is called as part of plugin
 	 * activation.
 	 */
 	public HelpPlugin(IPluginDescriptor descriptor) {
@@ -69,7 +69,7 @@ public class HelpPlugin extends Plugin {
 		plugin = this;
 	}
 	/**
-	 * @return the singleton instance of the help plugin
+	 * @return the singleton instance of the plugin
 	 */
 	public static HelpPlugin getDefault() {
 		return plugin;

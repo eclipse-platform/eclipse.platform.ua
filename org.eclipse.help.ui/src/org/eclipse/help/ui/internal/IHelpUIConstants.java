@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.help.ui.internal;
 /**
- * Interface for holding UI constants
+ * Interface for holding Help UI plug-in constants
  */
 public interface IHelpUIConstants {
 	// Help UI pluging id with a "." for convenience.

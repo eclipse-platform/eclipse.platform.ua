@@ -17,8 +17,7 @@ import org.eclipse.help.ui.internal.util.*;
 import org.eclipse.ui.plugin.*;
 
 /**
-  * This class is a UI plugin. This may need to change to regular 
-  * plugin if the plugin class is moved into the base help.
+  * This class is Help UI plugin.
   */
 public class HelpUIPlugin extends AbstractUIPlugin {
 	public final static String PLUGIN_ID = "org.eclipse.help.ui";
@@ -32,7 +31,7 @@ public class HelpUIPlugin extends AbstractUIPlugin {
 	/** 
 	 * Logs an Error message with an exception. Note that the message should already 
 	 * be localized to proper locale.
-	 * ie: WorkbenchResources.getString() should already have been called
+	 * ie: Resources.getString() should already have been called
 	 */
 	public static synchronized void logError(String message, Throwable ex) {
 		if (message == null)
@@ -44,7 +43,7 @@ public class HelpUIPlugin extends AbstractUIPlugin {
 	/** 
 	 * Logs a Warning message with an exception. Note that the message should already 
 	 * be localized to proper local.
-	 * ie: WorkbenchResources.getString() should already have been called
+	 * ie: Resources.getString() should already have been called
 	 */
 	public static synchronized void logWarning(String message) {
 		if (HelpPlugin.DEBUG) {
@@ -62,7 +61,7 @@ public class HelpUIPlugin extends AbstractUIPlugin {
 	}
 
 	/**
-	 * WorkbenchHelpPlugin constructor. It is called as part of plugin
+	 * Plugin constructor. It is called as part of plugin
 	 * activation.
 	 */
 	public HelpUIPlugin(IPluginDescriptor descriptor) {
@@ -70,7 +69,8 @@ public class HelpUIPlugin extends AbstractUIPlugin {
 		plugin = this;
 	}
 	/**
-	 * @return HelpViewerPlugin
+	 * Provides access to singleton
+	 * @return HelpUIPlugin
 	 */
 	public static HelpUIPlugin getDefault() {
 		return plugin;

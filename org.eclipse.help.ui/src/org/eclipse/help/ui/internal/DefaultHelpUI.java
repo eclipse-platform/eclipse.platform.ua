@@ -15,19 +15,19 @@ import org.eclipse.help.ui.internal.util.*;
 import org.eclipse.ui.help.*;
 
 /**
- * This class is an implementation of the pluggable help support.
- * In is registered into the support extension point, and all 
- * requests to display help are delegated to this class.
+ * This class is an implementation of the Help UI.
+ * In is registered into the helpSupport extension point,
+ * and is responsible for handling requests to display help.
  * The methods on this class interact with the actual
  * UI component handling the display.
- * <p>Most methods are inherited from the default hep support class; only
- * the UI specific ones are overriden.</p>
+ * <p>Most methods delegate most work to HelpDisplay class; only
+ * the UI specific ones implemented in place.</p>
  */
 public class DefaultHelpUI extends AbstractHelpUI {
 	private ContextHelpDialog f1Dialog = null;
 
 	/**
-	 * BaseHelpViewer constructor.
+	 * Constructor.
 	 */
 	public DefaultHelpUI() {
 		super();

@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.help.internal.webapp;
 
- 
+import java.text.*;
 import java.util.*;
 
 import org.eclipse.core.boot.*;
@@ -59,21 +59,57 @@ public class WebappResources {
 			return name;
 		}
 	}
-	
+
+	/**
+	 * Returns a string from a property file
+	 */
+	public static String getString(String name, Locale locale, String replace0) {
+		if (locale == null)
+			locale = getDefaultLocale();
+
+		// check cache
+		ResourceBundle bundle =
+			(ResourceBundle) resourceBundleTable.get(locale);
+
+		// load bundle
+		if (bundle == null) {
+			bundle = ResourceBundle.getBundle("webapp", locale);
+			if (bundle != null) {
+				resourceBundleTable.put(locale, bundle);
+			} else {
+				return name;
+			}
+		}
+		// get value
+		try {
+			String stringFromPropertiesFile = bundle.getString(name);
+			stringFromPropertiesFile =
+				MessageFormat.format(
+					stringFromPropertiesFile,
+					new Object[] { replace0 });
+			return stringFromPropertiesFile;
+		} catch (Exception e) {
+			return name;
+		}
+
+	}
 	private static Locale getDefaultLocale() {
 		String nl = BootLoader.getNL();
 		// sanity test
 		if (nl == null)
 			return Locale.getDefault();
-		
+
 		// break the string into tokens to get the Locale object
-		StringTokenizer locales = new StringTokenizer(nl,"_");
+		StringTokenizer locales = new StringTokenizer(nl, "_");
 		if (locales.countTokens() == 1)
 			return new Locale(locales.nextToken(), "");
 		else if (locales.countTokens() == 2)
 			return new Locale(locales.nextToken(), locales.nextToken());
 		else if (locales.countTokens() == 3)
-			return new Locale(locales.nextToken(), locales.nextToken(), locales.nextToken());
+			return new Locale(
+				locales.nextToken(),
+				locales.nextToken(),
+				locales.nextToken());
 		else
 			return Locale.getDefault();
 	}

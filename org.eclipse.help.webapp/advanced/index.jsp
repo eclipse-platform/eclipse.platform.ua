@@ -63,12 +63,12 @@ if (data.isMozilla()){
 <%
 	if(!("0".equals(data.getBannerHeight()))){
 %>
-	<frame name="BannerFrame" src='<%=data.getBannerURL()%>'  tabIndex="3" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" noresize=0>
+	<frame name="BannerFrame" title="<%=ServletResources.getString("Banner", request)%>" src='<%=data.getBannerURL()%>'  tabIndex="3" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" noresize=0>
 <%
 	}
 %>
-	<frame name="SearchFrame" src='<%="advanced/"+ search_jsp+data.getQuery()%>' marginwidth="0" marginheight="0" scrolling="no" frameborder="0" noresize=0>
-	<frame name="HelpFrame" src='<%="advanced/help.jsp"+data.getQuery()%>' marginwidth="0" marginheight="0" scrolling="no" frameborder="0" >
+	<frame name="SearchFrame" title="<%=ServletResources.getString("helpToolbarFrame", request)%>" src='<%="advanced/"+ search_jsp+data.getQuery()%>' marginwidth="0" marginheight="0" scrolling="no" frameborder="0" noresize=0>
+	<frame name="HelpFrame" title="<%=ServletResources.getString("ignore", "HelpFrame", request)%>" src='<%="advanced/help.jsp"+data.getQuery()%>' marginwidth="0" marginheight="0" scrolling="no" frameborder="0" >
 </frameset>
 
 </html>

@@ -40,21 +40,21 @@ BODY {
 }
 
 TABLE {
-	font: icon;
+	font: <%=prefs.getToolbarFont()%>;
 	background:<%=prefs.getToolbarBackground()%>;
-	margin:0;
-	padding:0;
+	margin: 0px;
+	padding: 0px;
 	height:100%;
 }
 
 FORM {
 	background:<%=prefs.getToolbarBackground()%>;
 	height:100%;
-	margin:0;
+	margin:0px;
 }
 
 INPUT {
-	font: icon;
+	font: <%=prefs.getToolbarFont()%>;
 	margin:0px;
 	padding:0px;
 }
@@ -71,7 +71,7 @@ INPUT {
 }
 
 #go {
-	background:WindowText;
+	background:ThreeDShadow;
 	color:Window;
 	font-weight:bold;
 	border:1px solid ThreeDShadow;
@@ -168,10 +168,10 @@ function doSearch(query)
 		parent.HelpFrame.NavFrame.showView &&
 		parent.HelpFrame.NavFrame.ViewsFrame && 
 		parent.HelpFrame.NavFrame.ViewsFrame.search && 
-		parent.HelpFrame.NavFrame.ViewsFrame.search.ViewFrame) 
+		parent.HelpFrame.NavFrame.ViewsFrame.search.searchViewFrame) 
 	{
 		parent.HelpFrame.NavFrame.showView("search");
-		var searchView = parent.HelpFrame.NavFrame.ViewsFrame.search.ViewFrame;
+		var searchView = parent.HelpFrame.NavFrame.ViewsFrame.search.searchViewFrame;
 		searchView.location.replace("searchView.jsp?"+query);
 	}
 }
@@ -201,7 +201,9 @@ function onloadHandler(e)
 		<table id="searchTable" align="left" valign="middle" cellspacing="0" cellpadding="0" border="0">
 			<tr nowrap  valign="middle">
 				<td>
+					<label id="searchLabel" for="searchWord">
 					&nbsp;<%=ServletResources.getString("Search", request)%>:
+					</label>
 				</td>
 				<td>
 					<input type="text" id="searchWord" name="searchWord" value='' size="20" maxlength="256" alt='<%=ServletResources.getString("SearchExpression", request)%>'>

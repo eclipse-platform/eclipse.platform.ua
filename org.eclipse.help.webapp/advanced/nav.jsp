@@ -53,18 +53,8 @@ var isIE = navigator.userAgent.indexOf('MSIE') != -1;
  */
 function setContentToolbarTitle(title)
 {
-	if(parent.ContentFrame.ToolbarFrame && parent.ContentFrame.ToolbarFrame.setTitle ){
-		parent.ContentFrame.ToolbarFrame.setTitle(title);
-	}
-}
-
-/**
- * Views can call this to set the title on the navigation toolbar
- */
-function setNavToolbarTitle(title)
-{
-	if(ToolbarFrame && ToolbarFrame.setTitle ){
-		ToolbarFrame.setTitle(title);
+	if(parent.ContentFrame.ContentToolbarFrame && parent.ContentFrame.ContentToolbarFrame.setTitle ){
+		parent.ContentFrame.ContentToolbarFrame.setTitle(title);
 	}
 }
 
@@ -91,7 +81,7 @@ function displayTocFor(topic)
 	/******** HARD CODED VIEW NAME *********/
 	showView("toc");
 	
-	var tocView = ViewsFrame.toc.ViewFrame;
+	var tocView = ViewsFrame.toc.tocViewFrame;
 
 	if (tocView.selectTopic && tocView.selectTopic(topic))
 		return;
@@ -110,7 +100,7 @@ function displayTocFor(topic)
 function saveNavigation()
 {
 	/**** HARD CODED VIEW NAME *********/
-	var tocView = ViewsFrame.toc.ViewFrame;
+	var tocView = ViewsFrame.toc.tocViewFrame;
 	
 	if (tocView.oldActive) {
 		tempActiveId = tocView.oldActive.id;
@@ -130,7 +120,7 @@ function restoreNavigation(errorMessage)
 	showView(tempView);
 
 	/**** HARD CODED VIEW NAME *********/	
-	var tocView = ViewsFrame.toc.ViewFrame;
+	var tocView = ViewsFrame.toc.tocViewFrame;
 
 	if (temp && (isIE || isMozilla10)) {
 		// Restore old navigation
@@ -152,8 +142,8 @@ function restoreNavigation(errorMessage)
 </head>
 
 <frameset onload="showView('<%=data.getVisibleView()%>')" id="navFrameset" rows='<%=data.isIE()?"*,22":"*,25"%>'  framespacing="0" border="0"  frameborder="0" scrolling="no">
-   <frame name="ViewsFrame" src='<%="views.jsp"+data.getQuery()%>' marginwidth="0" marginheight="0" scrolling="no" frameborder="0" resize=yes>
-   <frame name="TabsFrame" src='<%="tabs.jsp"+data.getQuery()%>' marginwidth="0" marginheight="0" scrolling="no" frameborder="0" noresize>
+   <frame name="ViewsFrame" title="<%=ServletResources.getString("ignore", "ViewsFrame", request)%>" src='<%="views.jsp"+data.getQuery()%>' marginwidth="0" marginheight="0" scrolling="no" frameborder="0" resize=yes>
+   <frame name="TabsFrame" title="<%=ServletResources.getString("TabsFrame", request)%>" src='<%="tabs.jsp"+data.getQuery()%>' marginwidth="0" marginheight="0" scrolling="no" frameborder="0" noresize>
 </frameset>
 
 </html>

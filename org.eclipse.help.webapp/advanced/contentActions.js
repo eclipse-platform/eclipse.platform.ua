@@ -66,7 +66,7 @@ function resynch(button)
 
 function printContent(button)
 {
-	parent.ContentFrame.focus();
+	parent.ContentViewFrame.focus();
 	print();
 	if (isIE && button) button.blur();
 }

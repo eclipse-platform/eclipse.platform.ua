@@ -44,7 +44,7 @@ if(!data.isLinksRequest()) {
 		<a id='a<%=i%>' 
 		   href='<%=links[i].getHref()%>' 
 		   title="<%=UrlUtil.htmlEncode(links[i].getTocLabel())%>">
-		   <img src="<%=prefs.getImagesDirectory()%>/topic.gif">
+		   <img src="<%=prefs.getImagesDirectory()%>/topic.gif" border=0>
 		   <%=UrlUtil.htmlEncode(links[i].getLabel())%>
 		 </a>
 	</td>

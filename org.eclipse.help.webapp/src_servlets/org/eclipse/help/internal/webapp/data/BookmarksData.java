@@ -63,7 +63,7 @@ public class BookmarksData extends RequestData {
 			bookmarks =
 				bookmarks + "," + encode(bookmarkURL) + "|" + encode(title);
 			prefs.setValue(BaseHelpSystem.BOOKMARKS, bookmarks);
-			HelpPlugin.getDefault().savePluginPreferences();
+			HelpBasePlugin.getDefault().savePluginPreferences();
 		}
 	}
 
@@ -87,7 +87,7 @@ public class BookmarksData extends RequestData {
 				bookmarks.substring(0, i)
 					+ bookmarks.substring(i + removeString.length());
 			prefs.setValue(BaseHelpSystem.BOOKMARKS, bookmarks);
-			HelpPlugin.getDefault().savePluginPreferences();
+			HelpBasePlugin.getDefault().savePluginPreferences();
 		}
 	}
 

@@ -21,14 +21,14 @@ public final class HelpSystem {
 	public final static String LINKS_VIEW_KEY = "linksView";
 	public final static String BASE_TOCS_KEY = "baseTOCS";
 	public final static String BOOKMARKS = "bookmarks";
-	public final static int MODE_WORBENCH = 0;
+	public final static int MODE_WORKBENCH = 0;
 	public final static int MODE_INFOCENTER = 1;
 	public final static int MODE_STANDALONE = 2;
 
 	protected TocManager tocManager;
 	protected ContextManager contextManager;
 	protected SearchManager searchManager;
-	private int mode = MODE_WORBENCH;
+	private int mode = MODE_WORKBENCH;
 	private boolean webappStarted = false;
 	private boolean webappRunning = false;
 	/**
@@ -109,7 +109,7 @@ public final class HelpSystem {
 	public static boolean ensureWebappRunning() {
 		if (!getInstance().webappStarted) {
 			getInstance().webappStarted = true;
-			if (getMode()!=MODE_WORBENCH) {
+			if (getMode()!=MODE_WORKBENCH) {
 				// start the help control web app
 				AppServer.add("helpControl", "org.eclipse.help.webapp", "");
 			}

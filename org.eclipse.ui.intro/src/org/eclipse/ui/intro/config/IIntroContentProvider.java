@@ -87,15 +87,6 @@ public interface IIntroContentProvider {
 
 
     /**
-     * Returns the id of the Intro contentProvider tag that defined this content
-     * provider. This can/should be cached from the init() method above and
-     * returned by this method.
-     * 
-     * @return
-     */
-    public String getId();
-
-    /**
      * Dispose of the ContentProvider. This will only be called when the Intro
      * view is closed. In other words, the content provider will not be disposed
      * of until the last possible minute. This gives the implementor the chance

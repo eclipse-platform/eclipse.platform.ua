@@ -39,6 +39,7 @@ public class SearchData extends RequestData {
 			topicHref = null;
 
 		resultsElement = loadSearchResults();
+		hits = getHits();
 	}
 
 	/**
@@ -52,10 +53,13 @@ public class SearchData extends RequestData {
 	}
 
 	/**
-	 * Returns true when there are search results.
+	 * Return indexed completion percentage
 	 */
-	public boolean hasResults() {
-		return resultsElement != null;
+	public boolean isProgressRequest() {
+		if (resultsElement == null)
+			return false; 
+		else 
+			return (resultsElement.getTagName().equals("progress"));
 	}
 
 	/**
@@ -91,9 +95,9 @@ public class SearchData extends RequestData {
 			
 		// Generate results list
 		if (resultsElement == null)
-			hits = null;
+			hits = new Hit[0];
 		else if (!resultsElement.getTagName().equals("toc"))
-			hits = null;
+			hits = new Hit[0];
 		else {
 			NodeList topics = resultsElement.getElementsByTagName("topic");
 			hits = new Hit[topics.getLength()];

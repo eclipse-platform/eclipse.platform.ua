@@ -91,9 +91,7 @@ function refresh()
 <%
 if (!searchData.isSearchRequest()) {
 	out.write(WebappResources.getString("doSearch", request));
-} else if (searchData.getHits() != null && searchData.getHits().length == 0){
-	out.write(WebappResources.getString("Nothing_found", request));
-} else if (!searchData.getIndexedPercentage().equals("100")) {
+} else if (searchData.isProgressRequest()) {
 %>
 
 <CENTER>
@@ -116,6 +114,8 @@ setTimeout('refresh()', 2000);
 
 <%
 	return;
+} else if (searchData.getHits().length == 0){
+	out.write(WebappResources.getString("Nothing_found", request));
 } else {
 		
 	Hit[] hits = searchData.getHits();

@@ -39,6 +39,7 @@ public class LinksData extends RequestData {
 			topicHref = null;
 
 		linksElement = loadLinks();
+		links = getLinks();
 	}
 
 	/**
@@ -48,14 +49,6 @@ public class LinksData extends RequestData {
 	public boolean isLinksRequest() {
 		return (request.getParameter("contextId")!=null);
 	}
-
-	/**
-	 * Returns true when there are search results.
-	 */
-	public boolean hasLinks() {
-		return linksElement != null;
-	}
-
 
 	private Element loadLinks() {
 		ContentUtil content = new ContentUtil(context, request);
@@ -68,9 +61,9 @@ public class LinksData extends RequestData {
 			
 		// Generate results list
 		if (linksElement == null)
-			links = null;
+			links = new Link[0];
 		else if (!linksElement.getTagName().equals("toc"))
-			links = null;
+			links = new Link[0];
 		else {
 			NodeList topics = linksElement.getElementsByTagName("topic");
 			links = new Link[topics.getLength()];

@@ -10,6 +10,8 @@ import java.util.Locale;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
+import org.eclipse.help.internal.HelpSystem;
+
 /**
  * Servlet to handle live help action requests
  */
@@ -32,9 +34,10 @@ public class LiveHelpServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 		throws ServletException, IOException {
-		Eclipse eclipse =
-			(Eclipse) getServletContext().getAttribute("org.eclipse.help.servlet.eclipse");
-		if (connector != null && eclipse == null) {
+		if (HelpSystem.isInfocenter()) {
+			return;
+		}
+		if (connector != null) {
 			// it is not an infocentre
 			String query = req.getQueryString();
 			// Correct encoding of parameters encoded in Javascript 1.3

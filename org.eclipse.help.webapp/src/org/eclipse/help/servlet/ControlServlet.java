@@ -32,23 +32,25 @@ public class ControlServlet extends HttpServlet {
 	 */
 	public void init() throws ServletException {
 		super.init();
-		IPluginRegistry pluginRegistry = Platform.getPluginRegistry();
-		IExtensionPoint point =
-			pluginRegistry.getExtensionPoint(HELP_SYSTEM_EXTENSION_ID);
-		if (point != null) {
-			IExtension[] extensions = point.getExtensions();
-			if (extensions.length != 0) {
-				// There should only be one extension/config element so we just take the first
-				IConfigurationElement[] elements =
-					extensions[0].getConfigurationElements();
-				if (elements.length != 0) { // Instantiate the app server
-					try {
-						helpSupport =
-							(IHelp) elements[0].createExecutableExtension(
-								HELP_SYSTEM_CLASS_ATTRIBUTE);
-					} catch (CoreException e) {
-						// may need to change this
-						HelpPlugin.getDefault().getLog().log(e.getStatus());
+		if (!HelpSystem.isInfocenter()) {
+			IPluginRegistry pluginRegistry = Platform.getPluginRegistry();
+			IExtensionPoint point =
+				pluginRegistry.getExtensionPoint(HELP_SYSTEM_EXTENSION_ID);
+			if (point != null) {
+				IExtension[] extensions = point.getExtensions();
+				if (extensions.length != 0) {
+					// There should only be one extension/config element so we just take the first
+					IConfigurationElement[] elements =
+						extensions[0].getConfigurationElements();
+					if (elements.length != 0) { // Instantiate the app server
+						try {
+							helpSupport =
+								(IHelp) elements[0].createExecutableExtension(
+									HELP_SYSTEM_CLASS_ATTRIBUTE);
+						} catch (CoreException e) {
+							// may need to change this
+							HelpPlugin.getDefault().getLog().log(e.getStatus());
+						}
 					}
 				}
 			}
@@ -100,7 +102,9 @@ public class ControlServlet extends HttpServlet {
 		if ("shutdown".equalsIgnoreCase(command)) {
 			shutdown();
 		} else if ("displayHelp".equalsIgnoreCase(command)) {
-			displayHelp(req);
+			if (!HelpSystem.isInfocenter()) {
+				displayHelp(req);
+			}
 		} else {
 			resp.getWriter().print("Unrecognized command.");
 		}

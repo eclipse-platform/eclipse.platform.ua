@@ -11,6 +11,8 @@ import java.util.*;
 import javax.servlet.ServletContext;
 import javax.servlet.http.*;
 
+import org.eclipse.help.internal.HelpSystem;
+
 /**
  * Performs transfer of data from eclipse to a jsp/servlet
  */
@@ -131,11 +133,8 @@ public class EclipseConnector {
 		throws Exception {
 		//System.out.println("help content for: " + url);
 
-		Eclipse eclipse =
-			(Eclipse) context.getAttribute("org.eclipse.help.servlet.eclipse");
-
 		URLConnection con = null;
-		if (eclipse != null) {
+		if (HelpSystem.isInfocenter()) {
 			// it is an infocentre, add client locale to url
 			String locale =
 				request == null
@@ -146,11 +145,9 @@ public class EclipseConnector {
 			} else {
 				url = url + "?lang=" + locale;
 			}
-			con = eclipse.openConnection(url);
-		} else {
-			URL helpURL = new URL(url);
-			con = helpURL.openConnection();
 		}
+		URL helpURL = new URL(url);
+		con = helpURL.openConnection();
 
 		con.setAllowUserInteraction(false);
 		con.setDoInput(true);

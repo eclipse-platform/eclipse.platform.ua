@@ -11,9 +11,9 @@ import org.eclipse.help.internal.standalone.StandaloneHelp;
 
 /**
  * This is a standalone help system. It takes care of 
- * launching the eclipse with its help system implementation,
+ * launching the Eclipse with its help system implementation,
  * and controling it.
- * This class can be used instantiated and used in a Java program,
+ * This class can be instantiated and used in a Java program,
  * or can be launched from command line to execute single help action.
  * 
  * Usage as a Java component: 
@@ -43,6 +43,7 @@ public class Help {
 	/**
 	 * This contstructs the stand alone help.
 	 * @param pluginsDir directory containing Eclipse plugins
+	 * @deprecated use Help#Help(String[])
 	 */
 	public Help(String pluginsDir) {
 		File plugins = new File(pluginsDir);
@@ -58,13 +59,13 @@ public class Help {
 		help = new StandaloneHelp(args);
 	}
 	/**
-	 * Starts the help system.
+	 * Starts the stand alone help system.
 	 */
 	public void start() {
 		help.start();
 	}
 	/**
-	 * Shuts-down the help system.
+	 * Shuts-down the stand alone help system.
 	 */
 	public void shutdown() {
 		help.shutdown();
@@ -106,7 +107,7 @@ public class Help {
 
 	/**
 	 * Controls standalone help system from command line.
-	 * @param args array of String containng options
+	 * @param args array of String containing options
 	 *  Options are:
 	 * 	<code>-command start | shutdown | (displayHelp [href]) [-eclipsehome eclipseInstallPath] [platform options] [-vmargs [Java VM arguments]]</code>
 	 *  where

@@ -74,7 +74,7 @@ public class StandaloneHelp extends EclipseController {
 	}
 
 	/**
-	 * @see org.org.eclipse.help.standalone.Help#displayContextInfopop(java.lang.String,int,int)
+	 * @see org.eclipse.help.standalone.Help#displayContextInfopop(java.lang.String,int,int)
 	 */
 	public void displayContextInfopop(String contextId, int x, int y) {
 	}

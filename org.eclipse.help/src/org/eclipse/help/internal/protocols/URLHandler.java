@@ -13,12 +13,9 @@ public class URLHandler extends URLStreamHandler {
 		super();
 	}
 	/**
-	 * @see URLStreamHandler#openConnection(URL)
+	 * @see java.net.URLStreamHandler#openConnection(java.net.URL)
 	 */
-	public URLConnection openConnection(URL url) throws IOException {
-	// Note: openConnection() method is made public (rather than protected)
-	//       to enable request delegation from proxy handlers
-	
+	protected URLConnection openConnection(URL url) throws IOException {
 		String protocol = url.getProtocol();
 		if (protocol.equals("help"))
 			return new HelpURLConnection(url);

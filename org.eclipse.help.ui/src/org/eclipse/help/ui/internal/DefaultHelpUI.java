@@ -23,30 +23,21 @@ import org.eclipse.ui.help.*;
  * <p>Most methods are inherited from the default hep support class; only
  * the UI specific ones are overriden.</p>
  */
-public class DefaultHelp extends AbstractHelpUI {
-	private static DefaultHelp instance;
+public class DefaultHelpUI extends AbstractHelpUI {
 	private ContextHelpDialog f1Dialog = null;
 
 	/**
 	 * BaseHelpViewer constructor.
 	 */
-	public DefaultHelp() {
+	public DefaultHelpUI() {
 		super();
-		instance = this;
-	}
-
-	/**
-	 * Singleton method
-	 */
-	public static DefaultHelp getInstance() {
-		return instance;
 	}
 
 	/**
 	 * Displays help.
 	 */
 	public void displayHelp() {
-		BaseHelpSystem.getHelpSupport().displayHelp();
+		BaseHelpSystem.getHelpDisplay().displayHelp();
 	}
 	/**
 	 * Displays a help resource specified as a url. 
@@ -60,7 +51,7 @@ public class DefaultHelp extends AbstractHelpUI {
 	 * </ul>
 	 */
 	public void displayHelpResource(String href) {
-		BaseHelpSystem.getHelpSupport().displayHelpResource(href);
+		BaseHelpSystem.getHelpDisplay().displayHelpResource(href);
 	}
 	/**
 	 * Displays context-sensitive help for specified context

@@ -25,7 +25,7 @@ import org.eclipse.help.internal.webapp.data.*;
  */
 public class ControlServlet extends HttpServlet {
 
-	private DefaultHelpSupport helpSupport = null;
+	private HelpDisplay helpDisplay = null;
 	private boolean shuttingDown = false;
 
 	/**
@@ -35,7 +35,7 @@ public class ControlServlet extends HttpServlet {
 	public void init() throws ServletException {
 		super.init();
 		if (BaseHelpSystem.getMode() == BaseHelpSystem.MODE_STANDALONE) {
-			helpSupport = BaseHelpSystem.getHelpSupport();
+			helpDisplay = BaseHelpSystem.getHelpDisplay();
 		}
 	}
 
@@ -114,9 +114,9 @@ public class ControlServlet extends HttpServlet {
 	private void displayHelp(HttpServletRequest req) {
 		String href = req.getParameter("href");
 		if (href != null) {
-			helpSupport.displayHelpResource(href);
+			helpDisplay.displayHelpResource(href);
 		} else {
-			helpSupport.displayHelp();
+			helpDisplay.displayHelp();
 		}
 	}
 }

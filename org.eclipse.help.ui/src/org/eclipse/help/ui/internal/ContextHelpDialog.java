@@ -260,8 +260,7 @@ public class ContextHelpDialog {
 		if (WorkbenchHelpPlugin.DEBUG_INFOPOP) {
 			System.out.println("ContextHelpDialog.launchLinks(): closed shell");
 		}
-		// TODO check if can be improved
-		BaseHelpSystem.getHelpSupport().displayHelp(context, selectedTopic);
+		BaseHelpSystem.getHelpDisplay().displayHelp(context, selectedTopic);
 	}
 	public synchronized void open() {
 		try {

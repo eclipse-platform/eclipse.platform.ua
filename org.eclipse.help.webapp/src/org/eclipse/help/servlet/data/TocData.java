@@ -8,8 +8,9 @@ import java.io.*;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
+import org.eclipse.help.*;
+import org.eclipse.help.internal.HelpSystem;
 import org.eclipse.help.servlet.*;
-import org.w3c.dom.*;
 
 /**
  * Helper class for tocView.jsp initialization
@@ -21,11 +22,11 @@ public class TocData extends RequestData {
 	private String topicHref;
 
 	// Selected TOC
-	private Element selectedToc;
-	private Element loadedToc;
+	private IToc selectedToc;
+	private IToc loadedToc;
 
 	// List of TOC's
-	private Element[] tocs;
+	private IToc[] tocs;
 
 	// images directory
 	private String imagesDirectory;
@@ -55,17 +56,9 @@ public class TocData extends RequestData {
 	 * Individual TOC's are not loaded yet.
 	 * @return Element[]
 	 */
-	public Element[] getTocs() {
+	public IToc[] getTocs() {
 		if (tocs == null) {
-
-			ContentUtil content = new ContentUtil(context, request);
-			Element tocsElement = content.loadTocs();
-			if (tocsElement == null)
-				return new Element[0];
-			NodeList tocsElements = tocsElement.getElementsByTagName("toc");
-			tocs = new Element[tocsElements.getLength()];
-			for (int i = 0; i < tocs.length; i++)
-				tocs[i] = (Element) tocsElements.item(i);
+			tocs = HelpSystem.getTocManager().getTocs(getLocale());
 		}
 		return tocs;
 	}
@@ -74,46 +67,22 @@ public class TocData extends RequestData {
 	 * Returns the selected TOC, without loading its content.
 	 * @return Element
 	 */
-	public Element getSelectedToc() {
+	public IToc getSelectedToc() {
 
 		if (selectedToc == null) {
 
 			// Find the requested TOC
 			if (tocHref != null && tocHref.length() > 0) {
-				Element[] tocs = getTocs();
+				tocs = getTocs();
 				for (int i = 0; selectedToc == null && i < tocs.length; i++)
-					if (tocHref.equals(tocs[i].getAttribute("href")))
+					if (tocHref.equals(tocs[i].getHref()))
 						selectedToc = tocs[i];
 			} else {
 				// try obtaining the TOC from the topic
-				ContentUtil content = new ContentUtil(context, request);
-				Element tocsElement =
-					content.loadTocsContainingTopic(topicHref);
-				if (tocsElement != null) {
-					NodeList tocsElements =
-						tocsElement.getElementsByTagName("toc");
-					if (tocsElements.getLength() > 0)
-						selectedToc = (Element) tocsElements.item(0);
-				}
+				selectedToc = findTocContainingTopic(topicHref);
 			}
 		}
 		return selectedToc;
-	}
-
-	/**
-	 * Returns the selected TOC. If not loaded, it will load it first.
-	 * @return Element
-	 */
-	public Element loadSelectedToc() {
-		if (loadedToc == null) {
-			Element toc = getSelectedToc();
-			if (toc != null) {
-				ContentUtil content = new ContentUtil(context, request);
-				// load TOC that contains specified topic
-				loadedToc = content.loadTOC(toc.getAttribute("href"));
-			}
-		}
-		return loadedToc;
 	}
 
 	/**
@@ -126,43 +95,17 @@ public class TocData extends RequestData {
 		if (topicHref != null && topicHref.length() > 0)
 			return UrlUtil.getHelpURL(topicHref);
 		else {
-			Element toc = getSelectedToc();
+			IToc toc = getSelectedToc();
 			if (toc == null)
 				return null;
-			String tocDescription = toc.getAttribute("topic");
-			return UrlUtil.getHelpURL(tocDescription);
+			ITopic tocDescription = toc.getTopic(null);
+			if (tocDescription != null)
+				return UrlUtil.getHelpURL(tocDescription.getHref());
+			else
+				return UrlUtil.getHelpURL(null);
 		}
 	}
 
-	/**
-	 * Returns the href of the specified TOC.
-	 * @param toc
-	 * @return String
-	 */
-	public String getTocHref(Element toc) {
-		return toc.getAttribute("href");
-	}
-
-	/**
-	 * Returns the description topic for specified TOC.
-	 * @param toc
-	 * @return String
-	 */
-	public String getTocDescriptionTopic(Element toc) {
-		if (toc == null)
-			return "about:blank"; // should this return the help home ?
-		String tocDescription = toc.getAttribute("topic");
-		return UrlUtil.getHelpURL(tocDescription);
-	}
-
-	/**
-	 * Returns the label (title) of the specified TOC
-	 * @param toc
-	 * @return String
-	 */
-	public String getTocLabel(Element toc) {
-		return toc.getAttribute("label");
-	}
 
 	/**
 	 * Generates the HTML code (a tree) for a TOC.
@@ -170,25 +113,19 @@ public class TocData extends RequestData {
 	 * @param out
 	 * @throws IOException
 	 */
-	public void generateToc(Element toc, Writer out) throws IOException {
-		// load the toc first
-		if (loadSelectedToc() == null)
-			return;
+	public void generateToc(IToc toc, Writer out) throws IOException {
 
-		// Note: if we were to generate all the TOCS, then we have to load them first
-		NodeList topics = loadedToc.getChildNodes();
-		for (int i = 0; i < topics.getLength(); i++) {
-			Node n = topics.item(i);
-			if (n.getNodeType() == Node.ELEMENT_NODE)
-				generateTopic((Element) n, out);
+		ITopic[] topics = toc.getTopics();
+		for (int i = 0; i < topics.length; i++) {
+			generateTopic(topics[i], out);
 		}
 	}
 
-	private void generateTopic(Element topic, Writer out) throws IOException {
+	private void generateTopic(ITopic topic, Writer out) throws IOException {
 
 		out.write("<li>");
 
-		boolean hasNodes = topic.hasChildNodes();
+		boolean hasNodes = topic.getSubtopics().length > 1;
 		if (hasNodes) {
 			out.write("<nobr>");
 			out.write("<img src='");
@@ -196,24 +133,22 @@ public class TocData extends RequestData {
 			out.write("/plus.gif' class='collapsed' >");
 			out.write(
 				"<a href='"
-					+ UrlUtil.getHelpURL(topic.getAttribute("href"))
+					+ UrlUtil.getHelpURL(topic.getHref())
 					+ "' title='"
-					+ UrlUtil.htmlEncode(topic.getAttribute("label"))
+					+ UrlUtil.htmlEncode(topic.getLabel())
 					+ "'>");
 			out.write("<img src='");
 			out.write(imagesDirectory);
 			out.write("/container_obj.gif'>");
-			out.write(UrlUtil.htmlEncode(topic.getAttribute("label")));
+			out.write(UrlUtil.htmlEncode(topic.getLabel()));
 			out.write("</a>");
 			out.write("</nobr>");
 
 			out.write("<ul class='collapsed'>");
 
-			NodeList topics = topic.getChildNodes();
-			for (int i = 0; i < topics.getLength(); i++) {
-				Node n = topics.item(i);
-				if (n.getNodeType() == Node.ELEMENT_NODE)
-					generateTopic((Element) n, out);
+			ITopic[] topics = topic.getSubtopics();
+			for (int i = 0; i < topics.length; i++) {
+				generateTopic(topics[i], out);
 			}
 
 			out.write("</ul>");
@@ -224,14 +159,14 @@ public class TocData extends RequestData {
 			out.write("/plus.gif' style='visibility:hidden;' >");
 			out.write(
 				"<a href='"
-					+ UrlUtil.getHelpURL(topic.getAttribute("href"))
+					+ UrlUtil.getHelpURL(topic.getHref())
 					+ "' title='"
-					+ UrlUtil.htmlEncode(topic.getAttribute("label"))
+					+ UrlUtil.htmlEncode(topic.getLabel())
 					+ "'>");
 			out.write("<img src='");
 			out.write(imagesDirectory);
 			out.write("/topic.gif'>");
-			out.write(UrlUtil.htmlEncode(topic.getAttribute("label")));
+			out.write(UrlUtil.htmlEncode(topic.getLabel()));
 			out.write("</a>");
 			out.write("</nobr>");
 		}
@@ -245,47 +180,40 @@ public class TocData extends RequestData {
 	 * @param out
 	 * @throws IOException
 	 */
-	public void generateBasicToc(Element toc, Writer out) throws IOException {
-		// load the toc first
-		if (loadSelectedToc() == null)
-			return;
-
-		// Note: if we were to generate all the TOCS, then we have to load them first
-		NodeList topics = loadedToc.getChildNodes();
-		for (int i = 0; i < topics.getLength(); i++) {
-			Node n = topics.item(i);
-			if (n.getNodeType() == Node.ELEMENT_NODE)
-				generateBasicTopic((Element) n, out);
+	public void generateBasicToc(IToc toc, Writer out) throws IOException {
+		ITopic[] topics = toc.getTopics();
+		for (int i = 0; i < topics.length; i++) {
+			generateBasicTopic(topics[i], out);
 		}
+		
 	}
 
-	private void generateBasicTopic(Element topic, Writer out) throws IOException {
+	private void generateBasicTopic(ITopic topic, Writer out)
+		throws IOException {
 
 		out.write("<li>");
 
-		boolean hasNodes = topic.hasChildNodes();
+		boolean hasNodes = topic.getSubtopics().length > 1;
 		if (hasNodes) {
 			out.write("<nobr>");
 			out.write(
 				"<a href='"
-					+ UrlUtil.getHelpURL(topic.getAttribute("href"))
+					+ UrlUtil.getHelpURL(topic.getHref())
 					+ "' title='"
-					+ UrlUtil.htmlEncode(topic.getAttribute("label"))
+					+ UrlUtil.htmlEncode(topic.getLabel())
 					+ "'>");
 			out.write("<img src='");
 			out.write(imagesDirectory);
 			out.write("/container_obj.gif' border=0>");
-			out.write("&nbsp;" + UrlUtil.htmlEncode(topic.getAttribute("label")));
+			out.write("&nbsp;" +UrlUtil.htmlEncode(topic.getLabel()));
 			out.write("</a>");
 			out.write("</nobr>");
 
 			out.write("<ul>");
 
-			NodeList topics = topic.getChildNodes();
-			for (int i = 0; i < topics.getLength(); i++) {
-				Node n = topics.item(i);
-				if (n.getNodeType() == Node.ELEMENT_NODE)
-					generateBasicTopic((Element) n, out);
+			ITopic[] topics = topic.getSubtopics();
+			for (int i = 0; i < topics.length; i++) {
+					generateBasicTopic(topics[i], out);
 			}
 
 			out.write("</ul>");
@@ -293,14 +221,14 @@ public class TocData extends RequestData {
 			out.write("<nobr>");
 			out.write(
 				"<a href='"
-					+ UrlUtil.getHelpURL(topic.getAttribute("href"))
+					+ UrlUtil.getHelpURL(topic.getHref())
 					+ "' title='"
-					+ UrlUtil.htmlEncode(topic.getAttribute("label"))
+					+ UrlUtil.htmlEncode(topic.getLabel())
 					+ "'>");
 			out.write("<img src='");
 			out.write(imagesDirectory);
 			out.write("/topic.gif' border=0>");
-			out.write("&nbsp;" + UrlUtil.htmlEncode(topic.getAttribute("label")));
+			out.write("&nbsp;" +UrlUtil.htmlEncode(topic.getLabel()));
 			out.write("</a>");
 			out.write("</nobr>");
 		}
@@ -308,4 +236,30 @@ public class TocData extends RequestData {
 		out.write("</li>");
 	}
 
+	/**
+	 * Finds a TOC that contains specified topic
+	 * @param topic the topic href
+	 */
+	private IToc findTocContainingTopic(String topic) {
+		if (topic == null || topic.equals(""))
+			return null;
+
+		int index = topic.indexOf("help:/");
+		if (index != -1)
+			topic = topic.substring(index + 5);
+		index = topic.indexOf('?');
+		if (index != -1)
+			topic = topic.substring(0, index);
+
+		if (topic == null || topic.equals(""))
+			return null;
+
+		tocs = getTocs();
+		for (int i = 0; i < tocs.length; i++)
+			if (tocs[i].getTopic(topic) != null)
+				return tocs[i];
+
+		// nothing found
+		return null;
+	}
 }

@@ -7,7 +7,7 @@
 <% 
 	TocData data = new TocData(application,request);
 	WebappPreferences prefs = data.getPrefs();
-	Element selectedToc = data.getSelectedToc();
+	IToc selectedToc = data.getSelectedToc();
 %>
 
 <html>
@@ -22,15 +22,15 @@
 
 <body bgcolor="#FFFFFF" text="#000000">
 <%
-	Element[] tocs = data.getTocs();
+	IToc[] tocs = data.getTocs();
 	for (int i=0; i<tocs.length; i++) 
 	{
 %>
-		<b><nobr><img src="<%=prefs.getImagesDirectory()%>/toc_obj.gif"><a id="b<%=i%>" href="<%="tocView.jsp?toc="+data.getTocHref(tocs[i])%>" target='_self'>&nbsp;<%=data.getTocLabel(tocs[i])%></a></nobr></b>
+		<b><nobr><img src="<%=prefs.getImagesDirectory()%>/toc_obj.gif"><a id="b<%=i%>" href="<%="tocView.jsp?toc="+tocs[i].getHref()%>" target='_self'>&nbsp;<%=tocs[i].getLabel()%></a></nobr></b>
 <%
 		// Only generate the selected toc
 		if (selectedToc != null &&
-		    selectedToc.getAttribute("href").equals(tocs[i].getAttribute("href")))
+		    selectedToc.getHref().equals(tocs[i].getHref()))
 		{
 %>		
 	<ul>

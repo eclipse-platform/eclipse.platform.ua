@@ -40,12 +40,12 @@ public class WebappPreferences {
 	}
 
 	public boolean isBookmarksView() {
-		return HelpSystem.getMode() != HelpSystem.MODE_INFOCENTER
+		return BaseHelpSystem.getMode() != BaseHelpSystem.MODE_INFOCENTER
 			&& "true".equals(prefs.getString("bookmarksView"));
 	}
 
 	public boolean isLinksView() {
-		return HelpSystem.getMode() != HelpSystem.MODE_INFOCENTER
+		return BaseHelpSystem.getMode() != BaseHelpSystem.MODE_INFOCENTER
 			&& "true".equals(prefs.getString("linksView"));
 	}
 

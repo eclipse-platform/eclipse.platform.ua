@@ -77,7 +77,7 @@ public class SearchServlet extends HttpServlet {
 			NullProgressMonitor pm = new NullProgressMonitor();
 
 			SearchResults results = createHitCollector(request, response);
-			HelpSystem.getSearchManager().search(
+			BaseHelpSystem.getSearchManager().search(
 				createSearchQuery(request),
 				results,
 				pm);

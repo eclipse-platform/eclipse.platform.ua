@@ -135,10 +135,10 @@ public class LayoutData extends RequestData {
 		if (preferences.isWindowTitlePrefix()) {
 			return ServletResources.getString(
 				"browserTitle",
-				HelpSystem.getProductName(),
+				BaseHelpSystem.getProductName(),
 				request);
 		} else {
-			return HelpSystem.getProductName();
+			return BaseHelpSystem.getProductName();
 		}
 	}
 }

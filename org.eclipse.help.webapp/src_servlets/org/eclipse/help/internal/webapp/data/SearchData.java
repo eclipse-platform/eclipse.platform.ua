@@ -243,7 +243,7 @@ public class SearchData extends RequestData {
 			if (pm.isDone()) {
 				this.indexCompletion = 100;
 				SearchResults results = createHitCollector();
-				HelpSystem.getSearchManager().search(
+				BaseHelpSystem.getSearchManager().search(
 					createSearchQuery(),
 					results,
 					pm);

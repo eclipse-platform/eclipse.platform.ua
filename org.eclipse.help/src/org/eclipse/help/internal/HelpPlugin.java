@@ -94,7 +94,6 @@ public class HelpPlugin extends Plugin {
 	 *   this plug-in 
 	 */
 	public void shutdown() throws CoreException {
-		HelpCore.shutdown();
 	}
 	/**
 	 * Starts up this plug-in.
@@ -134,7 +133,5 @@ public class HelpPlugin extends Plugin {
 			DEBUG_CONTEXT = "true".equalsIgnoreCase(Platform.getDebugOption(PLUGIN_ID + "/debug/context")); //$NON-NLS-1$
 			DEBUG_PROTOCOLS = "true".equalsIgnoreCase(Platform.getDebugOption(PLUGIN_ID + "/debug/protocols")); //$NON-NLS-1$
 		}
-
-		HelpCore.startup();
 	}
 }

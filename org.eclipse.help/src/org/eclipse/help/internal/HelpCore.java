@@ -65,42 +65,4 @@ public final class HelpCore {
 	public HelpCore newInstance() {
 		return null;
 	}
-
-	/**
-	 * Shuts down the Help System.
-	 * @exception CoreException if this method fails to shut down
-	 *   this plug-in 
-	 */
-	public static void shutdown() throws CoreException {
-		if (HelpPlugin.DEBUG) {
-			System.out.println("Help System is shutting down.");
-		}
-
-		if (HelpPlugin.DEBUG) {
-			System.out.println("Help System is shut down.");
-		}
-	}
-	/**
-	 * Called by Platform after loading the plugin
-	 */
-	public static void startup() {
-		try {
-			HelpPlugin.getDefault().getPluginPreferences();
-		} catch (Exception e) {
-			HelpPlugin.getDefault().getLog().log(
-				new Status(
-					Status.ERROR,
-					HelpPlugin
-						.getDefault()
-						.getDescriptor()
-						.getUniqueIdentifier(),
-					0,
-					Resources.getString("E005"),
-					e));
-		}
-		if (HelpPlugin.DEBUG) {
-			System.out.println("Help System started.");
-		}
-	}
-
 }

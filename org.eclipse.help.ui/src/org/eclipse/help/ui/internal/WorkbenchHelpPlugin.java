@@ -95,10 +95,10 @@ public class WorkbenchHelpPlugin extends AbstractUIPlugin {
 			DEBUG_INFOPOP = "true".equalsIgnoreCase(Platform.getDebugOption(PLUGIN_ID+"/debug/infopop")); //$NON-NLS-1$
 		}
 
-		HelpSystem.setDefaultErrorUtil(new ErrorUtil());
+		BaseHelpSystem.setDefaultErrorUtil(new ErrorUtil());
 	}
 
 	public IBrowser getHelpBrowser() {
-		return HelpSystem.getHelpBrowser();
+		return BaseHelpSystem.getHelpBrowser();
 	}
 }

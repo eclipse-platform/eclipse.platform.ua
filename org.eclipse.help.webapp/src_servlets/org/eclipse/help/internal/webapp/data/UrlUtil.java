@@ -164,7 +164,7 @@ public class UrlUtil {
 		if (defaultLocale == null) {
 			initializeLocales();
 		}
-		if ((HelpSystem.getMode() != HelpSystem.MODE_INFOCENTER)
+		if ((BaseHelpSystem.getMode() != BaseHelpSystem.MODE_INFOCENTER)
 			|| request == null) {
 			return defaultLocale;
 		}
@@ -209,7 +209,7 @@ public class UrlUtil {
 		if (defaultLocale == null) {
 			defaultLocale = Locale.getDefault().toString();
 		}
-		if (HelpSystem.getMode() != HelpSystem.MODE_INFOCENTER) {
+		if (BaseHelpSystem.getMode() != BaseHelpSystem.MODE_INFOCENTER) {
 			return;
 		}
 

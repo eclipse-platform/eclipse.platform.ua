@@ -35,8 +35,8 @@ public class ControlServlet extends HttpServlet {
 	 */
 	public void init() throws ServletException {
 		super.init();
-		if (HelpSystem.getMode() == HelpSystem.MODE_STANDALONE) {
-			helpSupport = HelpSystem.getHelpSupport();
+		if (BaseHelpSystem.getMode() == BaseHelpSystem.MODE_STANDALONE) {
+			helpSupport = BaseHelpSystem.getHelpSupport();
 		}
 	}
 
@@ -92,7 +92,7 @@ public class ControlServlet extends HttpServlet {
 		if ("shutdown".equalsIgnoreCase(command)) {
 			shutdown();
 		} else if ("displayHelp".equalsIgnoreCase(command)) {
-			if (HelpSystem.getMode() == HelpSystem.MODE_STANDALONE) {
+			if (BaseHelpSystem.getMode() == BaseHelpSystem.MODE_STANDALONE) {
 				displayHelp(req);
 			}
 		} else {

@@ -53,7 +53,7 @@ public class BookmarksData extends RequestData {
 				return;
 			}
 			Preferences prefs = HelpBasePlugin.getDefault().getPluginPreferences();
-			String bookmarks = prefs.getString(HelpSystem.BOOKMARKS);
+			String bookmarks = prefs.getString(BaseHelpSystem.BOOKMARKS);
 
 			// separate the url and title by vertical bar
 
@@ -62,7 +62,7 @@ public class BookmarksData extends RequestData {
 				return;
 			bookmarks =
 				bookmarks + "," + encode(bookmarkURL) + "|" + encode(title);
-			prefs.setValue(HelpSystem.BOOKMARKS, bookmarks);
+			prefs.setValue(BaseHelpSystem.BOOKMARKS, bookmarks);
 			HelpPlugin.getDefault().savePluginPreferences();
 		}
 	}
@@ -77,7 +77,7 @@ public class BookmarksData extends RequestData {
 				return;
 			}
 			Preferences prefs = HelpBasePlugin.getDefault().getPluginPreferences();
-			String bookmarks = prefs.getString(HelpSystem.BOOKMARKS);
+			String bookmarks = prefs.getString(BaseHelpSystem.BOOKMARKS);
 			String removeString =
 				"," + encode(bookmarkURL) + "|" + encode(title);
 			int i = bookmarks.indexOf(removeString);
@@ -86,17 +86,17 @@ public class BookmarksData extends RequestData {
 			bookmarks =
 				bookmarks.substring(0, i)
 					+ bookmarks.substring(i + removeString.length());
-			prefs.setValue(HelpSystem.BOOKMARKS, bookmarks);
+			prefs.setValue(BaseHelpSystem.BOOKMARKS, bookmarks);
 			HelpPlugin.getDefault().savePluginPreferences();
 		}
 	}
 
 	public Topic[] getBookmarks() {
 		// sanity test for infocenter, but this could not work anyway...
-		if (HelpSystem.getMode() != HelpSystem.MODE_INFOCENTER) {
+		if (BaseHelpSystem.getMode() != BaseHelpSystem.MODE_INFOCENTER) {
 			// this is workbench
 			Preferences prefs = HelpBasePlugin.getDefault().getPluginPreferences();
-			String bookmarks = prefs.getString(HelpSystem.BOOKMARKS);
+			String bookmarks = prefs.getString(BaseHelpSystem.BOOKMARKS);
 			StringTokenizer tokenizer = new StringTokenizer(bookmarks, ",");
 			Topic[] topics = new Topic[tokenizer.countTokens()];
 			for (int i = 0; tokenizer.hasMoreTokens(); i++) {

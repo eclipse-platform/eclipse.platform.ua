@@ -93,11 +93,20 @@ A.active:hover{
 <script language="JavaScript" src="toc.js"></script>
  
 <script language="JavaScript"> 
- 	var extraStyle = "";
- 	if (isMozilla)
-  	 	extraStyle = "<style type='text/css'>UL { margin-left:-20px;} #root{ margin-left:-35px; margin-top:5px;} A.active, A.active:hover {background:WindowText;color:Window;} </style>";
+
+if (isMozilla)
+ 	document.write("<style type='text/css'>UL { margin-left:-20px;} #root{ margin-left:-35px; margin-top:5px;} A.active, A.active:hover {background:WindowText;color:Window;} </style>");
  
- 	document.write(extraStyle);
+ 
+/**
+ * Loads the specified table of contents
+ */		
+function loadTOC(tocId, tocDescriptionTopic)
+{
+	// navigate to this toc
+	window.location.replace("contents.jsp?toc="+tocId);
+}
+
 </script>
 
 </head>
@@ -112,7 +121,7 @@ A.active:hover{
 	{
 %>
 		<li>
-		<nobr><img id="book" src="images/toc_obj.gif"><a class='book' href='<%=contents.getTocDescriptionTopic(tocs[i])%>'><%=contents.getTocLabel(tocs[i])%></a></nobr>
+		<nobr><img id="book" src="images/toc_obj.gif"><a class='book' href="<%=contents.getTocDescriptionTopic(tocs[i])%>" onclick='loadTOC("<%=contents.getTocHref(tocs[i])%>", "<%=contents.getTocDescriptionTopic(tocs[i])%>")'><%=contents.getTocLabel(tocs[i])%></a></nobr>
 <%
 		contents.generateToc(tocs[i], out);
 %>

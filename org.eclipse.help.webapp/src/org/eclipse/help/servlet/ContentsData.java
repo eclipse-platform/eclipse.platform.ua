@@ -68,6 +68,10 @@ public class ContentsData {
 		return selectedToc;
 	}
 
+	public String getTocHref(Element toc) {
+		return toc.getAttribute("href");
+	}
+	
 	public String getTocDescriptionTopic(Element toc) {
 		String tocDescription = toc.getAttribute("topic");
 		return getHelpURL(tocDescription);
@@ -101,7 +105,7 @@ public class ContentsData {
 		boolean hasNodes = topic.hasChildNodes();
 		if (hasNodes) {
 			out.write("<nobr>");
-			out.write("img src='images/plus.gif' class='collapsed' >");
+			out.write("<img src='images/plus.gif' class='collapsed' >");
 			out.write(
 				"<a href='"
 					+ getHelpURL(topic.getAttribute("href"))
@@ -125,7 +129,7 @@ public class ContentsData {
 			out.write("</ul>");
 		} else {
 			out.write("<nobr>");
-			out.write("img src='images/plus.gif' style='visibility:hidden;' >");
+			out.write("<img src='images/plus.gif' style='visibility:hidden;' >");
 			out.write(
 				"<a href='"
 					+ getHelpURL(topic.getAttribute("href"))

@@ -11,11 +11,10 @@
 package org.eclipse.help.internal;
 
 
-import java.util.ArrayList;
+import java.util.*;
 
-import org.eclipse.core.runtime.Status;
-import org.eclipse.help.internal.*;
-import org.xml.sax.SAXParseException;
+import org.eclipse.core.runtime.*;
+import org.xml.sax.*;
 
 /**
  * This class is intended to capture all runtime exception happening during

@@ -30,17 +30,14 @@ public class ToolbarData extends RequestData {
 		String[] tooltips = request.getParameterValues("tooltip");
 		String[] images = request.getParameterValues("image");
 		String[] actions = request.getParameterValues("action");
-		String[] scripts = request.getParameterValues("script");
 
 		if (names == null
 			|| tooltips == null
 			|| images == null
 			|| actions == null
-			|| scripts == null
 			|| names.length != tooltips.length
 			|| names.length != images.length
-			|| names.length != actions.length
-			|| names.length != scripts.length) {
+			|| names.length != actions.length) {
 			buttons = new ToolbarButton[0];
 			return;
 		}
@@ -55,8 +52,7 @@ public class ToolbarData extends RequestData {
 						names[i],
 						WebappResources.getString(tooltips[i], request),
 						getPrefs().getImagesDirectory() + "/" + images[i],
-						actions[i],
-						scripts[i]);
+						actions[i]);
 		}
 	}
 
@@ -65,6 +61,13 @@ public class ToolbarData extends RequestData {
 	}
 	
 	public String getTitle() {
-		return WebappResources.getString(request.getParameter("view"), request);
+		if (request.getParameter("view") == null)
+			return " ";
+		else 
+			return WebappResources.getString(request.getParameter("view"), request);
+	}
+	
+	public String getScript() {
+		return request.getParameter("script");
 	}
 }

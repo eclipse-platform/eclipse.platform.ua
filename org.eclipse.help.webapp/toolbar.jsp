@@ -101,8 +101,15 @@ if (isMozilla)
 else if (isIE)
   document.ondblclick = mouseDblClickHandler;
 
-
 </script>
+
+<%
+if (data.getScript() != null) {
+%>
+<script language="JavaScript" src="<%=data.getScript()%>"></script>
+<%
+}
+%>
 
 </head>
  
@@ -145,7 +152,6 @@ else if (isIE)
 <%
 		} else {
 %>
-				<script language="JavaScript" src="<%=buttons[i].getScript()%>"></script>
 				<td align="middle" width="22">
 					<a href="#" 
 					   onclick="<%=buttons[i].getAction()%>(this);" 

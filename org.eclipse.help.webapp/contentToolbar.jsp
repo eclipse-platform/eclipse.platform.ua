@@ -14,6 +14,7 @@
 %>
 <jsp:include page="toolbar.jsp">
 	<jsp:param name="view" value=""/>
+	<jsp:param name="script" value="contentActions.js"/>
 	
 	<jsp:param name="name"     value="back"/>
 	<jsp:param name="tooltip"  value='back_tip'/>

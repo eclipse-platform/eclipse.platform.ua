@@ -64,43 +64,42 @@ function displayTocFor(topic)
 
 	var selected = false;
 	/**** HARD CODED VIEW NAME *********/
-	if (ViewsFrame.toc.selectTopic)
-		selected = ViewsFrame.toc.selectTopic(topic);
+	var tocView = ViewsFrame.toc.ViewFrame;
+	if (tocView.selectTopic)
+		selected = tocView.selectTopic(topic);
 
 	if (!selected) {
 		// save the current navigation, so we can retrieve it when synch does not work
 		saveNavigation();
 		// we are using the full URL because this API is exposed to clients
 		// (content page may want to autosynchronize)
-		var tocURL = window.location.protocol + "//" +window.location.host  + "<%=request.getContextPath()%>" + "/toc.jsp";
-		ViewsFrame.toc.location.replace(tocURL + "?topic="+topic+"&synch=yes");			
+		var tocURL = window.location.protocol + "//" +window.location.host  + "<%=request.getContextPath()%>" + "/tocView.jsp";
+		tocView.location.replace(tocURL + "?topic="+topic+"&synch=yes");			
 	}
 }
 
 function saveNavigation()
 {
 	/**** HARD CODED VIEW NAME *********/
-	if (ViewsFrame.toc.location.href.indexOf("tocs.jsp") == -1) {
-					
-		if (ViewsFrame.toc.oldActive) {
-			tempActive = ViewsFrame.toc.oldActive;
-			tempActiveClass = ViewsFrame.toc.oldActiveClass;
-		}
-		// on mozilla, we will not preserve selection, the object is no longer valid.
-		// in the future, we could look up the topic, but this should suffice for now
-		// Note: need newer mozilla version
-		if (isMozilla){
-			tempActive.className ="";
-			tempActive=null;
-		}
-			
-		if (isIE)
-			temp = ViewsFrame.toc.document.body.innerHTML;
-		else if (isMozilla)
-			temp = ViewsFrame.toc.getElementById("toc").contentDocument.documentElement.innerHTML;
-	} else {
-		temp = null;
+	var tocView = ViewsFrame.toc.ViewFrame;
+		
+	if (tocView.oldActive) {
+		tempActive = tocView.oldActive;
+		tempActiveClass = tocView.oldActiveClass;
 	}
+	// on mozilla, we will not preserve selection, the object is no longer valid.
+	// in the future, we could look up the topic, but this should suffice for now
+	// Note: need newer mozilla version
+	if (isMozilla){
+		tempActive.className ="";
+		tempActive=null;
+	}
+		
+	if (isIE)
+		temp = tocView.document.body.innerHTML;
+	else if (isMozilla)
+		temp = tocView.getElementById("toc").contentDocument.documentElement.innerHTML;
+
 }
 
 function restoreNavigation()
@@ -111,20 +110,21 @@ function restoreNavigation()
 	showView(tempView);
 
 	/**** HARD CODED VIEW NAME *********/	
+	var tocView = ViewsFrame.toc.ViewFrame;
 	if (temp && (isIE || isMozilla10)){
 		// Restore old navigation
 		if (isIE)
-			ViewsFrame.toc.document.body.innerHTML = temp;
+			tocView.document.body.innerHTML = temp;
 		else if (isMozilla10)
-			ViewsFrame.toc.document.getElementById("toc").contentDocument.documentElement.innerHTML = temp;
+			tocView.document.getElementById("toc").contentDocument.documentElement.innerHTML = temp;
 		
 		if (tempActive) {
-			ViewsFrame.toc.oldActive = tempActive;
-			ViewsFrame.toc.oldActiveClass = tempActiveClass;
+			tocView.oldActive = tempActive;
+			tocView.oldActiveClass = tempActiveClass;
 		}
 	}else {
 		// Show bookshelf
-		ViewsFrame.toc.location.replace("toc.jsp");
+		tocView.location.replace("tocView.jsp");
 	}
 }
 

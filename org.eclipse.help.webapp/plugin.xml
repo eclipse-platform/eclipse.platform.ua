@@ -19,7 +19,7 @@
 
 
    <extension
-         point="org.eclipse.help.webapp">
+         point="org.eclipse.help.base.webapp">
       <webapp
             default="true">
       </webapp>

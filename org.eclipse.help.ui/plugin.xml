@@ -71,7 +71,7 @@
    </extension>
 <!-- Web Browsers -->
    <extension
-         point="org.eclipse.help.browser">
+         point="org.eclipse.help.base.browser">
       <browser
             factoryclass="org.eclipse.help.ui.internal.browser.SystemBrowserFactory"
             name="%system_browser"

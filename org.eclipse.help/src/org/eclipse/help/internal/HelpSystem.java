@@ -3,14 +3,12 @@
  * All Rights Reserved.
  */
 package org.eclipse.help.internal;
-import java.net.URL;
-
 import org.eclipse.core.runtime.*;
 import org.eclipse.help.AppServer;
-import org.eclipse.help.internal.context.*;
+import org.eclipse.help.internal.context.ContextManager;
+import org.eclipse.help.internal.search.SearchManager;
 import org.eclipse.help.internal.toc.TocManager;
 import org.eclipse.help.internal.util.*;
-import org.eclipse.help.internal.search.SearchManager;
 /**
  * The actual implementation of the help system plugin.
  */
@@ -23,12 +21,13 @@ public final class HelpSystem {
 	public final static String LINKS_VIEW_KEY = "linksView";
 	public final static String BASE_TOCS_KEY = "baseTOCS";
 	public final static String BOOKMARKS = "bookmarks";
-	
+
 	protected TocManager tocManager;
 	protected ContextManager contextManager;
 	protected SearchManager searchManager;
-	private boolean webappStarted=false;
-	private boolean webappRunning=false;
+	private boolean infocenter = false;
+	private boolean webappStarted = false;
+	private boolean webappRunning = false;
 	/**
 	 * HelpSystem constructor comment.
 	 */
@@ -94,20 +93,39 @@ public final class HelpSystem {
 			HelpPlugin.getDefault().getLog().log(
 				new Status(
 					Status.ERROR,
-					HelpPlugin.getDefault().getDescriptor().getUniqueIdentifier(),
+					HelpPlugin
+						.getDefault()
+						.getDescriptor()
+						.getUniqueIdentifier(),
 					0,
 					Resources.getString("E005"),
 					e));
 		}
 		Logger.logInfo(Resources.getString("I002"));
 	}
-	public static boolean ensureWebappRunning(){
-		if(!getInstance().webappStarted){
-			getInstance().webappStarted=true;
+	public static boolean ensureWebappRunning() {
+		if (!getInstance().webappStarted) {
+			getInstance().webappStarted = true;
 			// get an app server and start the help web app
-			getInstance().webappRunning=AppServer.add("help", "org.eclipse.help.webapp", "");
+			getInstance().webappRunning =
+				AppServer.add("help", "org.eclipse.help.webapp", "");
 		}
 		return getInstance().webappRunning;
+	}
+
+	/**
+	 * Returns the infocenter.
+	 * @return boolean
+	 */
+	public static boolean isInfocenter() {
+		return getInstance().infocenter;
+	}
+
+	/**
+	 * Sets running in the infocenter mode.
+	 */
+	public static void setInfocenter() {
+		getInstance().infocenter = true;
 	}
 
 }

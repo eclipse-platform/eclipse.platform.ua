@@ -4,21 +4,23 @@ package org.eclipse.help.internal;
  * All Rights Reserved.
  */
 import java.io.*;
-import java.util.Properties;
+import java.util.*;
 
 import org.eclipse.core.boot.IPlatformRunnable;
-import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.*;
 import org.eclipse.help.AppServer;
 
 /**
  * Help application.
  * Starts webserver and help web application.
  */
-public class HelpApplication implements IPlatformRunnable {
+public class HelpApplication
+	implements IPlatformRunnable, IExecutableExtension {
 	private static final int STATUS_EXITTING = 0;
 	private static final int STATUS_RESTARTING = 2;
 	private static final int STATUS_RUNNING = 1;
 	private static int status = STATUS_RUNNING;
+	private boolean infocenter = false;
 	/**
 	 * Causes help service to stop and exit
 	 */
@@ -54,6 +56,18 @@ public class HelpApplication implements IPlatformRunnable {
 			return this.EXIT_RESTART;
 		} else {
 			return this.EXIT_OK;
+		}
+	}
+	/**
+	 * @see IExecutableExtension
+	 */
+	public void setInitializationData(
+		IConfigurationElement configElement,
+		String propertyName,
+		Object data) {
+		String value = (String) ((Map) data).get("infocenter");
+		if ("true".equalsIgnoreCase(value)) {
+			HelpSystem.setInfocenter();
 		}
 	}
 	private void writeHostAndPort() throws IOException {

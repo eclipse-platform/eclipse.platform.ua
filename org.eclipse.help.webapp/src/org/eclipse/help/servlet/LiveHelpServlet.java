@@ -4,30 +4,24 @@
  */
 package org.eclipse.help.servlet;
 
-import java.io.*;
-import java.util.Locale;
+import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
+import org.eclipse.core.runtime.*;
+import org.eclipse.help.ILiveHelpAction;
 import org.eclipse.help.internal.HelpSystem;
 
 /**
  * Servlet to handle live help action requests
  */
 public class LiveHelpServlet extends HttpServlet {
-	private EclipseConnector connector;
-
 	/**
 	 */
 	public void init() throws ServletException {
-		if (HelpSystem.getMode()==HelpSystem.MODE_INFOCENTER) {
+		if (HelpSystem.getMode() == HelpSystem.MODE_INFOCENTER) {
 			throw new ServletException();
-		}
-		try {
-			connector = new EclipseConnector(getServletContext());
-		} catch (Throwable e) {
-			throw new ServletException(e);
 		}
 	}
 
@@ -37,22 +31,35 @@ public class LiveHelpServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 		throws ServletException, IOException {
-		if (connector != null) {
-			// it is not an infocentre
-			String query = req.getQueryString();
-			// Correct encoding of parameters encoded in Javascript 1.3
-			String agent = req.getHeader("User-Agent").toLowerCase(Locale.US);
-			boolean ie = (agent.indexOf("msie") != -1);
-			boolean mozilla = (!ie && (agent.indexOf("mozilla/5") != -1));
-			if (!mozilla) {
-				query = UrlUtil.changeParameterEncoding(query, "arg", "arg");
-			}
-			//
-			String url = "livehelp:?" + query;
-			InputStream is = connector.openStream(url, req);
-			is.close();
+		if (HelpSystem.getMode() == HelpSystem.MODE_INFOCENTER) {
+			return;
 		}
-		resp.getOutputStream().close();
+		String pluginID = UrlUtil.getRequestParameter(req, "pluginID");
+		if (pluginID == null)
+			return;
+		String className = UrlUtil.getRequestParameter(req, "class");
+		if (className == null)
+			return;
+		String arg = UrlUtil.getRequestParameter(req, "arg");
+		Plugin plugin = Platform.getPlugin(pluginID);
+		if (plugin == null)
+			return;
+		ClassLoader loader = plugin.getDescriptor().getPluginClassLoader();
+		try {
+			Class c = loader.loadClass(className);
+			Object o = c.newInstance();
+			if (o instanceof ILiveHelpAction) {
+				ILiveHelpAction helpExt = (ILiveHelpAction) o;
+				if (arg != null)
+					helpExt.setInitializationString(arg);
+				Thread runnableLiveHelp = new Thread(helpExt);
+				runnableLiveHelp.setDaemon(true);
+				runnableLiveHelp.start();
+			}
+		} catch (ThreadDeath td) {
+			throw td;
+		} catch (Exception e) {
+		}
 	}
 	/**
 	 *

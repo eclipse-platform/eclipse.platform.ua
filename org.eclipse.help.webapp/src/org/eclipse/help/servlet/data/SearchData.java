@@ -217,7 +217,7 @@ public class SearchData extends RequestData {
 			if (pm.isDone()) {
 				this.indexCompletion = 100;
 
-				SearchQuery sQuery = new SearchQuery(query);
+				SearchRequest sQuery = new SearchRequest(query);
 				SearchResults results =
 					new SearchResults(
 						sQuery.getScope(),

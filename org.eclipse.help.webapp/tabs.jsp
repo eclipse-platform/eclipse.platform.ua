@@ -5,6 +5,7 @@
 	application.getRequestDispatcher("/servlet/org.eclipse.help.servlet.InitServlet").include(request,response);
 
 	LayoutData layout = new LayoutData(application,request);
+	View[] views = layout.getViews();
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -79,54 +80,23 @@ var extraStyle = "";
 if (isMozilla)
  	extraStyle = "<style type='text/css'>BODY { height:21px;} </style>";
 document.write(extraStyle);
- 
 
-var titleArray = new Array ();
-<%
-	View[] views = layout.getViews();
-	for (int i=0; i<views.length; i++) 
-	{	
-%>
-	titleArray['<%=views[i].getName()%>'] = '<%=WebappResources.getString(views[i].getName(), request)%>';
-<%
-	}
-%>
-
-var tocTitle = null;
 var lastTab = "";
-
-
 /* 
  * Switch tabs.
  */ 
-function switchTab(nav, newTitle)
+function showTab(tab)
 { 	
-	if (nav == lastTab) 
+	if (tab == lastTab) 
 		return;
 		
-	lastTab = nav;
+	lastTab = tab;
 	
-	// set the title on the navigation toolbar to match the tab
-  	if (newTitle)
-     	parent.ToolbarFrame.document.getElementById("titleText").innerHTML = newTitle;
-    else
-    	parent.ToolbarFrame.document.getElementById("titleText").innerHTML = titleArray[nav];
-       	
-	// show appropriate frame
- 	var iframes = parent.ViewsFrame.document.body.getElementsByTagName("IFRAME");
- 	for (var i=0; i<iframes.length; i++)
- 	{			
-  		if (iframes[i].id != nav)
-   			iframes[i].className = "hidden";
-  		else
-   			iframes[i].className = "visible";
- 	}
- 
  	// show the appropriate pressed tab
   	var buttons = document.body.getElementsByTagName("TD");
   	for (var i=0; i<buttons.length; i++)
   	{
-  		if (buttons[i].id == nav) // Note: assumes the same id shared by tabs and iframes
+  		if (buttons[i].id == tab) 
 			buttons[i].className = "pressed";
 		else if (buttons[i].className == "pressed")
 			buttons[i].className = "tab";
@@ -136,7 +106,7 @@ function switchTab(nav, newTitle)
 
 </head>
    
-<body onload="switchTab('<%=layout.getVisibleView()%>')">
+<body>
 
   <table cellspacing="0" cellpadding="0" border="0" width="100%" height="100%">
    <tr>
@@ -149,10 +119,10 @@ function switchTab(nav, newTitle)
 	     align="center"  
 	     class="tab" 
 	     id="<%=views[i].getName()%>" 
-	     onclick="switchTab('<%=views[i].getName()%>')" 
+	     onclick="parent.showView('<%=views[i].getName()%>')" 
 	     onmouseover="window.status='<%=views[i].getName()%>';return true;" 
 	     onmouseout="window.status='';">
-	     <a  href='javascript:switchTab("<%=views[i].getName()%>");' 
+	     <a  href='javascript:parent.showView("<%=views[i].getName()%>");' 
 	         onclick='this.blur()' 
 	         onmouseover="window.status='<%=title%>';return true;" 
 	         onmouseout="window.status='';">

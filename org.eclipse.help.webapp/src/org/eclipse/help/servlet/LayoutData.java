@@ -66,10 +66,10 @@ public class LayoutData {
 	 */
 	public View[] getViews() {
 		View[] views = new View[] {
-			new View("Content", "contents.jsp", "images/contents_view.gif", true),
-			new View("SearchResults", "search_results.jsp", "images/search_results_view.gif", false),
-			new View("Links", "links.jsp", "images/links_view.gif", false),
-			new View("Bookmarks", "bookmarks.jsp", "images/bookmarks_view.gif", false)
+			new View("content", "contents.jsp", "images/contents_view.gif", true),
+			new View("search", "search_results.jsp", "images/search_results_view.gif", false),
+			new View("links", "links.jsp", "images/links_view.gif", false),
+			new View("bookmarks", "bookmarks.jsp", "images/bookmarks_view.gif", false)
 		};
 		return views;
 	}
@@ -79,6 +79,6 @@ public class LayoutData {
 		if (view != null && view.length() > 0)
 			return view;
 		else
-			return "Content";
+			return "content";
 	}
 }

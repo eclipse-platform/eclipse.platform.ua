@@ -3,6 +3,8 @@
 <% 
 	// calls the utility class to initialize the application
 	application.getRequestDispatcher("/servlet/org.eclipse.help.servlet.InitServlet").include(request,response);
+	ContentsData contents = new ContentsData(application, request);
+	Element selectedToc = contents.getSelectedToc();
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -86,7 +88,6 @@ A.active:hover{
     
 <base target="ContentFrame">
 <script language="JavaScript" src="toc.js"></script>
- 
 <script language="JavaScript"> 
 
 if (isMozilla)
@@ -96,56 +97,27 @@ if (isMozilla)
 /**
  * Loads the specified table of contents
  */		
-function loadTOC(tocId)
+function loadTOC(tocHref)
 {
 	// navigate to this toc, if not already loaded
-	if (window.location.href.indexOf("contents.jsp?toc="+tocId) != -1)
+	if (window.location.href.indexOf("contents.jsp?toc="+tocHref) != -1)
 		return;
-	window.location.replace("contents.jsp?toc="+tocId);
+	window.location.replace("contents.jsp?toc="+tocHref);
 }
 
-</script>
-
-</head>
-
-
-<body>
-	<ul class='expanded' id='root'>
-<%
-	ContentsData contents = new ContentsData(application, request);
-	Element selectedToc = contents.getSelectedToc();
-	String id = "";
-	Element[] tocs = contents.getTocs();
-	for (int i=0; i<tocs.length; i++) 
-	{
-%>
-		<li>
-		<nobr><img src="images/toc_obj.gif"><a id="b<%=i%>" style="font-weight: bold;" href="<%=contents.getTocDescriptionTopic(tocs[i])%>" onclick='loadTOC("<%=contents.getTocHref(tocs[i])%>")'><%=contents.getTocLabel(tocs[i])%></a></nobr>
-<%
-		// Only generate the selected toc
-		if (selectedToc == null)
-			continue;
-		if (!selectedToc.getAttribute("href").equals(tocs[i].getAttribute("href")))
-			continue;
-		contents.generateToc(tocs[i], out);
-		// keep track of the selected toc id
-		id = "b"+i;
-%>
-		</li>	
-<%
-	}
-%>		
-
-	</ul>
-
+var tocTitle = "";
+var tocId = "";
+	
+function onloadHandler()
+{
 <%
 	if (contents.getSelectedToc() != null)
 	{
 %>
-<script language="JavaScript">
-
+	tocTitle = '<%=UrlUtil.JavaScriptEncode(contents.getTocLabel(contents.getSelectedToc()))%>';
+	
 	// set title on the content toolbar
-	parent.parent.setToolbarTitle('<%=UrlUtil.JavaScriptEncode(contents.getTocLabel(contents.getSelectedToc()))%>');
+	parent.parent.setToolbarTitle(tocTitle);
 		
 	// select specified topic, or else the book
 	var topic = '<%=contents.getSelectedTopic()%>';
@@ -156,13 +128,45 @@ function loadTOC(tocId)
 		selectTopic(topic);
 	}
 	else
-		selectTopicById("<%=id%>");
-
-</script>
+		selectTopicById(tocId);
 
 <%
 	}
 %>
+}
+		
+</script>
+</head>
+
+
+<body onload="onloadHandler()">
+	<ul class='expanded' id='root'>
+<%
+	String id = "";
+	Element[] tocs = contents.getTocs();
+	for (int i=0; i<tocs.length; i++) 
+	{
+%>
+		<li>
+		<nobr><img src="images/toc_obj.gif"><a id="b<%=i%>" style="font-weight: bold;" href="<%=contents.getTocDescriptionTopic(tocs[i])%>" onclick='loadTOC("<%=contents.getTocHref(tocs[i])%>")'><%=contents.getTocLabel(tocs[i])%></a></nobr>
+<%
+		// Only generate the selected toc
+		if (selectedToc != null &&
+		    selectedToc.getAttribute("href").equals(tocs[i].getAttribute("href")))
+		{
+			contents.generateToc(tocs[i], out);
+			// keep track of the selected toc id
+%>
+			<script language="JavaScript">tocId="b"+<%=i%></script>
+<%
+		}
+%>
+		</li>	
+<%
+	}
+%>		
+	</ul>
+
 </body>
 </html>
 

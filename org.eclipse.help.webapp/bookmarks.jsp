@@ -1,26 +1,14 @@
-<%@ page import="java.util.*,java.net.URLEncoder,org.eclipse.core.runtime.*,org.eclipse.help.internal.*,org.eclipse.help.servlet.*,org.w3c.dom.*" errorPage="err.jsp" contentType="text/html; charset=UTF-8"%>
+<%@ page import="java.util.*,org.eclipse.help.servlet.*,org.w3c.dom.*" errorPage="err.jsp" contentType="text/html; charset=UTF-8"%>
 
 <% 
 	// calls the utility class to initialize the application
 	application.getRequestDispatcher("/servlet/org.eclipse.help.servlet.InitServlet").include(request,response);
-%>
 
-<%
-	String bookmarkURL = request.getParameter("add");
-	String removeUrl = request.getParameter("remove");
-	if (bookmarkURL != null && bookmarkURL.length() > 0)
-	{
-		String title=UrlUtil.getRequestParameter(request,"title");
-		Preferences prefs = HelpPlugin.getDefault().getPluginPreferences();
-		String bookmarks = prefs.getString(HelpSystem.BOOKMARKS);
-		// separate the url and title by vertical bar
-		bookmarks = bookmarks + "," + bookmarkURL + "|" + title;
-		prefs.setValue(HelpSystem.BOOKMARKS, bookmarks);
-		HelpPlugin.getDefault().savePluginPreferences();
-	}
-	else
-	{
-	}
+	BookmarksData bookmarksData = new BookmarksData(application,request);
+	// see if anything is to be added
+	bookmarksData.addBookmark();
+	// see if anything is to be removd
+	bookmarksData.removeBookmark();
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -106,74 +94,23 @@ document.write(extraStyle);
 
 <body>
  
-<%
-// Load the bookmarks in the non-infocenter scenario.
-StringTokenizer bookmarks = null;
-if (application.getAttribute("org.eclipse.help.servlet.eclipse") == null)
-{
-	// this is workbench
-	ContentUtil content = new ContentUtil(application, request);
-	Element prefsElement = content.loadPreferences();
-
-	if (prefsElement != null){
-		NodeList prefs = prefsElement.getElementsByTagName("pref");
-		for (int i=0; i<prefs.getLength(); i++)
-		{
-			Element pref = (Element)prefs.item(i);
-			String name = pref.getAttribute("name");
-			if (name.equals("bookmarks"))
-			{
-				bookmarks = new StringTokenizer(pref.getAttribute("value"), ",");
-				break;
-			}
-		}
-	}
-}
-
-%>
 
 <table id='list'  cellspacing='0' >
 
 <%
-if (bookmarks != null && bookmarks.hasMoreTokens())
-{
-	for (int i=0; bookmarks.hasMoreTokens(); i++) 
+	Topic[] bookmarks = bookmarksData.getBookmarks();
+	for (int i=0; i<bookmarks.length; i++) 
 	{
-		String bookmark = bookmarks.nextToken();
-		// url and title are separated by vertical bar
-		int separator = bookmark.indexOf('|');
-
-		//String tocLabel = bookmark;//topic.getAttribute("toclabel");
-		String label = bookmark.substring(separator+1); //topic.getAttribute("label");
-		String href = separator<0? "": bookmark.substring(0,separator); //topic.getAttribute("href");
-		if (href != null && href.length() > 0) {
-			// external href
-			if (href.charAt(0) == '/')
-				href = "content/help:" + href;
-			else if (href.startsWith("file:/"))
-				href = "content/" + href;
-				/*
-			if (href.indexOf('?') == -1)
-				href +="?toc="+URLEncoder.encode(topic.getAttribute("toc"));
-			else
-				href += "&toc="+URLEncoder.encode(topic.getAttribute("toc"));			
-				*/
-
-		} else
-			href = "about:blank";
 %>
 
 <tr class='list' id='r<%=i%>'>
 	<td align='left' class='label' nowrap>
-		<a id='a<%=i%>' href='<%=href%>' onclick='parent.parent.setToolbarTitle(" ")' title="<%=UrlUtil.htmlEncode(label)%>"><img src="images/bookmark_obj.gif"><%=UrlUtil.htmlEncode(label)%></a>
+		<a id='a<%=i%>' href='<%=bookmarks[i].getHref()%>' onclick='parent.parent.setToolbarTitle(" ")' title="<%=UrlUtil.htmlEncode(bookmarks[i].getLabel())%>"><img src="images/bookmark_obj.gif"><%=UrlUtil.htmlEncode(bookmarks[i].getLabel())%></a>
 	</td>
 </tr>
 
 <%
 	}
-}else{
-	out.write("<tr id='msg'><td>"+WebappResources.getString("addBookmark", request) + "</td></tr>");
-}
 %>
 
 </table>

@@ -20,7 +20,7 @@
 <title><%=WebappResources.getString("Help", request)%></title>
 <script language="JavaScript">
 /**
- * Needs to be called from a view
+ * Views can call this to set the title on the main toolbar
  */
 function setToolbarTitle(title)
 {
@@ -28,10 +28,20 @@ function setToolbarTitle(title)
 		parent.DisplayFrame.ToolbarFrame.setTitle(title);
 	}
 }
+
+/**
+ * Shows specified view. Called from actions that switch the view */
+function showView(view)
+{
+	// Note: assumes the same id shared by tabs and iframes
+	ViewsFrame.showView(view);
+	TabsFrame.showTab(view);
+}
+
 </script>
 </head>
 
-<frameset id="navFrameset" rows="24,*,24"  framespacing="0" border="0"  frameborder="0" spacing="0"  scrolling="no">
+<frameset onload="showView('<%=layout.getVisibleView()%>')" id="navFrameset" rows="24,*,24"  framespacing="0" border="0"  frameborder="0" spacing="0"  scrolling="no">
    <frame name="ToolbarFrame" src='<%="navToolbar.jsp"+layout.getQuery()%>' marginwidth="0" marginheight="0" scrolling="no" frameborder="0" noresize>
    <frame name="ViewsFrame" src='<%="views.jsp"+layout.getQuery()%>' marginwidth="0" marginheight="0" scrolling="no" frameborder="0" resize=yes>
    <frame name="TabsFrame" src='<%="tabs.jsp"+layout.getQuery()%>' marginwidth="0" marginheight="0" scrolling="no" frameborder="0" noresize>

@@ -63,22 +63,13 @@ function setToolbarTitle(title)
 	}
 }
 
-/* 
- * Switch tabs.
- */ 
-function switchTab(nav, newTitle)
-{ 
-	// delegate to the right frame
-}
- 
- 
 /**
  * Shows the TOC frame, loads appropriate TOC, and selects the topic
  */
 function displayTocFor(topic)
 {
 	tempTab = lastTab;
-	switchTab("toc");
+	NavFrame.showView("toc");
 	
 	// remove the query, if any
 	var i = topic.indexOf('?');

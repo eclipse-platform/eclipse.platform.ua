@@ -164,9 +164,9 @@ function doSearch(query)
 		
 	var viewsFrame = parent.HelpFrame.NavFrame.ViewsFrame;
 	if (isIE)
-		viewsFrame.document.SearchResults.location.replace("search_results.jsp?"+query);
+		viewsFrame.document.search.location.replace("search_results.jsp?"+query);
 	else if (isMozilla)
-		viewsFrame.document.getElementById("SearchResults").src = "search_results.jsp?"+query; 
+		viewsFrame.document.getElementById("search").src = "search_results.jsp?"+query; 
 }
 
 function fixHeights()

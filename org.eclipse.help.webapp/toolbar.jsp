@@ -76,10 +76,10 @@ function bookmarkPage(button)
 	// exception is thrown. We need to catch it and ignore it.
 	try
 	{
-		parent.switchTab("bookmarks");
+		parent.parent.NavFrame.showView("bookmarks");
 		
 		// use the url from plugin id only
-		var url = parent.parent.MainFrame.location.href;
+		var url = parent.ContentFrame.location.href;
 		var i = url.indexOf("content/help:/");
 		if (i >=0 )
 			url = url.substring(i+13);
@@ -88,11 +88,11 @@ function bookmarkPage(button)
 		if (i >= 0)
 			url = url.substring(0, i);
 			
-		var title = parent.parent.MainFrame.document.title;
+		var title = parent.ContentFrame.document.title;
 		if (title == null || title == "")
 			title = url;
 			
-		parent.NavFrame.bookmarks.location = "bookmarks.jsp?add="+url+"&title="+escape(title);
+		parent.parent.NavFrame.ViewsFrame.bookmarks.location = "bookmarks.jsp?add="+url+"&title="+escape(title);
 	}catch (e) {}
 	if (isIE) button.blur();
 
@@ -123,7 +123,7 @@ function resynch(button)
 {
 	try
 	{
-		var topic = parent.MainFrame.window.location.href;
+		var topic = parent.ContentFrame.window.location.href;
 		parent.displayTocFor(topic);
 	}
 	catch(e)
@@ -134,7 +134,7 @@ function resynch(button)
 
 function printContent(button)
 {
-	parent.MainFrame.focus();
+	parent.ContentFrame.focus();
 	print();
 	if (isIE) button.blur();
 }
@@ -195,10 +195,17 @@ function setTitle(label)
 				<td align="middle" width="22">
 					<a  href="#" onclick="resynch(this);" onmouseover="window.status= '<%=WebappResources.getString("Synch", request)%>'; return true;" onmouseout="window.status='';"><img src="images/synch_toc_nav.gif" alt='<%=WebappResources.getString("Synch", request)%>' border="0" name="sync_nav"></a>
 				</td>
+<%
+	WebappPreferences prefs = (WebappPreferences)application.getAttribute("WebappPreferences");
+	if (prefs.isBookmarksView()) 
+	{
+%>
 				<td id="bookmark" align="middle" width="22">
 					<a href="#" onclick="bookmarkPage(this)" onmouseover="window.status='<%=WebappResources.getString("BookmarkPage", request)%>';return true;" onmouseout="window.status='';"><img src="images/bookmark_obj.gif" alt='<%=WebappResources.getString("BookmarkPage", request)%>' border="0" name="bookmark"></a>
 				</td>
-
+<%
+	}
+%>
 				<td align="middle" width="22">
 					<a  href="#" onclick="printContent(this);" onmouseover="window.status='<%=WebappResources.getString("Print", request)%>' ;return true;"  onmouseout="window.status='';"><img  src="images/print_edit.gif" alt='<%=WebappResources.getString("Print", request)%>' border="0" name="print"></a>
 				</td>

@@ -28,6 +28,7 @@ public class WebappPreferences {
 	 */
 	protected WebappPreferences(ServletContext context) {
 		this.context = context;
+		loadPreferences();
 	}
 
 	public String getBanner() {
@@ -43,11 +44,7 @@ public class WebappPreferences {
 	}
 
 	public boolean isBookmarksView() {
-		return "true".equals(bookmarks);
-	}
-
-	public String getBookmarks() {
-		return bookmarks;
+		return "true".equals(bookmarksView);
 	}
 
 	public boolean isLinksView() {

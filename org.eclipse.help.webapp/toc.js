@@ -9,7 +9,6 @@ var isMozilla = navigator.userAgent.indexOf('Mozilla') != -1 && parseInt(navigat
 var isIE = navigator.userAgent.indexOf('MSIE') != -1;
 var isIE50 = navigator.userAgent.indexOf('MSIE 5.0') != -1;
 
-var tocTitle = "";
 var oldActive;
 var oldActiveClass = "";
 
@@ -285,9 +284,7 @@ function highlightTopic(topic)
   	var a = getAnchorNode(topic); 
   	if (a != null)
   	{
-  		/******************************
-  		 * FIX THIS  		 *******************************/
-  	  	//parent.parent.setToolbarTitle(tocTitle);
+  	  	parent.parent.setToolbarTitle(tocTitle);
   	  	if (oldActive) 
   	  		oldActive.className = oldActiveClass;
 

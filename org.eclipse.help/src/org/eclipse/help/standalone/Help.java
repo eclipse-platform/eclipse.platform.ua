@@ -31,10 +31,20 @@ public class Help {
 	/**
 	* Constructs help system
 	* @param options array of String options and their values
-	* 	Option <code>-eclipseHome dir</code> specifies Eclipse
+	* <p>
+	*  Option <code>-eclipseHome dir</code> specifies Eclipse
 	*  installation directory.
 	*  It must be provided, when current directory is not the same
 	*  as Eclipse installation directory.
+	* <p>
+	*  Option <code>-host helpServerHost</code> specifies host name
+	*  of the interface that help server will use.
+	*  It overrides host name specified in the application server plugin preferences.
+	* <p>
+	*  Option <code>-eclipseHome dir</code> specifies port number
+	*  that help server will use.
+	*  It overrides port number specified in the application server plugin preferences.
+	* <p>
 	*  Additionally, most options accepted by Eclipse execuable are supported.
 	*/
 	public Help(String[] options) {
@@ -109,14 +119,20 @@ public class Help {
 	 * Controls standalone help system from command line.
 	 * @param args array of String containing options
 	 *  Options are:
-	 * 	<code>-command start | shutdown | (displayHelp [href]) [-eclipsehome eclipseInstallPath] [platform options] [-vmargs [Java VM arguments]]</code>
+	 * 	<code>-command start | shutdown | (displayHelp [href]) [-eclipsehome eclipseInstallPath] [-host helpServerHost] [-port helpServerPort] [platform options] [-vmargs [Java VM arguments]]</code>
 	 *  where
 	 *  <ul>
 	 *  <li><code>href</code> is the URL of the help resource to display,</li>
 	 * 	<li><code>dir</code> specifies Eclipse installation directory;
 	 * 	  it must be provided, when current directory is not the same
 	 *    as Eclipse installation directory,</li>
-	 *   <li><code>platform options</code> are other options that are supported by Eclipse Executable.</li>
+	 * 	<li><code>helpServerHost</code> specifies host name of the interface
+	 * 	  that help server will use, it overrides host name specified
+	 *    the application server plugin preferences</li>
+	 * 	<li><code>helpServerPort</code> specifies port number
+	 * 	  that help server will use, it overrides port number specified
+	 *    the application server plugin preferences.</li>
+	 *  <li><code>platform options</code> are other options that are supported by Eclipse Executable.</li>
 	 *  <ul>
 	 */
 	public static void main(String[] args) {

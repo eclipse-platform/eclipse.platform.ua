@@ -165,11 +165,14 @@ function doSearch(query)
 		
 	/******** HARD CODED VIEW NAME *********/
 	parent.HelpFrame.NavFrame.showView("search");
-	var viewsFrame = parent.HelpFrame.NavFrame.ViewsFrame;
+	var searchView = parent.HelpFrame.NavFrame.ViewsFrame.search.ViewFrame;
+	searchView.location.replace("searchView.jsp?"+query);
+	/*
 	if (isIE)
 		viewsFrame.document.search.location.replace("searchView.jsp?"+query);
 	else if (isMozilla)
 		viewsFrame.document.getElementById("search").src = "searchView.jsp?"+query; 
+		*/
 }
 
 function fixHeights()

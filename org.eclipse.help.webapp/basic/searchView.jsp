@@ -3,6 +3,7 @@
  All Rights Reserved.
 --%>
 <%@ include file="header.jsp"%>
+<%@ page import="org.eclipse.help.internal.search.*"%>
 
 <% 
 	SearchData data = new SearchData(application, request);
@@ -46,22 +47,23 @@ if (data.isProgressRequest()) {
 	if (data.getHits().length == 0){
 		out.write(WebappResources.getString("Nothing_found", request));
 	} else {	
-		Hit[] hits = data.getHits();
+		SearchHit[] hits = data.getHits();
 %>
 
 <table id='list'  cellspacing='0' >
 
 <%
-		for (int i = 0; i < hits.length; i++) 
-		{
+	for (int i = 0; i < hits.length; i++) 
+	{
+		String title = hits[i].getToc() != null ? hits[i].getToc().getLabel() : "";
 %>
 
 <tr id='r<%=i%>'>
-	<td align='right'><%=hits[i].getScore()%></td>
+	<td align='right'><%=data.getFormattedScore(hits[i])%></td>
 	<td align='left' nowrap>
 		<a id='a<%=i%>' 
-		   href='<%=hits[i].getHref()%>' 
-		   title="<%=UrlUtil.htmlEncode(hits[i].getTocLabel())%>">
+		   href='<%=UrlUtil.getHelpURL(hits[i].getHref())%>' 
+		   title="<%=UrlUtil.htmlEncode(title)%>">
 		   <%=UrlUtil.htmlEncode(hits[i].getLabel())%>
 		 </a>
 	</td>

@@ -33,14 +33,14 @@
 		</tr>
   				
 <% 
-Element[] tocs = data.getTocs();
+IToc[] tocs = data.getTocs();
 for (int i=0; i<tocs.length; i++)
 {
-	String label = UrlUtil.htmlEncode(tocs[i].getAttribute("label"));
+	String label = UrlUtil.htmlEncode(tocs[i].getLabel());
 %>
   		<tr>
   			<td nowrap>
-				<input type="checkbox" name='scope' value='<%=tocs[i].getAttribute("href")%>' alt="<%=label%>"><%=label%>
+				<input type="checkbox" name='scope' value='<%=tocs[i].getHref()%>' alt="<%=label%>"><%=label%>
 			</td>
 		</tr>
 <%

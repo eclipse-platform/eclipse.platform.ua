@@ -9,7 +9,6 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.help.internal;
-import org.eclipse.help.*;
 import org.eclipse.help.internal.context.*;
 import org.eclipse.help.internal.toc.*;
 
@@ -23,7 +22,6 @@ public final class HelpCore {
 
 	protected TocManager tocManager;
 	protected ContextManager contextManager;
-	private IHelp helpSupport = null;
 
 	/**
 	 * HelpCore constructor comment.

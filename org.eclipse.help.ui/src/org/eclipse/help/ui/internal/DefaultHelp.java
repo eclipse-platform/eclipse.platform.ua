@@ -12,6 +12,7 @@ package org.eclipse.help.ui.internal;
 import org.eclipse.help.*;
 import org.eclipse.help.internal.base.*;
 import org.eclipse.help.ui.internal.util.*;
+import org.eclipse.ui.help.*;
 
 /**
  * This class is an implementation of the pluggable help support.
@@ -22,7 +23,7 @@ import org.eclipse.help.ui.internal.util.*;
  * <p>Most methods are inherited from the default hep support class; only
  * the UI specific ones are overriden.</p>
  */
-public class DefaultHelp extends DefaultHelpSupport {
+public class DefaultHelp extends AbstractHelpUI {
 	private static DefaultHelp instance;
 	private ContextHelpDialog f1Dialog = null;
 
@@ -41,6 +42,26 @@ public class DefaultHelp extends DefaultHelpSupport {
 		return instance;
 	}
 
+	/**
+	 * Displays help.
+	 */
+	public void displayHelp() {
+		BaseHelpSystem.getHelpSupport().displayHelp();
+	}
+	/**
+	 * Displays a help resource specified as a url. 
+	 * <ul>
+	 *  <li>a URL in a format that can be returned by
+	 * 	{@link  org.eclipse.help.IHelpResource#getHref() IHelpResource.getHref()}
+	 * 	<li>a URL query in the format format <em>key=value&amp;key=value ...</em>
+	 *  The valid keys are: "tab", "toc", "topic", "contextId".
+	 *  For example, <em>toc="/myplugin/mytoc.xml"&amp;topic="/myplugin/references/myclass.html"</em>
+	 *  is valid.
+	 * </ul>
+	 */
+	public void displayHelpResource(String href) {
+		BaseHelpSystem.getHelpSupport().displayHelp(href);
+	}
 	/**
 	 * Displays context-sensitive help for specified context
 	 * @param contexts the context to display

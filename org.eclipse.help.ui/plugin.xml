@@ -23,7 +23,7 @@
 
 <!-- Default Help UI  -->
    <extension
-         point="org.eclipse.help.support">
+         point="org.eclipse.ui.helpSupport">
       <config
             class="org.eclipse.help.ui.internal.DefaultHelp">
       </config>

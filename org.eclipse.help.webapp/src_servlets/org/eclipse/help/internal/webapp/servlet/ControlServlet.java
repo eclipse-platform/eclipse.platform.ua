@@ -10,12 +10,11 @@
  *******************************************************************************/
 package org.eclipse.help.internal.webapp.servlet;
 
-import java.io.IOException;
+import java.io.*;
 
-import javax.servlet.ServletException;
+import javax.servlet.*;
 import javax.servlet.http.*;
 
-import org.eclipse.help.IHelp;
 import org.eclipse.help.internal.base.*;
 import org.eclipse.help.internal.webapp.data.*;
 /**
@@ -26,7 +25,7 @@ import org.eclipse.help.internal.webapp.data.*;
  */
 public class ControlServlet extends HttpServlet {
 
-	private IHelp helpSupport = null;
+	private DefaultHelpSupport helpSupport = null;
 	private boolean shuttingDown = false;
 
 	/**

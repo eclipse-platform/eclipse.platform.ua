@@ -12,6 +12,7 @@
 package org.eclipse.help.ui.internal;
 
 import org.eclipse.help.*;
+import org.eclipse.help.internal.base.*;
 import org.eclipse.help.ui.internal.util.*;
 import org.eclipse.jface.resource.*;
 import org.eclipse.swt.*;
@@ -259,8 +260,8 @@ public class ContextHelpDialog {
 		if (WorkbenchHelpPlugin.DEBUG_INFOPOP) {
 			System.out.println("ContextHelpDialog.launchLinks(): closed shell");
 		}
-		// launch help view
-		DefaultHelp.getInstance().displayHelp(context, selectedTopic);
+		// TODO check if can be improved
+		BaseHelpSystem.getHelpSupport().displayHelp(context, selectedTopic);
 	}
 	public synchronized void open() {
 		try {

@@ -147,15 +147,14 @@ public class AnalyzerDescriptor {
 		// analyzers between some versions of org.eclipse.help plugin
 		// are compatible (logic unchanged), index can be preserved between
 		// them
-		// in 3.0 index has been moved so 2.x.x index cannot be reused
-		// analyzer in help.base plug-ins are same in 3.0.1 as in 3.0.0
-		if (analyzerId.compareTo(HelpBasePlugin.PLUGIN_ID + "#3.0.0") >= 0
-                && analyzerId.compareTo(HelpBasePlugin.PLUGIN_ID + "#3.0.1") <= 0
-                && id.compareTo(HelpBasePlugin.PLUGIN_ID + "#3.0.0") >= 0
-                && id.compareTo(HelpBasePlugin.PLUGIN_ID + "#3.0.1") <= 0) {
-            return true;
-        }
-        return false;
+		// in 3.0 index has been moved so cannot be reused
+		//		if (analyzerId.compareTo(HelpBasePlugin.PLUGIN_ID + "#2.0.1") >= 0
+		//			&& analyzerId.compareTo(HelpBasePlugin.PLUGIN_ID + "#3.0.0") <= 0
+		//			&& id.compareTo(HelpBasePlugin.PLUGIN_ID + "#2.0.1") >= 0
+		//			&& id.compareTo(HelpBasePlugin.PLUGIN_ID + "#3.0.0") <= 0) {
+		//			return true;
+		//		}
+		return false;
 	}
 
 }

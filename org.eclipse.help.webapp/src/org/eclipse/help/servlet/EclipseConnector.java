@@ -134,7 +134,7 @@ public class EclipseConnector {
 		//System.out.println("help content for: " + url);
 
 		URLConnection con = null;
-		if (HelpSystem.isInfocenter()) {
+		if (HelpSystem.getMode()==HelpSystem.MODE_INFOCENTER) {
 			// it is an infocentre, add client locale to url
 			String locale =
 				request == null

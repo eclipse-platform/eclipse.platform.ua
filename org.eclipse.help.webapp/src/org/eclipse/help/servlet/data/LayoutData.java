@@ -71,7 +71,7 @@ public class LayoutData extends RequestData {
 	public View[] getViews() {
 		if (views != null)
 			return views;
-		if (HelpSystem.isInfocenter()) {
+		if (HelpSystem.getMode() == HelpSystem.MODE_INFOCENTER) {
 			views =
 				new View[] {
 					new View(
@@ -85,6 +85,7 @@ public class LayoutData extends RequestData {
 							+ "/search_results_view.gif"),
 					};
 		} else {
+			// workbench or standalone
 			views =
 				new View[] {
 					new View(

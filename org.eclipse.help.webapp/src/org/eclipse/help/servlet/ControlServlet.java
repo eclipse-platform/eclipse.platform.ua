@@ -32,7 +32,7 @@ public class ControlServlet extends HttpServlet {
 	 */
 	public void init() throws ServletException {
 		super.init();
-		if (!HelpSystem.isInfocenter()) {
+		if (HelpSystem.getMode()==HelpSystem.MODE_STANDALONE) {
 			IPluginRegistry pluginRegistry = Platform.getPluginRegistry();
 			IExtensionPoint point =
 				pluginRegistry.getExtensionPoint(HELP_SYSTEM_EXTENSION_ID);
@@ -102,7 +102,7 @@ public class ControlServlet extends HttpServlet {
 		if ("shutdown".equalsIgnoreCase(command)) {
 			shutdown();
 		} else if ("displayHelp".equalsIgnoreCase(command)) {
-			if (!HelpSystem.isInfocenter()) {
+			if (HelpSystem.getMode()==HelpSystem.MODE_STANDALONE) {
 				displayHelp(req);
 			}
 		} else {

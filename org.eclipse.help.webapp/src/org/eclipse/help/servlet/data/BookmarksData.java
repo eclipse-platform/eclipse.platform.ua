@@ -61,7 +61,7 @@ public class BookmarksData extends RequestData {
 
 	public Topic[] getBookmarks() {
 		// sanity test for infocenter, but this could not work anyway...
-		if (!HelpSystem.isInfocenter()) {
+		if (HelpSystem.getMode()!=HelpSystem.MODE_INFOCENTER) {
 			// this is workbench
 			Preferences prefs = HelpPlugin.getDefault().getPluginPreferences();
 			String bookmarks = prefs.getString(HelpSystem.BOOKMARKS);

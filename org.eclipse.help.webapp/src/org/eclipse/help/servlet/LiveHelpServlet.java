@@ -21,6 +21,9 @@ public class LiveHelpServlet extends HttpServlet {
 	/**
 	 */
 	public void init() throws ServletException {
+		if (HelpSystem.getMode()==HelpSystem.MODE_INFOCENTER) {
+			throw new ServletException();
+		}
 		try {
 			connector = new EclipseConnector(getServletContext());
 		} catch (Throwable e) {
@@ -34,9 +37,6 @@ public class LiveHelpServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 		throws ServletException, IOException {
-		if (HelpSystem.isInfocenter()) {
-			return;
-		}
 		if (connector != null) {
 			// it is not an infocentre
 			String query = req.getQueryString();

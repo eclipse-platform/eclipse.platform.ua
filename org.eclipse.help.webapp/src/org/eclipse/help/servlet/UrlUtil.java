@@ -289,8 +289,9 @@ public class UrlUtil {
 	public static boolean validate (String fileURL, HttpServletRequest req, ServletContext context)
 	{
 		// first check if we are running outside the workbench
-		if (HelpSystem.isInfocenter())
+		if (HelpSystem.getMode()==HelpSystem.MODE_INFOCENTER) {
 			return false;
+		}
 		
 		// check that the request IP is a local IP
 		String reqIP = req.getRemoteAddr();

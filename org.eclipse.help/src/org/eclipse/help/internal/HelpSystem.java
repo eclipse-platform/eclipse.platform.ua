@@ -26,6 +26,7 @@ public final class HelpSystem {
 	protected ContextManager contextManager;
 	protected SearchManager searchManager;
 	private boolean infocenter = false;
+	private boolean standalone = false;
 	private boolean webappStarted = false;
 	private boolean webappRunning = false;
 	/**
@@ -106,7 +107,11 @@ public final class HelpSystem {
 	public static boolean ensureWebappRunning() {
 		if (!getInstance().webappStarted) {
 			getInstance().webappStarted = true;
-			// get an app server and start the help web app
+			if (HelpSystem.isInfocenter() || HelpSystem.isStandalone()) {
+				// start the help control web app
+				AppServer.add("helpControl", "org.eclipse.help.webapp", "");
+			}
+			// start the help web app
 			getInstance().webappRunning =
 				AppServer.add("help", "org.eclipse.help.webapp", "");
 		}
@@ -115,7 +120,8 @@ public final class HelpSystem {
 
 	/**
 	 * Returns the infocenter.
-	 * @return boolean
+	 * @return true for infocenter
+	 *  false for stand-alone and workbench help
 	 */
 	public static boolean isInfocenter() {
 		return getInstance().infocenter;
@@ -126,6 +132,21 @@ public final class HelpSystem {
 	 */
 	public static void setInfocenter() {
 		getInstance().infocenter = true;
+	}
+	/**
+	 * Returns the standalone.
+	 * @return true for standalone help
+	 *  false for infocenter and workbench help
+	 */
+	public static boolean isStandalone() {
+		return getInstance().standalone;
+	}
+
+	/**
+	 * Sets running in the standalone mode.
+	 */
+	public static void setStandalone() {
+		getInstance().standalone = true;
 	}
 
 }

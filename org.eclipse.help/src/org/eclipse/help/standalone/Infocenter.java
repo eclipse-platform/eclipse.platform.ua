@@ -29,7 +29,7 @@ public class Infocenter {
 	// time between retries to connectect to webapp [ms]
 	int connectionRetryInterval = 5 * 1000;
 	// control servlet path
-	private static final String CONTROL_SERVLET_PATH = "/help/control.html";
+	private static final String CONTROL_SERVLET_PATH = "/helpControl/control.html";
 	// arguments to pass to Eclipse
 	private List eclipseArgs;
 	// Eclipse installation directory

@@ -68,6 +68,8 @@ public class HelpApplication
 		String value = (String) ((Map) data).get("infocenter");
 		if ("true".equalsIgnoreCase(value)) {
 			HelpSystem.setInfocenter();
+		} else{
+			HelpSystem.setStandalone();
 		}
 	}
 	private void writeHostAndPort() throws IOException {

@@ -58,7 +58,7 @@ function removeBookmark()
 	if (title == null || title == "")
 		title = url;
 			
-	window.location.replace("bookmarksView.jsp?operation=remove&bookmark="+url+"&title="+escape(title));
+	window.location.replace("bookmarksView.jsp?operation=remove&bookmark="+url+"&title="+escape(title)+"&encoding=js");
 	return true;
 }
 

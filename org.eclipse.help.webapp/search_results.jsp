@@ -4,7 +4,7 @@
 	// calls the utility class to initialize the application
 	application.getRequestDispatcher("/servlet/org.eclipse.help.servlet.InitServlet").include(request,response);
 	
-	SearchData search = new SearchData(application, request);
+	SearchData searchData = new SearchData(application, request);
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -90,7 +90,7 @@ function refresh()
 
 <%
 if (!searchData.isSearchRequest()) {
-	out.write(WebappResources.getString("doSearch", request))
+	out.write(WebappResources.getString("doSearch", request));
 } else if (searchData.getHits() != null && searchData.getHits().length == 0){
 	out.write(WebappResources.getString("Nothing_found", request));
 } else if (!searchData.getIndexedPercentage().equals("100")) {
@@ -101,10 +101,10 @@ if (!searchData.isSearchRequest()) {
 	<TR><TD><%=WebappResources.getString("Indexing", request)%></TD></TR>
 	<TR><TD ALIGN='LEFT'>
 		<DIV STYLE='width:100px;height:16px;border:1px solid WindowText;'>
-			<DIV ID='divProgress' STYLE='width:<%=getIndexedPercentage()%>px;height:100%;background-color:Highlight'></DIV>
+			<DIV ID='divProgress' STYLE='width:<%=searchData.getIndexedPercentage()%>px;height:100%;background-color:Highlight'></DIV>
 		</DIV>
 	</TD></TR>
-	<TR><TD><%=getIndexedPercentage()%>% <%=WebappResources.getString("complete", request)%></TD></TR>
+	<TR><TD><%=searchData.getIndexedPercentage()%>% <%=WebappResources.getString("complete", request)%></TD></TR>
 	<TR><TD><br><%=WebappResources.getString("IndexingPleaseWait", request)%></TD></TR>
 </TABLE>
 </CENTER>
@@ -135,7 +135,7 @@ setTimeout('refresh()', 2000);
 		   href='<%=hits[i].getHref()%>' 
 		   onclick='parent.parent.setToolbarTitle("<%=UrlUtil.JavaScriptEncode(hits[i].getTocLabel())%>")' 
 		   title="<%=UrlUtil.htmlEncode(hits[i].getTocLabel())%>">
-		   <%=UrlUtil.htmlEncode(label)%>
+		   <%=UrlUtil.htmlEncode(hits[i].getLabel())%>
 		 </a>
 	</td>
 </tr>
@@ -156,14 +156,17 @@ if (topic != null && topic.startsWith("/"))
 	topic = request.getContextPath() + "/content/help:" + topic;
 else if (topic != null && topic.startsWith("file:/"))
 	topic = request.getContextPath() + "/content/help:/" + topic;
+
 %>
 
 <script language="JavaScript">
+
 // check if the topic URL starts with http
 if (!'<%=topic%>'.indexOf("http")==0)
 	selectTopic(window.location.protocol + "//" +window.location.host + '<%=topic%>');
 else
 	selectTopic('<%=topic%>');
+
 </script>
 
 </body>

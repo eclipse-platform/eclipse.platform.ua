@@ -9,7 +9,7 @@ import org.w3c.dom.*;
  * All Rights Reserved.
  */
 
-public class HelpData {
+public class LayoutData {
 
 	private String query = "";
 	private WebappPreferences prefs;
@@ -17,7 +17,7 @@ public class HelpData {
 	private HttpServletRequest req;
 	private ServletContext context;
 
-	public HelpData(ServletContext context, HttpServletRequest req) {
+	public LayoutData(ServletContext context, HttpServletRequest req) {
 		this.context = context;
 		this.req = req;
 
@@ -60,4 +60,18 @@ public class HelpData {
 			
 		return help_home;
 	}
+	
+	/**
+	 * Return array of length 0 if no views
+	 */
+	public View[] getViews() {
+		View[] views = new View[] {
+			new View("Content", "contents.jsp", "images/contents_view.gif", true),
+			new View("SearchResults", "search_results.jsp", "images/search_results_view.gif", false),
+			new View("Links", "links.jsp", "images/links_view.gif", false),
+			new View("Bookmarks", "bookmarks.jsp", "images/bookmarks_view.gif", false)
+		};
+		return views;
+	}
+
 }

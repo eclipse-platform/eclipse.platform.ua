@@ -1,3 +1,5 @@
+<%@ page import="org.eclipse.help.servlet.*" errorPage="err.jsp" contentType="text/js; charset=UTF-8"%>
+
 /*
  * (c) Copyright IBM Corp. 2000, 2002.
  * All Rights Reserved.
@@ -7,12 +9,14 @@ var isMozilla = navigator.userAgent.indexOf('Mozilla') != -1 && parseInt(navigat
 var isMozilla10 = isMozilla && navigator.userAgent.indexOf('rv:1') != -1;
 var isIE = navigator.userAgent.indexOf('MSIE') != -1;
 
+// Identifier
+var EclipseHelpSystem = true;
+
+// Global var for the webapp address
+var contextPath = "<%=request.getContextPath()%>";
+
 var framesLoaded = false;
 var args = parseQueryString();
-
-var tocTitle = null;
-var currentNavFrame;
-var lastTab = "";
 
 var temp;
 var tempActive;
@@ -24,13 +28,6 @@ var tempTab = "";
 function onloadFrameset()
 {
 	framesLoaded = true;
-
-	// show the appropriate tab
-	var tab = "toc";
-	if (args && args["tab"])
-	    tab = args["tab"];
-	switchTab(tab);
-	
 }
 
     
@@ -70,38 +67,8 @@ function setToolbarTitle(title)
  * Switch tabs.
  */ 
 function switchTab(nav, newTitle)
-{ 	
-	if (nav == lastTab) 
-		return;
-		
-	lastTab = nav;
-	
-	// set the title on the navigation toolbar to match the tab
-  	if (newTitle)
-     	NavToolbarFrame.document.getElementById("titleText").innerHTML = newTitle;
-    else
-    	NavToolbarFrame.document.getElementById("titleText").innerHTML = titleArray[nav];
-       	
-	// show appropriate frame
-	this.currentNavFrame=nav;
- 	var iframes = NavFrame.document.body.getElementsByTagName("IFRAME");
- 	for (var i=0; i<iframes.length; i++)
- 	{			
-  		if (iframes[i].id != nav)
-   			iframes[i].className = "hidden";
-  		else
-   			iframes[i].className = "visible";
- 	}
- 
- 	// show the appropriate pressed tab
-  	var buttons = TabsFrame.document.body.getElementsByTagName("TD");
-  	for (var i=0; i<buttons.length; i++)
-  	{
-  		if (buttons[i].id == (nav + "Tab")) // Note: assumes the same id shared by tabs and iframes
-			buttons[i].className = "pressed";
-		else if (buttons[i].className == "pressed")
-			buttons[i].className = "tab";
- 	 }
+{ 
+	// delegate to the right frame
 }
  
  

@@ -84,7 +84,7 @@ A.active:hover{
    
 </style>  
     
-<base target="MainFrame">
+<base target="ContentFrame">
 <script language="JavaScript" src="toc.js"></script>
  
 <script language="JavaScript"> 
@@ -145,7 +145,9 @@ function loadTOC(tocId)
 <script language="JavaScript">
 
 	// set title on the content toolbar
-	parent.parent.setToolbarTitle('<%=UrlUtil.JavaScriptEncode(contents.getTocLabel(contents.getSelectedToc()))%>');
+	/**************
+	 * FIX THIS	 **************/
+	//parent.parent.setToolbarTitle('<%=UrlUtil.JavaScriptEncode(contents.getTocLabel(contents.getSelectedToc()))%>');
 		
 	// select specified topic, or else the book
 	var topic = '<%=contents.getSelectedTopic()%>';

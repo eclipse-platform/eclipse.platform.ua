@@ -71,11 +71,13 @@ BODY {
 				<td>
 					&nbsp;
 				</td>
+				<!--
 				<td align="middle" width="20">
 					<a  href="#" onclick="parent.showBookshelf(this); this.blur();" onmouseover="window.status='<%=WebappResources.getString("Bookshelf", request)%>';return true;" onmouseout="window.status='';">
 						<img  id="bookshelfIcon" src="images/home_cont.gif" alt='<%=WebappResources.getString("Bookshelf", request)%>' border="0">
 					</a>
 				</td>
+				-->
 			</tr>
 		</table>
 	</div>	

@@ -1,3 +1,12 @@
+<%@ page import="java.net.URLEncoder,org.eclipse.help.servlet.*,org.w3c.dom.*" errorPage="err.jsp" contentType="text/html; charset=UTF-8"%>
+
+<% 
+	// calls the utility class to initialize the application
+	application.getRequestDispatcher("/servlet/org.eclipse.help.servlet.InitServlet").include(request,response);
+	
+	LayoutData layout = new LayoutData(application,request);
+%>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <!--
  (c) Copyright IBM Corp. 2000, 2002.
@@ -50,11 +59,24 @@ IFRAME {
 </head>
    
 <body>
- <iframe frameborder="0" class="hidden"  name="toc" id="toc" ></iframe> 
- <iframe frameborder="0"  class="hidden"  name="search" id="search" ></iframe> 
- <iframe frameborder="0" class="hidden" name="links" id="links"></iframe>
- <iframe frameborder="0" class="hidden" name="bookmarks" id="bookmarks"></iframe>
+<%
+	View[] views = layout.getViews();
+	for (int i=0; i<views.length; i++) 
+	{
+		String className = views[i].isVisible() ? "visible" : "hidden";
+%>
+ 	<iframe frameborder="0" 
+ 		    class="<%=className%>"  
+ 		    name="<%=views[i].getName()%>" 
+ 		    id="<%=views[i].getName()%>" 
+ 		    src="<%=views[i].getURL()%>" >
+ 	</iframe> 
+<%
+	}
+%>	
+
  <iframe frameborder="0" class="hidden" name="temp" id="temp"></iframe>
+ 
 </body>
 </html>
 

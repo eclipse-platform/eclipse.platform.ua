@@ -1,8 +1,10 @@
-<%@ page import="java.net.URLEncoder,org.eclipse.help.servlet.*,org.w3c.dom.*" errorPage="err.jsp" contentType="text/html; charset=UTF-8"%>
+<%@ page import="java.util.*,org.eclipse.help.servlet.*,org.w3c.dom.*" errorPage="err.jsp" contentType="text/html; charset=UTF-8"%>
 
 <% 
 	// calls the utility class to initialize the application
 	application.getRequestDispatcher("/servlet/org.eclipse.help.servlet.InitServlet").include(request,response);
+
+	LayoutData layout = new LayoutData(application,request);
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -10,71 +12,74 @@
  (c) Copyright IBM Corp. 2000, 2002.
  All Rights Reserved.
 -->
+
 <html>
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title><%=WebappResources.getString("Help", request)%></title>
 
-<title>Navigation</title>
+<script language="Javascript">
 
-<style type="text/css">
+var titleArray = new Array ();
+<%
+	View[] views = layout.getViews();
+	for (int i=0; i<views.length; i++) 
+	{	
+%>
+	titleArray['<%=views[i].getName()%>'] = '<%=WebappResources.getString(views[i].getName(), request)%>';
+<%
+	}
+%>
 
-/* need this one for Mozilla */
-HTML { 
-	width:100%;
-	height:100%;
-	margin:0px;
-	padding:0px;
-	border:0px;
- }
+var tocTitle = null;
+var lastTab = "";
 
-BODY {
-	margin:0px;
-	padding:0px;
-	border-right:1px solid WindowText;
-	/* Mozilla does not like width:100%, so we set height only */
-	height:100%;
+
+/* 
+ * Switch tabs.
+ */ 
+function switchTab(nav, newTitle)
+{ 	
+	if (nav == lastTab) 
+		return;
+		
+	lastTab = nav;
+	
+	// set the title on the navigation toolbar to match the tab
+  	if (newTitle)
+     	ToolbarFrame.document.getElementById("titleText").innerHTML = newTitle;
+    else
+    	ToolbarFrame.document.getElementById("titleText").innerHTML = titleArray[nav];
+       	
+	// show appropriate frame
+ 	var iframes = ViewsFrame.document.body.getElementsByTagName("IFRAME");
+ 	for (var i=0; i<iframes.length; i++)
+ 	{			
+  		if (iframes[i].id != nav)
+   			iframes[i].className = "hidden";
+  		else
+   			iframes[i].className = "visible";
+ 	}
+ 
+ 	// show the appropriate pressed tab
+  	var buttons = TabsFrame.document.body.getElementsByTagName("TD");
+  	for (var i=0; i<buttons.length; i++)
+  	{
+  		if (buttons[i].id == nav) // Note: assumes the same id shared by tabs and iframes
+			buttons[i].className = "pressed";
+		else if (buttons[i].className == "pressed")
+			buttons[i].className = "tab";
+ 	 }
 }
-
-IFRAME {
-	width:100%;
-	height:100%;
-}
-
-.hidden {
-	visibility:hidden;
-	width:0;
-	height:0;
-}
-
-.visible {
-	visibility:visible;
-	width:100%;
-	height:100%;
-}
-
-</style>
+</script>
 
 </head>
-   
-<body>
-<%
-	NavData nav = new NavData(application, request);
-%>
- <iframe src='<%=nav.getContentsPageURL()%>' frameborder="0" class="hidden"  name="toc" id="toc" ></iframe> 
- <iframe src='<%=nav.getSearchResultsPageURL()%>' frameborder="0"  class="hidden"  name="search" id="search" ></iframe> 
-<% 
-	if (nav.getLinksPageURL() != null) {
-%>
- <iframe src='<%=nav.getLinksPageURL()%>' frameborder="0" class="hidden" name="links" id="links"></iframe>
-<%
-	}
-	if (nav.getBookmarksPageURL() != null) {
-%>
- <iframe src='<%=nav.getBookmarksPageURL()%>' frameborder="0" class="hidden" name="bookmarks" id="bookmarks"></iframe>
-<%
-	}
-%>
- <iframe frameborder="0" class="hidden" name="temp" id="temp"></iframe>
-</body>
-</html>
 
+<frameset id="navFrameset" rows="24,*,24"  framespacing="0" border="0"  frameborder="0" spacing="0"  scrolling="no">
+   <frame name="ToolbarFrame" src='<%="navToolbar.jsp"+layout.getQuery()%>' marginwidth="0" marginheight="0" scrolling="no" frameborder="0" noresize>
+   <frame name="ViewsFrame" src='<%="views.jsp"+layout.getQuery()%>' marginwidth="0" marginheight="0" scrolling="no" frameborder="0" resize=yes>
+   <frame name="TabsFrame" src='<%="tabs.jsp"+layout.getQuery()%>' marginwidth="0" marginheight="0" scrolling="no" frameborder="0" noresize>
+</frameset>
+
+</html>

@@ -26,7 +26,7 @@ public class StandaloneHelp extends StandaloneInfocenter {
 	// timout for .hostport file to apper since starting eclipse [ms]
 	private static final int STARTUP_TIMEOUT = 30 * 1000;
 	// number of retries to connectect to webapp
-	private static final int CONNECTION_RERIES = 2;
+	private static final int CONNECTION_RETRIES = 2;
 	// time between retries to connectect to webapp [ms]
 	private static final int CONNECTION_RETRY_INTERVAL = 5 * 1000;
 	// ID of the application to run
@@ -38,7 +38,7 @@ public class StandaloneHelp extends StandaloneInfocenter {
 	public StandaloneHelp(List options) {
 		super(options, HELP_APPLICATION_ID);
 		startupTimeout = STARTUP_TIMEOUT;
-		connectionRetries = CONNECTION_RERIES;
+		connectionRetries = CONNECTION_RETRIES;
 		connectionRetryInterval = CONNECTION_RETRY_INTERVAL;
 	}
 	/**

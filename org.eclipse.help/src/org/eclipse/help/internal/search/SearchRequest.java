@@ -12,13 +12,13 @@ import org.eclipse.help.internal.util.URLCoder;
  * where query paramters are obtained from
  * URL query string
  */
-public class SearchQuery implements ISearchQuery {
+public class SearchRequest implements ISearchQuery {
 	private Map terms;
 	/**
 	 * Creates Isearch query from the specified
 	 * URL query string
 	 */
-	public SearchQuery(String query) {
+	public SearchRequest(String query) {
 		parseQuery(query);
 	}
 	/**

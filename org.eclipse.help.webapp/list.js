@@ -83,16 +83,16 @@ function getNextUp(node)
 
 
 /**
- * Highlights link
+ * Highlights link. Returns true if highlights.
  */
 function highlightTopic(topic)
 {
-  if (!topic || (topic.tagName != "A" && topic.parentNode.tagName != "A"))
-	return;
+  	if (!topic || (topic.tagName != "A" && topic.parentNode.tagName != "A"))
+		return false;
 	
-  var tr = getTRNode(topic); 
-  if (tr != null)
-  {
+  	var tr = getTRNode(topic); 
+  	if (tr != null)
+  	{
   	   	if (oldActive && oldActive != tr) {
     		oldActive.className="list";
     		var oldA = getAnchorNode(oldActive);
@@ -111,7 +111,9 @@ function highlightTopic(topic)
   			//if (isIE)
   			//	a.hideFocus = "true";
    		}
-  }
+   		return true;
+  	}
+  	return false;
 }
 
 /**
@@ -259,9 +261,6 @@ function mouseClickHandler(e) {
   		return true;
   	
   	highlightTopic(clickedNode);
-
-  	if (isMozilla)
-  		e.cancelBubble = true;
 }
 
 

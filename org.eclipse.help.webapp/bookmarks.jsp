@@ -120,7 +120,6 @@ var bookmark;
  */
 function removeBookmark() 
 {
-	alert("remove bookmark " + bookmark)
 	if (!bookmark) 
 		return;
 		

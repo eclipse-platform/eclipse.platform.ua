@@ -9,13 +9,13 @@ import java.net.*;
 import java.util.*;
 
 /**
- * This is the standalone help system. It takes care of 
+ * This is a standalone help system. It takes care of 
  * launching the eclipse with its help system implementation,
  * and controling it.
  * This class can be used instantiated and used in a Java program,
  * or can be launched from command line to execute single help action.
  * 
- * Usage: 
+ * Usage as a Java component: 
  * <ul>
  * <li> create an instantance of this class and then hold onto 
  * this instance for the duration of your application</li>
@@ -25,13 +25,13 @@ import java.util.*;
  * </ul>
  */
 public class Help {
-	// timout for .hostport file to apper since starting eclipse
-	private static final int STARTUP_TIMEOUT = 10 * 1000;
+	// timout for .hostport file to apper since starting eclipse [ms]
+	private static final int STARTUP_TIMEOUT = 30 * 1000;
 	// number of retries to connectect to webapp
 	private static final int CONNECTION_RERIES = 2;
-	// time between retries to connectect to webapp
+	// time between retries to connectect to webapp [ms]
 	private static final int CONNECTION_RETRY_INTERVAL = 5 * 1000;
-
+	// debugging
 	private static boolean debug = false;
 	// arguments to pass to Eclipse
 	private List eclipseArgs;
@@ -83,8 +83,11 @@ public class Help {
 		processOptions(options);
 	}
 	private void processOptions(List options) {
-		// consume -eclipsehome opion
+		// consume -eclipsehome (accept eclipse_home too) opion
 		List homes = removeEclipseOption("-eclipseHome", options);
+		if (homes.isEmpty()) {
+			homes = removeEclipseOption("-eclipse_Home", options);
+		}
 		if (!homes.isEmpty()) {
 			eclipseHome = new File((String) homes.get(0));
 		} else {
@@ -169,7 +172,7 @@ public class Help {
 	 * Controls standalone help system from command line.
 	 * @param args array of String containng options
 	 *  Options are:
-	 * 	<code>-help start | shutdown | (displayHelp [href]) [-eclipsehome eclipseInstallPath] [platform options] [-vmargs [Java VM arguments]]</code>
+	 * 	<code>-command start | shutdown | (displayHelp [href]) [-eclipsehome eclipseInstallPath] [platform options] [-vmargs [Java VM arguments]]</code>
 	 *  where
 	 *  <ul>
 	 *  <li><code>href</code> is the URL of the help resource to display,</li>
@@ -181,18 +184,18 @@ public class Help {
 	 */
 	public static void main(String[] args) {
 		// convert array of arguments to a list
-		List argsList = new ArrayList(args.length + 3);
+		List argsList = new ArrayList();
 		for (int i = 0; i < args.length; i++) {
 			argsList.add(args[i]);
 		}
 		// read -debug option
 		if (getEclipseOption("-debug", argsList) != null) {
 			debug = true;
-			System.out.println("Debugging is on");
+			System.out.println("Debugging is on.");
 		}
 
-		// consume -help option
-		List helpCommands = removeEclipseOption("-help", argsList);
+		// consume -command option
+		List helpCommands = removeEclipseOption("-command", argsList);
 		// Construct help
 		Help help = new Help(argsList);
 		// Execute help command
@@ -209,12 +212,30 @@ public class Help {
 					help.displayHelp();
 				}
 			} else {
-				System.out.println("Help command missing.");
+				printMainUsage();
 			}
+		} else {
+			printMainUsage();
 		}
 		if (debug) {
 			System.out.println("Exitting main.");
 		}
+	}
+	/**
+	 * Prints usage of this class as a program.
+	 */
+	static void printMainUsage() {
+		System.out.println("Parameters syntax:");
+		System.out.println();
+		System.out.println(
+			"-command start | shutdown | (displayHelp [href]) [-eclipsehome eclipseInstallPath] [platform options] [-vmargs [Java VM arguments]]");
+		System.out.println();
+		System.out.println("where:");
+		System.out.println(" href is the URL of the help resource to display,");
+		System.out.println(
+			" dir specifies Eclipse installation directory; it must be provided, when current directory is not the same as Eclipse installation directory,");
+		System.out.println(
+			" platform options are other options that are supported by Eclipse Executable.");
 	}
 	/**
 	 * Shuts-down the help system . To be called once, at the end. 
@@ -374,7 +395,8 @@ public class Help {
 		return values;
 	}
 	/**
-	 * Ensures help is running, and sends command to the control servlet.
+	 * Ensures helpApplication is running, and sends command
+	 * to the control servlet.
 	 * If connection fails, retries several times,
 	 * in case webapp is starting up.
 	 */

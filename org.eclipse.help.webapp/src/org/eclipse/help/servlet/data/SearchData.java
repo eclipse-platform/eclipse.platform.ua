@@ -100,14 +100,14 @@ public class SearchData extends RequestData {
 	}
 
 	public String getSearchWordParamName() {
-		if (isMozilla)
+		if (isMozilla())
 			return "searchWord";
 		else
 			return "searchWordJS13";
 	}
 
 	public String getScopeParamName() {
-		if (isMozilla)
+		if (isMozilla())
 			return "scope";
 		else
 			return "scopeJS13";

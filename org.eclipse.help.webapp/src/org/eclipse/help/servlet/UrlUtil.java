@@ -366,4 +366,15 @@ public class UrlUtil {
 			url = "../content/help:" + url;
 		return url;
 	}
+	public static boolean isIE(HttpServletRequest request) {
+		String agent = request.getHeader("User-Agent").toLowerCase();
+		boolean opera = (agent.indexOf("opera") >= 0);
+		return (agent.indexOf("msie") >= 0) && !opera;
+	}
+
+	public static boolean isMozilla(HttpServletRequest request) {
+		String agent = request.getHeader("User-Agent").toLowerCase();
+		boolean opera = (agent.toLowerCase().indexOf("opera") >= 0);
+		return !isIE(request) && (agent.indexOf("mozilla/5") >= 0) && !opera;
+	}
 }

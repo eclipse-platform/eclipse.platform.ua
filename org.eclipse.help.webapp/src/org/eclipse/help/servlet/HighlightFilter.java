@@ -31,15 +31,20 @@ public class HighlightFilter implements IFilter {
 	 * @see IFilter#filter(byte[])
 	 */
 	public byte[] filter(byte[] input) {
-		if (searchWord == null)
+		if (searchWord == null) {
 			return input;
+		}
+		if (!(UrlUtil.isIE(request) || UrlUtil.isMozilla(request))) {
+			return input;
+		}
 
 		Collection keywords = getWords();
 		keywords = removeWildCards(keywords);
 		keywords = encodeKeyWords(keywords);
 		byte[] script = createJScript(keywords);
-		if (script == null)
+		if (script == null) {
 			return input;
+		}
 
 		return HeadFilterHelper.filter(input, script);
 	}

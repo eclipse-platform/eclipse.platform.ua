@@ -9,7 +9,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.eclipse.help.internal.HelpSystem;
-import org.eclipse.help.servlet.WebappPreferences;
+import org.eclipse.help.servlet.*;
 
 /**
  * Helper class for contents.jsp initialization
@@ -22,9 +22,6 @@ public class RequestData {
 	protected ServletContext context;
 	protected HttpServletRequest request;
 	protected String locale;
-	protected boolean isIE;
-	protected boolean isMozilla;
-
 	/**
 	 * Constructs the data for a request.
 	 * @param context
@@ -33,10 +30,6 @@ public class RequestData {
 	public RequestData(ServletContext context, HttpServletRequest request) {
 		this.context = context;
 		this.request = request;
-
-		String agent = request.getHeader("User-Agent").toLowerCase(Locale.US);
-		this.isIE = (agent.indexOf("msie") != -1);
-		this.isMozilla = (!isIE && (agent.indexOf("mozilla/5") != -1));
 
 		if ((HelpSystem.getMode() == HelpSystem.MODE_INFOCENTER)
 			&& request != null)
@@ -53,11 +46,11 @@ public class RequestData {
 	}
 
 	public boolean isIE() {
-		return isIE;
+		return UrlUtil.isIE(request);
 	}
 
 	public boolean isMozilla() {
-		return isMozilla;
+		return UrlUtil.isMozilla(request);
 	}
 	
 	public String getLocale() {

@@ -17,6 +17,8 @@ import org.w3c.dom.*;
 public class RequestData {
 	protected ServletContext context;
 	protected HttpServletRequest request;
+	protected boolean isIE;
+	protected boolean isMozilla;
 
 	/**
 	 * Constructs the data for a request.
@@ -26,6 +28,10 @@ public class RequestData {
 	public RequestData(ServletContext context, HttpServletRequest request) {
 		this.context = context;
 		this.request = request;
+		
+		String agent=request.getHeader("User-Agent").toLowerCase(Locale.US);
+		this.isIE   = (agent.indexOf("msie") != -1);
+		this.isMozilla  = (!isIE && (agent.indexOf("mozilla/5")!=-1));
 	}
 
 }

@@ -42,7 +42,10 @@ public class LayoutData extends RequestData {
 	}
 
 	public String getBannerHeight() {
-		return prefs.getBannerHeight();
+		if (getBannerURL() == null)
+			return "0";
+		else
+			return prefs.getBannerHeight();
 	}
 
 	public String getContentURL() {

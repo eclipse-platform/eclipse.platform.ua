@@ -76,7 +76,7 @@ TABLE {
 
 </style>
 
-<base target="ContentFrame">
+<base target="ContentViewFrame">
 
 <script language="JavaScript" src="list.js"></script>
 

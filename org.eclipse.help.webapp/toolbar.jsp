@@ -125,6 +125,10 @@ function resynch(button)
 	try
 	{
 		var topic = parent.ContentViewFrame.window.location.href;
+		// remove the query, if any
+		var i = topic.indexOf('?');
+		if (i != -1)
+			topic = topic.substring(0, i);
 		parent.parent.NavFrame.displayTocFor(topic);
 	}
 	catch(e)

@@ -23,6 +23,11 @@
     </servlet>
         
      <!-- **** begin precompiled JSP config ***** -->
+    <servlet>
+		<servlet-name>jsp.nav</servlet-name>
+		<servlet-class>jsp.nav</servlet-class>
+	</servlet>
+	
 	<servlet>
 		<servlet-name>jsp.advanced</servlet-name>
 		<servlet-class>jsp.advanced</servlet-class>
@@ -202,7 +207,11 @@
     </servlet-mapping>
     
     <!-- **** begin precompiled JSP config ***** -->
-
+	<servlet-mapping>
+		<servlet-name>jsp.nav</servlet-name>
+		<url-pattern>/nav.jsp</url-pattern>
+	</servlet-mapping>
+	
 	<servlet-mapping>
 		<servlet-name>jsp.advanced</servlet-name>
 		<url-pattern>/advanced.jsp</url-pattern>

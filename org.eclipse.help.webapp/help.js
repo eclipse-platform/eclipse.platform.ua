@@ -24,36 +24,13 @@ var tempTab = "";
 function onloadFrameset()
 {
 	framesLoaded = true;
-	if(args && (args["toc"] || args["topic"]) )
-	{
-		NavFrame.document.getElementById("toc").src = "toc.jsp"+ getQuery();
-	} else {
-		NavFrame.document.getElementById("toc").src = "tocs.jsp"+ getQuery();
-	}
-	
-	NavFrame.document.getElementById("search").src = "search_results.jsp" + getQuery();
-	if (NavFrame.document.getElementById("links"))
-		NavFrame.document.getElementById("links").src = "links.jsp" + getQuery();
-	if (NavFrame.document.getElementById("bookmarks"))
-		NavFrame.document.getElementById("bookmarks").src = "bookmarks.jsp" + getQuery();
-		
+
 	// show the appropriate tab
 	var tab = "toc";
 	if (args && args["tab"])
 	    tab = args["tab"];
 	switchTab(tab);
 	
-}
-
-/**
- * Returns query passed to the url, prefixed with "?"
- * or "" if no query was passed.
- */
-function getQuery()
-{
-    var longquery = window.location.href.split("?");
-    if (longquery.length <= 1) return "";
-    return "?" + longquery[1];
 }
 
     
@@ -125,15 +102,6 @@ function switchTab(nav, newTitle)
 		else if (buttons[i].className == "pressed")
 			buttons[i].className = "tab";
  	 }
- 	 
-	// enable/disable the bookshelf icon
- 	if (nav == "toc" && 
- 	 	 (NavFrame.toc.location.href == "about:blank" && NavFrame.document.getElementById("toc").src.indexOf("tocs.jsp") >= 0
- 	 	  || NavFrame.toc.location.href.indexOf("tocs.jsp") >= 0 ))
- 	 	showBookshelfIcon(false);
- 	else
- 	 	showBookshelfIcon(true);
- 	
 }
  
  
@@ -159,7 +127,7 @@ function displayTocFor(topic)
 		saveNavigation();
 		// we are using the full URL because this API is exposed to clients
 		// (content page may want to autosynchronize)
-		var tocURL = window.location.protocol + "//" +window.location.host  +contextPath + "/toc.jsp";
+		var tocURL = window.location.protocol + "//" +window.location.host  +contextPath + "/contents.jsp";
 		NavFrame.toc.location.replace(tocURL + "?topic="+topic+"&synch=yes");			
 	}
 }
@@ -203,46 +171,20 @@ function restoreNavigation()
 		
 		if (tempActive)
 			NavFrame.oldActive = tempActive;
-		if (oldTab == "toc")
-			showBookshelfIcon(true);
 	}else {
 		// Show bookshelf
-		NavFrame.toc.location.replace("tocs.jsp");
-		if (oldTab == "toc")
-			showBookshelfIcon(false);
+		NavFrame.toc.location.replace("contents.jsp");
 	}
 }
 
-
-function showBookshelfIcon(show)
-{
-   	// show or hide the bookshelf icon on the nav toolbar 
-   	if (show)
-   		NavToolbarFrame.document.getElementById("bookshelfIcon").src = "images/home_nav.gif";
-   	else
-   		NavToolbarFrame.document.getElementById("bookshelfIcon").src = "images/home_cont.gif";
-}
-
-function showBookshelf()
-{ 	
-	switchTab("toc");
-	// load the bookshelf
-	NavFrame.toc.window.location.replace("tocs.jsp");
-	// clear the content page
-	parent.MainFrame.location=help_home;
-	setToolbarTitle(" ");
-	showBookshelfIcon(false);
-}
 
 /**
  * Loads the specified table of contents
  */		
 function loadTOC(tocId)
 {
-	showBookshelfIcon(true);
-	
 	// navigate to this toc
-	NavFrame.toc.window.location.replace("toc.jsp?toc="+tocId);
+	NavFrame.toc.window.location.replace("contents.jsp?toc="+tocId);
 	
 }
 

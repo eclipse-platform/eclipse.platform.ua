@@ -6,9 +6,9 @@ package org.eclipse.help.internal.search;
 
 import java.util.*;
 
-import org.apache.lucene.search.*;
+import org.apache.lucene.search.Hits;
 import org.eclipse.core.runtime.*;
-import org.eclipse.help.internal.*;
+import org.eclipse.help.internal.HelpSystem;
 import org.eclipse.help.internal.util.*;
 
 /**
@@ -33,7 +33,7 @@ public class SearchProgressMonitor implements IProgressMonitor {
 			}
 		};
 	}
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -121,9 +121,7 @@ public class SearchProgressMonitor implements IProgressMonitor {
 	/**
 	 * Returns a progress monitor for specified query and locale
 	 */
-	public static synchronized SearchProgressMonitor getProgressMonitor(
-		final String searchWord,
-		final String locale) {
+	public static synchronized SearchProgressMonitor getProgressMonitor(final String locale) {
 
 		// return an existing progress monitor if there is one
 		if (progressMonitors.get(locale) != null)
@@ -137,7 +135,7 @@ public class SearchProgressMonitor implements IProgressMonitor {
 			public void run() {
 				try {
 					HelpSystem.getSearchManager().search(
-						new SearchRequest(searchWord),
+						new DummySearchQuery(locale),
 						dummy_collector,
 						pm);
 				} catch (OperationCanceledException oce) {
@@ -168,6 +166,36 @@ public class SearchProgressMonitor implements IProgressMonitor {
 		}
 
 		return pm;
+	}
+	static class DummySearchQuery implements ISearchQuery {
+		private String l;
+		DummySearchQuery(String loc) {
+			l = loc;
+		}
+		/**
+		 * Obtains names of fields in addition to default field
+		 */
+		public Collection getFieldNames() {
+			return new ArrayList();
+		}
+		/**
+		 * Obtains search word (user query)
+		 */
+		public String getSearchWord() {
+			return "dummy";
+		}
+		/**
+		 * @return true if search only in specified fields, not the default field
+		 */
+		public boolean isFieldSearch() {
+			return false;
+		}
+		/**
+		 * Obtains locale
+		 */
+		public String getLocale() {
+			return l;
+		}
 	}
 
 }

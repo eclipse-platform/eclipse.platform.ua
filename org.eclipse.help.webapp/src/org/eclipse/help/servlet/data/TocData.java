@@ -4,13 +4,11 @@
  */
 package org.eclipse.help.servlet.data;
 import java.io.*;
-import java.util.*;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
-import org.eclipse.help.servlet.ContentUtil;
-import org.eclipse.help.servlet.UrlUtil;
+import org.eclipse.help.servlet.*;
 import org.w3c.dom.*;
 
 /**
@@ -29,6 +27,9 @@ public class TocData extends RequestData {
 	// List of TOC's
 	private Element[] tocs;
 
+	// images directory
+	private String imagesDirectory;
+
 	/**
 	 * Constructs the xml data for the contents page.
 	 * @param context
@@ -36,13 +37,17 @@ public class TocData extends RequestData {
 	 */
 	public TocData(ServletContext context, HttpServletRequest request) {
 		super(context, request);
-				
+
 		this.tocHref = request.getParameter("toc");
 		this.topicHref = request.getParameter("topic");
 		if (tocHref != null && tocHref.length() == 0)
 			tocHref = null;
 		if (topicHref != null && topicHref.length() == 0)
 			topicHref = null;
+
+		WebappPreferences pref =
+			(WebappPreferences) context.getAttribute("WebappPreferences");
+		imagesDirectory = pref.getImagesDirectory();
 	}
 
 	/**
@@ -186,14 +191,18 @@ public class TocData extends RequestData {
 		boolean hasNodes = topic.hasChildNodes();
 		if (hasNodes) {
 			out.write("<nobr>");
-			out.write("<img src='images/plus.gif' class='collapsed' >");
+			out.write("<img src='");
+			out.write(imagesDirectory);
+			out.write("/plus.gif' class='collapsed' >");
 			out.write(
 				"<a href='"
 					+ UrlUtil.getHelpURL(topic.getAttribute("href"))
 					+ "' title='"
 					+ UrlUtil.htmlEncode(topic.getAttribute("label"))
 					+ "'>");
-			out.write("<img src='images/container_obj.gif'>");
+			out.write("<img src='");
+			out.write(imagesDirectory);
+			out.write("/container_obj.gif'>");
 			out.write(UrlUtil.htmlEncode(topic.getAttribute("label")));
 			out.write("</a>");
 			out.write("</nobr>");
@@ -210,15 +219,18 @@ public class TocData extends RequestData {
 			out.write("</ul>");
 		} else {
 			out.write("<nobr>");
-			out.write(
-				"<img src='images/plus.gif' style='visibility:hidden;' >");
+			out.write("<img src='");
+			out.write(imagesDirectory);
+			out.write("/plus.gif' style='visibility:hidden;' >");
 			out.write(
 				"<a href='"
 					+ UrlUtil.getHelpURL(topic.getAttribute("href"))
 					+ "' title='"
 					+ UrlUtil.htmlEncode(topic.getAttribute("label"))
 					+ "'>");
-			out.write("<img src='images/topic.gif'>");
+			out.write("<img src='");
+			out.write(imagesDirectory);
+			out.write("/topic.gif'>");
 			out.write(UrlUtil.htmlEncode(topic.getAttribute("label")));
 			out.write("</a>");
 			out.write("</nobr>");

@@ -585,7 +585,7 @@ This markup is only to be used with an HTML based intro part implementation. It 
          </documentation>
       </annotation>
       <complexType>
-         <attribute name="id" type="string">
+         <attribute name="id" type="string" use="required">
             <annotation>
                <documentation>
                   unique id to identify this anchor.

@@ -78,6 +78,8 @@ function showView(view)
    			iframes[i].className = "visible";
  	}
 }
+
+
 </script>
 
 </head>

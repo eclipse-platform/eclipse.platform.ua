@@ -120,7 +120,6 @@ public class SearchQueryData {
 		else
 			q += "&fieldSearch=false";
 		if (bookFiltering) {
-			q += "&scopedSearch=true";
 			if (selectedBooks != null) {
 				for (Iterator iterator = selectedBooks.iterator();
 					iterator.hasNext();

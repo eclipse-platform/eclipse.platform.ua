@@ -20,6 +20,7 @@ public class SearchData extends RequestData {
 	// Request parameters
 	private String topicHref;
 	private String selectedTopicId = "";
+	private String searchWord;
 
 	// search results
 	Element resultsElement;
@@ -40,6 +41,10 @@ public class SearchData extends RequestData {
 
 		resultsElement = loadSearchResults();
 		hits = getHits();
+		
+		String sQuery=request.getQueryString();
+		sQuery=UrlUtil.changeParameterEncoding(sQuery, "searchWordJS13", "searchWord");
+		searchWord=UrlUtil.getRequestParameter(sQuery, "searchWord");
 	}
 
 	/**
@@ -134,5 +139,54 @@ public class SearchData extends RequestData {
 	
 	public String getSelectedTopicId() {
 		return selectedTopicId;
+	}
+	
+	public String getSearchWordParamName() {
+		if (isMozilla)
+			return "searchWord";
+		else
+			return "searchWordJS13";
+	}	
+
+	public String getScopeParamName() {
+		if (isMozilla)
+			return "scope";
+		else
+			return "scopeJS13";
+	}
+	
+	/**
+	 * Returns the search query
+	 */
+	public String getSearchWord() {
+		if (searchWord == null)	
+			return "";
+		else
+			return searchWord;
+	}
+	
+	public Element[] getTocs() {
+		TocData tocData = new TocData(context, request);
+		return tocData.getTocs();
+	}
+	
+	/**
+	 * Returns the list of selected TOC's as a comma-separated list
+	 */
+	public String getSelectedTocsList() {
+		String[] books = UrlUtil.getRequestParameters(request, "scope");			
+		StringBuffer booksList = new StringBuffer();
+		if (books.length > 0) {
+			booksList.append('"');
+			booksList.append(UrlUtil.JavaScriptEncode(books[0]));
+			booksList.append('"');
+			for (int i = 1; i < books.length; i++) {
+				booksList.append(',');
+				booksList.append('"');
+				booksList.append(UrlUtil.JavaScriptEncode(books[i]));
+				booksList.append('"');
+			}
+		}
+		return booksList.toString();
 	}
 }

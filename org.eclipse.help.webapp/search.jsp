@@ -1,48 +1,20 @@
-<%@ page import="java.util.Locale,org.eclipse.help.servlet.*" errorPage="err.jsp" contentType="text/html; charset=UTF-8"%>
-
-<% 
-	// calls the utility class to initialize the application
-	application.getRequestDispatcher("/servlet/org.eclipse.help.servlet.InitServlet").include(request,response);
-	
-	SearchData searchData = new SearchData(application, request);
-	WebappPreferences prefs = searchData.getPrefs();
-%>
-
-<%
-	String agent=request.getHeader("User-Agent").toLowerCase(Locale.US);
-	boolean ie   = (agent.indexOf("msie") != -1);
-	boolean mozilla  = (!ie && (agent.indexOf("mozilla/5")!=-1));
-	String searchWordParName = "searchWord";
-	if(!mozilla){
-		searchWordParName = "searchWordJS13";
-	}	
-
-	// create list of books initilize selectedBooks variable used by advances search
-	// when no filtering, selectedBooks needs to be null
-	String[] books = UrlUtil.getRequestParameters(request, "scope");
-	String booksArrayInit = "null";
-	if (books.length > 0) {
-		booksArrayInit = "new Array (\"" + UrlUtil.JavaScriptEncode(books[0]) + "\"";
-		for (int i = 1; i < books.length; i++) {
-			booksArrayInit += ", \"" + UrlUtil.JavaScriptEncode(books[i]) + "\"";
-		}
-		booksArrayInit += ")";
-	}
-%>
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<!--
+<%--
  (c) Copyright IBM Corp. 2000, 2002.
  All Rights Reserved.
--->
+--%>
+<%@ include file="header.jsp"%>
+
+<% 
+	SearchData data = new SearchData(application, request);
+	WebappPreferences prefs = data.getPrefs();
+%>
+
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
 <title><%=WebappResources.getString("Search", request)%></title>
-	<!--
-	<base target="NavFrame.document.all.search">
-	-->
      
 <style type="text/css">
 /* need this one for Mozilla */
@@ -108,20 +80,46 @@ INPUT {
 	border:0px;
 }
 
+<%
+	if (data.isIE()) {
+%>
+#searchWord {
+	margin-bottom:-1px;
+} 
+
+#go {
+	padding-left:1px;
+}
+<%
+	} else if (data.isMozilla()) {
+%>
+body {
+	border-right:1px solid WindowText;
+}
+<%
+	}
+%>
 </style>
 
 <script language="JavaScript">
 var isIE = navigator.userAgent.indexOf('MSIE') != -1;
 var isMozilla = navigator.userAgent.toLowerCase().indexOf('mozilla') != -1 && parseInt(navigator.appVersion.substring(0,1)) >= 5;
 
-var extraStyle = "";
-if (isIE)
- 	 extraStyle = "<style type='text/css'>#searchWord{margin-bottom:-1px;} #go{padding-left:1px;} </style>";
-else
- 	 extraStyle = "<style type='text/css'>body {border-right:1px solid WindowText;}</style>";
-document.write(extraStyle);
 
-var selectedBooks=<%=booksArrayInit%>;
+// create list of books initilize selectedBooks variable used by advances search
+// when no filtering, selectedBooks needs to be null
+<%
+	String selectedTocsList = data.getSelectedTocsList();
+	if (selectedTocsList.equals("")) {
+%>
+var selectedBooks = null;
+<%
+	} else {
+%>
+var selectedBooks=new Array(<%=selectedTocsList%>);
+<%
+	}
+%>
 var advancedDialog;
 var w = 400;
 var h = 300;
@@ -136,7 +134,7 @@ function saveSelectedBooks(books)
 
 function openAdvanced()
 {
-	advancedDialog = window.open("advanced.jsp?<%=searchWordParName%>="+escape(document.getElementById("searchWord").value), "advancedDialog", "resizeable=no,height="+h+",width="+w );
+	advancedDialog = window.open("advanced.jsp?<%=data.getSearchWordParamName()%>="+escape(document.getElementById("searchWord").value), "advancedDialog", "resizeable=no,height="+h+",width="+w );
 	advancedDialog.focus(); 
 }
 
@@ -162,7 +160,7 @@ function doSearch(query)
 		var maxHits = form.maxHits.value;
 		if (!searchWord || searchWord == "")
 			return;
-		query ="<%=searchWordParName%>="+escape(searchWord)+"&maxHits="+maxHits;
+		query ="<%=data.getSearchWordParamName()%>="+escape(searchWord)+"&maxHits="+maxHits;
 	}
 		
 	/******** HARD CODED VIEW NAME *********/

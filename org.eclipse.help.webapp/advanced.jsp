@@ -1,32 +1,15 @@
-<%@ page import="java.util.Locale,org.eclipse.help.servlet.*, org.w3c.dom.*" errorPage="err.jsp" contentType="text/html; charset=UTF-8"%>
-
-<% 
-	// calls the utility class to initialize the application
-	application.getRequestDispatcher("/servlet/org.eclipse.help.servlet.InitServlet").include(request,response);
-%>
-
-<%
-	String agent=request.getHeader("User-Agent").toLowerCase(Locale.US);
-	boolean ie   = (agent.indexOf("msie") != -1);
-	boolean mozilla  = (!ie && (agent.indexOf("mozilla/5")!=-1));
-	String searchWordParName = "searchWord";
-	String scopeParName = "scope";
-	if(!mozilla){
-		searchWordParName = "searchWordJS13";
-		scopeParName = "scopeJS13";
-	}	
-%>
-<%
-	String sQuery=request.getQueryString();
-	sQuery=UrlUtil.changeParameterEncoding(sQuery, "searchWordJS13", "searchWord");
-	String searchWord=UrlUtil.getRequestParameter(sQuery, "searchWord");
-%>
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<!--
+<%--
  (c) Copyright IBM Corp. 2000, 2002.
  All Rights Reserved.
--->
+--%>
+<%@ include file="header.jsp"%>
+
+<% 
+	SearchData data = new SearchData(application, request);
+	WebappPreferences prefs = data.getPrefs();
+%>
+
+
 <html>
 <head>
 <title><%=WebappResources.getString("Advanced", request)%></title>
@@ -129,14 +112,14 @@ function doAdvancedSearch()
 		{
 			if (buttons[i].type != "checkbox") continue;
 			if (buttons[i].checked == false) continue;
-			scope += "&<%=scopeParName%>="+escape(buttons[i].name);
+			scope += "&<%=data.getScopeParamName()%>="+escape(buttons[i].name);
 		}
 		
 		// persist selection
 		window.opener.saveSelectedBooks(getSelectedBooks());
 		
 		window.opener.document.forms["searchForm"].searchWord.value = searchWord;
-		var query = "<%=searchWordParName%>="+escape(searchWord)+"&maxHits="+maxHits + "&scopedSearch=true" + scope;
+		var query = "<%=data.getSearchWordParamName()%>="+escape(searchWord)+"&maxHits="+maxHits + "&scopedSearch=true" + scope;
 		window.opener.doSearch(query);
 		window.opener.focus();
 		window.close();
@@ -194,7 +177,7 @@ function onloadHandler()
 	<table id="searchTable" width="100%" cellspacing=0 cellpading=0 border=0 align=center >
 		<tr><td style="padding:0px 10px;"><%=WebappResources.getString("SearchExpression", request)%>
 		</td></tr>
-		<tr><td style="padding:0px 10px;"><input type="text" id="searchWord" name="searchWord" value='<%=searchWord!=null?searchWord:""%>' maxlength=256 alt='<%=WebappResources.getString("SearchExpression", request)%>'>
+		<tr><td style="padding:0px 10px;"><input type="text" id="searchWord" name="searchWord" value='<%=data.getSearchWord()%>' maxlength=256 alt='<%=WebappResources.getString("SearchExpression", request)%>'>
           	  	<input type="hidden" name="maxHits" value="500" >
         </td></tr>
         <tr><td style="padding:0px 10px;"><%=WebappResources.getString("expression_label", request)%>
@@ -207,17 +190,12 @@ function onloadHandler()
 		<tr><td>
 			<div id="booksContainer">
 <% 
-ContentUtil content = new ContentUtil(application, request);
-Element tocsElement = content.loadTocs();
-if (tocsElement == null) return;
-NodeList tocs = tocsElement.getElementsByTagName("toc");
-for (int i=0; i<tocs.getLength(); i++)
+Element[] tocs = data.getTocs();
+for (int i=0; i<tocs.length; i++)
 {
-	Element toc = (Element)tocs.item(i);
-	String label = toc.getAttribute("label");
-	String id = toc.getAttribute("href");
+	String label = UrlUtil.htmlEncode(tocs[i].getAttribute("label"));
 %>
-				<div class="book"><input class="checkbox" type="checkbox" name="<%=id%>" alt="<%=UrlUtil.htmlEncode(label)%>"><%=UrlUtil.htmlEncode(label)%></div>
+				<div class="book"><input class="checkbox" type="checkbox" name='<%=tocs[i].getAttribute("href")%>' alt="<%=label%>"><%=label%></div>
 <%
 }		
 %>

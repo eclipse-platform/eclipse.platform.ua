@@ -35,7 +35,7 @@
 		<td nowrap>
 		<b>
 		<a  href='<%="view.jsp?view="+views[i].getName()%>' > 
-	         <img alt="<%=title%>" 
+	         <img alt="" 
 	              title="<%=title%>" 
 	              src="<%=views[i].getImageURL()%>" border=0>
 	         

@@ -231,6 +231,17 @@ public class UrlUtil {
 		return (agent.indexOf("msie") >= 0);
 	}
 
+	public static String getIEVersion(HttpServletRequest request) {
+		String agent = request.getHeader("User-Agent").toLowerCase();
+		int start = agent.indexOf("msie ") + "msie ".length();
+		if (start < "msie ".length() || start >= agent.length())
+			return "0";
+		int end = agent.indexOf(";", start);
+		if (end <= start)
+			return "0";
+		return agent.substring(start, end);
+	}
+
 	public static boolean isKonqueror(HttpServletRequest request) {
 		String agent = request.getHeader("User-Agent").toLowerCase();
 		return agent.indexOf("konqueror") >= 0;

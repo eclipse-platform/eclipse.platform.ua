@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ================================================= -->
+<!-- This is the plugin for user assistance (help).    -->
+<!-- It defines the extension points for help          -->
+<!-- contributions and the help support.               -->
+<!-- ================================================= -->
+
+<plugin
+   name = "%help_plugin_name"
+   id = "org.eclipse.help.webapp"
+   version = "2.1.0"
+   provider-name = "%providerName">
+
+   <requires>
+      <import plugin="org.apache.xerces"/>
+      <import plugin="org.eclipse.help"/>
+   </requires>
+   
+</plugin>

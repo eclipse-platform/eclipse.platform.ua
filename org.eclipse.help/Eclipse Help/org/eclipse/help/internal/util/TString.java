@@ -364,7 +364,7 @@ public class TString {
 		for (int i=0; i<len; i++)
 		{
 			if (i != 0)
-				buf.append(',');
+				buf.append("%2c");
 			int unicode = word.charAt(i);
 			buf.append(String.valueOf(unicode));
 		}

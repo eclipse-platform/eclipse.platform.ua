@@ -313,7 +313,7 @@ public final class CustomizableIntroPart extends IntroPart implements
             standbyPart.dispose();
         // clear all loaded models since we are disposing of the Intro Part.
         IntroPlugin.getDefault().getExtensionPointManager().clear();
-        
+        ContentProviderManager.getInst().clear();
         // clean platform adapter.
         Platform.getAdapterManager().unregisterAdapters(factory,
                 CustomizableIntroPart.class);

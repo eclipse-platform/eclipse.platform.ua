@@ -23,8 +23,6 @@ public class IntroHTMLGenerator {
     private AbstractIntroPage introPage;
     private AbstractIntroPartImplementation presentation;
 
-    //private Map contentProviders;
-
     /**
      * Generates the HTML code that will be presented in the browser widget for
      * the provided intro page.
@@ -40,8 +38,6 @@ public class IntroHTMLGenerator {
             return null;
         this.introPage = page;
         this.presentation = presentation;
-        //if(contentProviders == null)
-        //	contentProviders = new HashMap();
 
         // generate and add the appropriate encoding to the top of the document
         // generateEncoding();
@@ -61,7 +57,6 @@ public class IntroHTMLGenerator {
      * Generates the HTML element and its content:
      * 
      * <pre>
-     * 
      *  
      *      &lt;HTML&gt;
      *      &lt;HEAD&gt;
@@ -71,7 +66,6 @@ public class IntroHTMLGenerator {
      *      body content
      *      &lt;/BODY&gt;
      *      &lt;/HTML&gt;
-     * 
      *  
      * </pre>
      * 
@@ -502,19 +496,6 @@ public class IntroHTMLGenerator {
 
         // If we've already loaded the content provider for this element,
         // retrieve it, otherwise load the class
-
-        /*
-         * Object providerClass = contentProviders.get(element.getId());
-         * if(providerClass == null) { String pluginId = (element.getPluginId() !=
-         * null) ? element.getPluginId() :
-         * element.getBundle().getSymbolicName(); providerClass =
-         * ModelLoaderUtil.createClassInstance( pluginId,
-         * element.getClassName()); if(providerClass != null && providerClass
-         * instanceof IIntroContentProvider) { ((IIntroContentProvider)
-         * providerClass).init(presentation);
-         * contentProviders.put(element.getId(), providerClass); } }
-         */
-
         IIntroContentProvider providerClass = ContentProviderManager.getInst()
                 .getContentProvider(element);
         if (providerClass == null)
@@ -789,10 +770,8 @@ public class IntroHTMLGenerator {
      * span element provides additional flexibility for CSS designers.
      * 
      * <pre>
-     * 
      *    
      *      &lt;P&gt;&lt;SPAN&gt;spanContent&lt;/SPAN&gt;&lt;/P&gt;
-     *   
      *  
      * </pre>
      * 
@@ -1188,10 +1167,5 @@ public class IntroHTMLGenerator {
         }
     }
 
-    /*
-     * public void dispose() { for(Iterator it =
-     * contentProviders.values().iterator(); it.hasNext();) { Object provider =
-     * it.next(); if(provider instanceof IIntroContentProvider) {
-     * ((IIntroContentProvider)provider).dispose(); } } contentProviders = null; }
-     */
+    
 }

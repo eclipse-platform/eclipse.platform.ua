@@ -20,8 +20,8 @@ import org.eclipse.ui.intro.config.*;
 /**
  * Class for handling/caching all the loaded Intro Content providers, from all
  * loaded models. <br>
- * For now, content providers are used as keys in the hashtable, and there
- * corresponding classes as values.
+ * For now, content provider model classes are used as keys in the hashtable,
+ * and there corresponding classes as values.
  *  
  */
 
@@ -62,8 +62,6 @@ public class ContentProviderManager {
         IIntroContentProvider providerClass = (IIntroContentProvider) contentProviders
                 .get(provider);
         return providerClass;
-
-
     }
 
     /**
@@ -92,12 +90,20 @@ public class ContentProviderManager {
         return providerClass;
     }
 
+    /*
+     * public void dispose() {
+     */
 
     public void clear() {
+        for (Iterator it = contentProviders.values().iterator(); it.hasNext();) {
+            Object provider = it.next();
+            if (provider instanceof IIntroContentProvider) {
+                ((IIntroContentProvider) provider).dispose();
+            }
+        }
         contentProviders.clear();
         Log.info("Cleared Intro model content providers"); //$NON-NLS-1$
     }
-
 
 
 }

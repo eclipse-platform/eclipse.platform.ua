@@ -24,7 +24,7 @@ import org.eclipse.ui.forms.widgets.*;
  * The life cycle of an IIntroContentProvider is as follows:
  * <ul>
  * <li>a content provider is defined in the Intro content markup file (ie:
- * introContent.xml fiule) as follows:
+ * introContent.xml file) as follows:
  * 
  * <p>
  * &lt;contentProvider id=&quot;roles&quot;
@@ -43,46 +43,46 @@ import org.eclipse.ui.forms.widgets.*;
  * <li>finally, when the intro view is closed, dispose will be called on all
  * this content provider to give it a chance to clean up.</li>
  * 
- * @since 3.0.1 
+ * @since 3.0.1
  */
 public interface IIntroContentProvider {
     /**
-	 * Initializes the content provider. An IIntroContentProviderSite is passed,
-	 * which will be called on to recompute or layout the content when the
-	 * content becomes stale.
-	 * 
-	 * @param site
-	 *            the site of this IIntroContentProvider
-	 */
+     * Initializes the content provider. An IIntroContentProviderSite is passed,
+     * which will be called on to recompute or layout the content when the
+     * content becomes stale.
+     * 
+     * @param site
+     *            the site of this IIntroContentProvider
+     */
     public void init(IIntroContentProviderSite site);
 
-    
-    /**
-	 * Creates HTML content in the provided PrintWriter. This content will be
-	 * included in the generated HTML page when embedded HTML widget is used to
-	 * render intro content.
-	 * 
-	 * @param id
-	 *            the unique identifier of the content element. The same content
-	 *            provider class can be reused for several elements and the id
-	 *            can be used to tell them apart.
-	 * @param out
-	 *            the output print writer to generate HTML content into
-	 */
-	public void createContent(String id, PrintWriter out);
 
     /**
-	 * Creates SWT content in the provided Composite. This method is called when
-	 * Eclipse Forms are used to render intro content.
-	 * 
-	 * @param id
-	 *            the unique identifier of the content element
-	 * @param parent
-	 *            the parent composite that should be used when creating SWT
-	 *            widgets
-	 * @param toolkit
-	 *            the form toolkit that should be used when creating new widgets
-	 */
+     * Creates HTML content in the provided PrintWriter. This content will be
+     * included in the generated HTML page when embedded HTML widget is used to
+     * render intro content.
+     * 
+     * @param id
+     *            the unique identifier of the content element. The same content
+     *            provider class can be reused for several elements and the id
+     *            can be used to tell them apart.
+     * @param out
+     *            the output print writer to generate HTML content into
+     */
+    public void createContent(String id, PrintWriter out);
+
+    /**
+     * Creates SWT content in the provided Composite. This method is called when
+     * Eclipse Forms are used to render intro content.
+     * 
+     * @param id
+     *            the unique identifier of the content element
+     * @param parent
+     *            the parent composite that should be used when creating SWT
+     *            widgets
+     * @param toolkit
+     *            the form toolkit that should be used when creating new widgets
+     */
     public void createContent(String id, Composite parent, FormToolkit toolkit);
 
 

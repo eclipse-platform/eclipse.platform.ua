@@ -477,11 +477,15 @@ public class FormIntroPartImplementation extends
             welcomeLink.setToolTipText(homePage.getUrl());
         }
     }
-	/*
-	 *  (non-Javadoc)
-	 * @see org.eclipse.ui.intro.config.IIntroContentProviderSite#reflow(org.eclipse.ui.intro.config.IIntroContentProvider, boolean)
-	 */
-    public void reflow(IIntroContentProvider provider, boolean incremental){
-		showPage(getModel().getCurrentPage());
-	}
+
+    /**
+     * Remove the provider page from the SWT UI forms cache.
+     * 
+     * @see org.eclipse.ui.intro.config.IIntroContentProviderSite#reflow(org.eclipse.ui.intro.config.IIntroContentProvider,
+     *      boolean)
+     */
+    public void reflow(IIntroContentProvider provider, boolean incremental) {
+
+        showPage(getModel().getCurrentPage());
+    }
 }

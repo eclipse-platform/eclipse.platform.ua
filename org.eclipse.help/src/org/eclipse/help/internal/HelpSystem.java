@@ -6,6 +6,7 @@ package org.eclipse.help.internal;
 import java.net.URL;
 
 import org.eclipse.core.runtime.*;
+import org.eclipse.help.AppServer;
 import org.eclipse.help.internal.context.*;
 import org.eclipse.help.internal.toc.TocManager;
 import org.eclipse.help.internal.util.*;
@@ -26,6 +27,8 @@ public final class HelpSystem {
 	protected TocManager tocManager;
 	protected ContextManager contextManager;
 	protected SearchManager searchManager;
+	private boolean webappStarted=false;
+	private boolean webappRunning=false;
 	/**
 	 * HelpSystem constructor comment.
 	 */
@@ -98,4 +101,13 @@ public final class HelpSystem {
 		}
 		Logger.logInfo(Resources.getString("I002"));
 	}
+	public static boolean ensureWebappRunning(){
+		if(!getInstance().webappStarted){
+			getInstance().webappStarted=true;
+			// get an app server and start the help web app
+			getInstance().webappRunning=AppServer.add("help", "org.eclipse.help.webapp", "");
+		}
+		return getInstance().webappRunning;
+	}
+
 }

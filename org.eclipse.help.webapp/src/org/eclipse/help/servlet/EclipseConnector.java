@@ -134,7 +134,7 @@ public class EclipseConnector {
 		//System.out.println("help content for: " + url);
 
 		URLConnection con = null;
-		if (HelpSystem.getMode()==HelpSystem.MODE_INFOCENTER) {
+		if (HelpSystem.getMode() == HelpSystem.MODE_INFOCENTER) {
 			// it is an infocentre, add client locale to url
 			String locale =
 				request == null
@@ -201,7 +201,7 @@ public class EclipseConnector {
 		//String agent = req.getHeader("User-Agent").toLowerCase(Locale.US);
 		//boolean ie = (agent.indexOf("msie") != -1);
 		if (uri != null && (uri.endsWith("html") || uri.endsWith("htm"))) {
-			if (UrlUtil.getRequestParameter(req, "resultof") != null)
+			if (req.getParameter("resultof") != null)
 				return new IFilter[] {
 					new FramesetFilter(req),
 					new HighlightFilter(req)};

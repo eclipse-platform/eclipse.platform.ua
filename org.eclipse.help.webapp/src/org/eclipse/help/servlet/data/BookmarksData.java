@@ -31,7 +31,7 @@ public class BookmarksData extends RequestData {
 	public void addBookmark() {
 		String bookmarkURL = request.getParameter("add");
 		if (bookmarkURL != null && bookmarkURL.length() > 0) {
-			String title = UrlUtil.getRequestParameter(request, "title");
+			String title = request.getParameter("title");
 			Preferences prefs = HelpPlugin.getDefault().getPluginPreferences();
 			String bookmarks = prefs.getString(HelpSystem.BOOKMARKS);
 			// separate the url and title by vertical bar
@@ -44,7 +44,7 @@ public class BookmarksData extends RequestData {
 	public void removeBookmark() {
 		String bookmarkURL = request.getParameter("remove");
 		if (bookmarkURL != null && bookmarkURL.length() > 0) {
-			String title = UrlUtil.getRequestParameter(request, "title");
+			String title = request.getParameter("title");
 			Preferences prefs = HelpPlugin.getDefault().getPluginPreferences();
 			String bookmarks = prefs.getString(HelpSystem.BOOKMARKS);
 			String removeString = "," + bookmarkURL + "|" + title;

@@ -5,7 +5,6 @@
 			<td nowrap>
 				<input type="text" name="searchWord" value='<%=data.getSearchWord()%>' maxlength=256 alt='<%=WebappResources.getString("SearchExpression", request)%>'>
           	  	<input type="hidden" name="maxHits" value="500" >
-          	  	<input type="hidden" name="scopedSearch" value="true" >
 				<input type="submit" value='<%=WebappResources.getString("GO", request)%>' alt='<%=WebappResources.getString("GO", request)%>'>
         	</td>
         </tr>

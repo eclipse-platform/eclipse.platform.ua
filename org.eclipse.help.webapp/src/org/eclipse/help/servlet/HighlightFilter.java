@@ -24,7 +24,7 @@ public class HighlightFilter implements IFilter {
 	 */
 	public HighlightFilter(HttpServletRequest request) {
 		this.request = request;
-		this.searchWord = UrlUtil.getRequestParameter(request, "resultof");
+		this.searchWord = request.getParameter("resultof");
 	}
 
 	/*

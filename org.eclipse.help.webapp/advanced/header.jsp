@@ -6,6 +6,7 @@
 <%@ page import="java.util.*,org.eclipse.help.*,org.eclipse.help.servlet.*,org.eclipse.help.servlet.data.*" errorPage="/advanced/err.jsp" contentType="text/html; charset=UTF-8"%>
 
 <% 
+	request.setCharacterEncoding("UTF-8");
 	// calls the utility class to initialize the application
 	application.getRequestDispatcher("/servlet/org.eclipse.help.servlet.InitServlet").include(request,response);
 %>

@@ -32,7 +32,7 @@ public class ControlServlet extends HttpServlet {
 	 */
 	public void init() throws ServletException {
 		super.init();
-		if (HelpSystem.getMode()==HelpSystem.MODE_STANDALONE) {
+		if (HelpSystem.getMode() == HelpSystem.MODE_STANDALONE) {
 			IPluginRegistry pluginRegistry = Platform.getPluginRegistry();
 			IExtensionPoint point =
 				pluginRegistry.getExtensionPoint(HELP_SYSTEM_EXTENSION_ID);
@@ -78,12 +78,15 @@ public class ControlServlet extends HttpServlet {
 		HttpServletResponse resp)
 		throws ServletException, IOException {
 
+		req.setCharacterEncoding("UTF-8");
+
 		resp.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
 		resp.setHeader("Pragma", "no-cache"); //HTTP 1.0
 		resp.setDateHeader("Expires", 0);
 		//prevents caching at the proxy server
 
-		if (!"/helpControl".equals(req.getContextPath()) || !"/control.html".equals(req.getServletPath())) {
+		if (!"/helpControl".equals(req.getContextPath())
+			|| !"/control.html".equals(req.getServletPath())) {
 			// do not allow arbitrary URLs to execute this servlet
 			resp.sendError(resp.SC_FORBIDDEN, "");
 			return;
@@ -93,7 +96,7 @@ public class ControlServlet extends HttpServlet {
 			return;
 		}
 
-		String command = UrlUtil.getRequestParameter(req, "command");
+		String command = req.getParameter("command");
 		if (command == null) {
 			resp.getWriter().print("No command.");
 			return;
@@ -102,7 +105,7 @@ public class ControlServlet extends HttpServlet {
 		if ("shutdown".equalsIgnoreCase(command)) {
 			shutdown();
 		} else if ("displayHelp".equalsIgnoreCase(command)) {
-			if (HelpSystem.getMode()==HelpSystem.MODE_STANDALONE) {
+			if (HelpSystem.getMode() == HelpSystem.MODE_STANDALONE) {
 				displayHelp(req);
 			}
 		} else {
@@ -123,7 +126,7 @@ public class ControlServlet extends HttpServlet {
 	 * href parameter, which is the resource to display
 	 */
 	private void displayHelp(HttpServletRequest req) {
-		String href = UrlUtil.getRequestParameter(req, "href");
+		String href = req.getParameter("href");
 		if (href != null) {
 			helpSupport.displayHelpResource(href);
 		} else {

@@ -34,13 +34,14 @@ public class LiveHelpServlet extends HttpServlet {
 		if (HelpSystem.getMode() == HelpSystem.MODE_INFOCENTER) {
 			return;
 		}
-		String pluginID = UrlUtil.getRequestParameter(req, "pluginID");
+		req.setCharacterEncoding("UTF-8");
+		String pluginID = req.getParameter("pluginID");
 		if (pluginID == null)
 			return;
-		String className = UrlUtil.getRequestParameter(req, "class");
+		String className = req.getParameter("class");
 		if (className == null)
 			return;
-		String arg = UrlUtil.getRequestParameter(req, "arg");
+		String arg = req.getParameter("arg");
 		Plugin plugin = Platform.getPlugin(pluginID);
 		if (plugin == null)
 			return;

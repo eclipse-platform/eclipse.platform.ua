@@ -119,14 +119,14 @@ function doAdvancedSearch()
 		{
 			if (buttons[i].type != "checkbox") continue;
 			if (buttons[i].checked == false) continue;
-			scope += "&<%=data.getScopeParamName()%>="+escape(buttons[i].name);
+			scope += "&scope="+escape(buttons[i].name);
 		}
 		
 		// persist selection
 		window.opener.saveSelectedBooks(getSelectedBooks());
 		
 		window.opener.document.forms["searchForm"].searchWord.value = searchWord;
-		var query = "<%=data.getSearchWordParamName()%>="+escape(searchWord)+"&maxHits="+maxHits + "&scopedSearch=true" + scope;
+		var query = "searchWord="+escape(searchWord)+"&maxHits="+maxHits + scope;
 		window.opener.doSearch(query);
 		window.opener.focus();
 		window.close();

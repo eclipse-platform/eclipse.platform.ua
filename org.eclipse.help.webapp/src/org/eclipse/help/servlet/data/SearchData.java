@@ -5,6 +5,8 @@
 package org.eclipse.help.servlet.data;
 import java.io.*;
 import java.text.*;
+import java.util.*;
+import java.util.ArrayList;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -43,13 +45,7 @@ public class SearchData extends RequestData {
 		if (topicHref != null && topicHref.length() == 0)
 			topicHref = null;
 
-		String sQuery = request.getQueryString();
-		sQuery =
-			UrlUtil.changeParameterEncoding(
-				sQuery,
-				"searchWordJS13",
-				"searchWord");
-		searchWord = UrlUtil.getRequestParameter(sQuery, "searchWord");
+		searchWord = request.getParameter("searchWord");
 
 		// try loading search results or get the indexing progress info.
 		if (isSearchRequest()) {
@@ -130,20 +126,6 @@ public class SearchData extends RequestData {
 		return String.valueOf(indexCompletion);
 	}
 
-	public String getSearchWordParamName() {
-		if (isMozilla())
-			return "searchWord";
-		else
-			return "searchWordJS13";
-	}
-
-	public String getScopeParamName() {
-		if (isMozilla())
-			return "scope";
-		else
-			return "scopeJS13";
-	}
-
 	/**
 	 * Returns the search query
 	 */
@@ -159,9 +141,9 @@ public class SearchData extends RequestData {
 	 * Returns the list of selected TOC's as a comma-separated list
 	 */
 	public String getSelectedTocsList() {
-		String[] books = UrlUtil.getRequestParameters(request, "scope");
+		String[] books = request.getParameterValues("scope");
 		StringBuffer booksList = new StringBuffer();
-		if (books.length > 0) {
+		if (books!=null && books.length > 0) {
 			booksList.append('"');
 			booksList.append(UrlUtil.JavaScriptEncode(books[0]));
 			booksList.append('"');
@@ -181,7 +163,7 @@ public class SearchData extends RequestData {
 	public boolean isTocSelected(int toc) {
 		TocData tocData = new TocData(context, request);
 		String href=tocData.getTocHref(toc);
-		String[] books = UrlUtil.getRequestParameters(request, "scope");
+		String[] books = request.getParameterValues("scope");
 		for(int i=0; i<books.length; i++){
 			if(books[i].equals(href)){
 				return true;
@@ -195,36 +177,15 @@ public class SearchData extends RequestData {
 	* indexed documents.
 	*/
 	private void loadSearchResults() {
-		// Load the results
-		String query = request.getQueryString();
-		query =
-			UrlUtil.changeParameterEncoding(
-				query,
-				"searchWordJS13",
-				"searchWord");
-		query = UrlUtil.changeParameterEncoding(query, "scopeJS13", "scope");
-
-		// create a SearchURL directly. 
-		// *** this code should eventually be cleaned ***
-		//return content.loadSearchResults(sQuery);
-
-		// The url string should contain the search parameters.
 		try {
 			SearchProgressMonitor pm =
 				SearchProgressMonitor.getProgressMonitor(
-					searchWord,
 					getLocale());
 			if (pm.isDone()) {
 				this.indexCompletion = 100;
-
-				SearchRequest sQuery = new SearchRequest(query);
-				SearchResults results =
-					new SearchResults(
-						sQuery.getScope(),
-						sQuery.getMaxHits(),
-						getLocale());
-
-				HelpSystem.getSearchManager().search(sQuery, results, pm);
+				
+				SearchResults results=createHitCollector();
+				HelpSystem.getSearchManager().search(createSearchQuery(), results, pm);
 				hits = results.getSearchHits();
 				if (hits == null) {
 					Logger.logError(Resources.getString("index_is_busy"), null);
@@ -239,6 +200,44 @@ public class SearchData extends RequestData {
 			this.indexCompletion = 0;
 		}
 
+	}
+	private ISearchQuery createSearchQuery(){
+		String searchWord=request.getParameter("searchWord");
+		if(searchWord==null){
+			searchWord="";
+		}
+		
+		String fieldSearchStr=request.getParameter("fieldSearch");
+		boolean fieldSearch=fieldSearchStr!=null?new Boolean(fieldSearchStr).booleanValue():false;
+		
+		return new SearchQuery(searchWord,fieldSearch, new ArrayList(), getLocale());
+	}
+	private SearchResults createHitCollector(){
+		String[] scopes=request.getParameterValues("scope");
+		Collection scopeCol=null;
+		if (scopes != null) {
+			if (scopes.length
+				!= HelpSystem.getTocManager().getTocs(getLocale()).length) {
+				// scope only if not all books selected
+				scopeCol = new ArrayList(scopes.length);
+				for (int i = 0; i < scopes.length; i++) {
+					scopeCol.add(scopes[i]);
+				}
+			}
+		}
+		
+		int maxHits=500;
+		String maxHitsStr=request.getParameter("maxHits");
+		if (maxHitsStr != null) {
+			try {
+				int clientmaxHits = Integer.parseInt(maxHitsStr);
+				if (0 < clientmaxHits && clientmaxHits < 500) {
+					maxHits = clientmaxHits;
+				}
+			} catch (NumberFormatException nfe) {
+			}
+		}
+		return new SearchResults(scopeCol, maxHits, getLocale());
 	}
 
 }

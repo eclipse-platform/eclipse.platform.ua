@@ -190,7 +190,7 @@ This markup is only to be used with an HTML based intro part implementation. It 
          <attribute name="encoding" type="string">
             <annotation>
                <documentation>
-                  an optional attribute to specify the encoding of the inlined file containing the head snippet. Default is UTF-8.
+                  an optional attribute to specify the encoding of the inlined file containing the head snippet. Default is UTF-8. Since 3.0.1
                </documentation>
             </annotation>
          </attribute>
@@ -516,7 +516,7 @@ Inclusion allows for including an html snippet directly from a file into the dyn
          <attribute name="encoding" type="string">
             <annotation>
                <documentation>
-                  an optional attribute to specify the encoding of the inlined file (in the case where type=inline is specified). If not specified, the default is UTF-8.
+                  an optional attribute to specify the encoding of the inlined file (in the case where type=inline is specified). If not specified, the default is UTF-8. Since 3.0.1
                </documentation>
             </annotation>
          </attribute>
@@ -614,7 +614,7 @@ Inclusion allows for including an html snippet directly from a file into the dyn
          <documentation>
             A proxy for an intro content provider, which allows an intro page to dynamically pull data from various sources (e.g., the web, eclipse, etc) and provide content at runtime based on this dynamic data.  If the IIntroContentProvider class that is specified in the class attribute can not be loaded, then the contents of the text element will be rendered instead. 
 This is a dynamic version of the html intro tag. While the html tag allows for embedding or inlining a static html content into the generated html intro page, the contentProvider tag allows for dynamic creation of that content at runtime. 
-Another difference between the tags is that the html tag is only supported for the HTML presentation, while this contentProvider tag is supported for both the HTML and SWT presentations.
+Another difference between the tags is that the html tag is only supported for the HTML presentation, while this contentProvider tag is supported for both the HTML and SWT presentations. Since 3.0.1
          </documentation>
       </annotation>
       <complexType>

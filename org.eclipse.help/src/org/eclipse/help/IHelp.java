@@ -26,9 +26,9 @@ package org.eclipse.help;
  * mandatory, and can be removed). Since the platform can only make use of a 
  * single help system UI implementation, make sure that the platform is not 
  * configured with more than one plug-in trying to extend this extension point.
- * @deprecated use org.eclipse.help.HelpSystem.getTocs()
- *  and org.eclipse.helpHelpSystem.getContext(java.lang.String) to obtain help resources.
- * Use various display methods of org.eclipse.ui.help.WorkbenchHelp to display help resources.
+ * @deprecated use {@link org.eclipse.help.HelpSystem#getTocs org.eclipse.help.HelpSystem.getTocs()}
+ *  and {@link org.eclipse.help.HelpSystem#getContext org.eclipse.help.HelpSystem.getContext(String)} to obtain help resources.
+ * Use various display methods of {@link org.eclipse.ui.help.WorkbenchHelp org.eclipse.ui.help.WorkbenchHelp} to display help resources.
  * </p>
  */
 public interface IHelp {

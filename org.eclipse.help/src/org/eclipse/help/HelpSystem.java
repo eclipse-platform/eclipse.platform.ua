@@ -65,7 +65,7 @@ public final class HelpSystem {
 	 * 	{@link  org.eclipse.help.IHelpResource#getHref IHelpResource.getHref}
 	 * </p>
 	 * @return an input stream containing the contents of the help resource,
-	 * or <code>null</code> if the help resource could nor be found and opened
+	 * or <code>null</code> if the help resource could not be found and opened
 	 */
 	public static InputStream getHelpContent(String href) {
 		try {

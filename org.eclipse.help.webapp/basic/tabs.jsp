@@ -31,10 +31,17 @@
 		if("search".equals(views[i].getName())){
 			title=WebappResources.getString("Search", request);
 		}
+		
+		String viewHref="view.jsp?view="+views[i].getName();
+		// always pass query string to "links view"
+		if("links".equals(views[i].getName())){
+			viewHref=viewHref+"&"+request.getQueryString();
+		}
+		
 %>
 		<td nowrap>
 		<b>
-		<a  href='<%="view.jsp?view="+views[i].getName()%>' > 
+		<a  href='<%=viewHref%>' > 
 	         <img alt="" 
 	              title="<%=title%>" 
 	              src="<%=views[i].getImageURL()%>" border=0>

@@ -24,12 +24,6 @@ BODY {
 	margin:0;
 	padding:0;
 	border:0;
-
-	scrollbar-highlight-color:ThreeDShadow;
-	scrollbar-shadow-color:ThreeDShadow;
-	scrollbar-arrow-color:#000000;
-	scrollbar-darkshadow-color:Window;
-	scrollbar-face-color:ButtonFace;
 }
 
 UL { 
@@ -86,7 +80,11 @@ A.active:hover{
 	background:ButtonFace;
 	width:100%;
 }
-     
+  
+.book {
+	font-weight: bold;
+}
+   
 </style>  
     
 <base target="MainFrame">
@@ -101,9 +99,11 @@ if (isMozilla)
 /**
  * Loads the specified table of contents
  */		
-function loadTOC(tocId, tocDescriptionTopic)
+function loadTOC(tocId)
 {
-	// navigate to this toc
+	// navigate to this toc, if not already loaded
+	if (window.location.href.indexOf("contents.jsp?toc="+tocId) != -1)
+		return;
 	window.location.replace("contents.jsp?toc="+tocId);
 }
 
@@ -121,7 +121,7 @@ function loadTOC(tocId, tocDescriptionTopic)
 	{
 %>
 		<li>
-		<nobr><img id="book" src="images/toc_obj.gif"><a class='book' href="<%=contents.getTocDescriptionTopic(tocs[i])%>" onclick='loadTOC("<%=contents.getTocHref(tocs[i])%>", "<%=contents.getTocDescriptionTopic(tocs[i])%>")'><%=contents.getTocLabel(tocs[i])%></a></nobr>
+		<nobr><img id="book" src="images/toc_obj.gif"><a class='book' href="<%=contents.getTocDescriptionTopic(tocs[i])%>" onclick='loadTOC("<%=contents.getTocHref(tocs[i])%>")'><%=contents.getTocLabel(tocs[i])%></a></nobr>
 <%
 		contents.generateToc(tocs[i], out);
 %>
@@ -132,7 +132,35 @@ function loadTOC(tocId, tocDescriptionTopic)
 
 	</ul>
 
+<%
+	if (false) //(contents.getSelectedToc() != null)
+	{
+%>
+<script language="JavaScript">
 
+	// set title on the content toolbar
+	parent.parent.setToolbarTitle('<%=UrlUtil.JavaScriptEncode(contents.getTocLabel(contents.getSelectedToc()))%>');
+		
+	// select specified topic, or else the book
+	var topic = '<%=contents.getSelectedTopic()%>';
+	alert(topic)
+	if (topic != "about:blank")
+	{
+		if (topic.indexOf(window.location.protocol) != 0)
+			topic = window.location.protocol + "//" +window.location.host +"<%=request.getContextPath()%>" + "/"+ topic;
+		selectTopic(topic);
+	}
+	else
+	{
+		topic = window.location.protocol + "//" +window.location.host +"<%=request.getContextPath()%>" + "/home.jsp?title=" + ""<%=UrlUtil.encode(contents.getTocLabel(contents.getSelectedToc()))%>"";
+		alert(topic)
+		parent.parent.MainFrame.location = topic;
+
+</script>
+
+<%
+	}
+%>
 </body>
 </html>
 

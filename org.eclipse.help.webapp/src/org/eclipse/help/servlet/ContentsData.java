@@ -30,6 +30,8 @@ public class ContentsData {
 	private Element[] tocs;
 
 
+	/**
+	 * Constructs the xml data for the contents page.	 * @param context	 * @param request	 */
 	public ContentsData(ServletContext context, HttpServletRequest request) {
 		this.context = context;
 		this.request = request;
@@ -41,6 +43,9 @@ public class ContentsData {
 			topicHref = null;
 	}
 
+	/**
+	 * Returns a list of all the TOC's as xml elements.
+	 * Individual TOC's are not loaded yet.	 * @return Element[]	 */
 	public Element[] getTocs() {
 		if (tocs == null) {
 
@@ -56,31 +61,53 @@ public class ContentsData {
 		return tocs;
 	}
 
+	/**
+	 * Returns the selected TOC. If not loaded, it will load it first.	 * @return Element	 */
 	public Element getSelectedToc() {
 		if (!selectedTocLoaded) {
 			ContentUtil content = new ContentUtil(context, request);
-			if (tocHref == null)
+			if (tocHref == null){
+				// load TOC that contains specified topic
 				selectedToc = content.loadTOCcontainingTopic(topicHref);
-			else
+				if (selectedToc == null) topicHref = null;
+			} else {
 				selectedToc = content.loadTOC(tocHref);
+			}	
 			selectedTocLoaded = true;
 		}
 		return selectedToc;
 	}
 
+	/**
+	 * Returns the href of the selected topic. 
+	 * If nothing is selected, it returns the href of the TOC description topic	 * @return String	 */
+	public String getSelectedTopic() {
+		return UrlUtil.getHelpURL(topicHref);
+	}
+	
+	/**
+	 * Returns the href of the specified TOC.	 * @param toc	 * @return String	 */
 	public String getTocHref(Element toc) {
 		return toc.getAttribute("href");
 	}
 	
+	/**
+	 * Returns the description topic for specified TOC.	 * @param toc	 * @return String	 */
 	public String getTocDescriptionTopic(Element toc) {
+		if (toc == null)
+			return "about:blank"; // should this return the help home ?
 		String tocDescription = toc.getAttribute("topic");
-		return getHelpURL(tocDescription);
+		return UrlUtil.getHelpURL(tocDescription);
 	}
 
+	/**
+	 * Returns the label (title) of the specified TOC	 * @param toc	 * @return String	 */
 	public String getTocLabel(Element toc) {
 		return toc.getAttribute("label");
 	}
 
+	/**
+	 * Generates the HTML code (a tree) for a TOC.	 * @param toc	 * @param out	 * @throws IOException	 */
 	public void generateToc(Element toc, Writer out) throws IOException {
 		// Only generate the selected toc
 		if (getSelectedToc() == null)
@@ -108,7 +135,7 @@ public class ContentsData {
 			out.write("<img src='images/plus.gif' class='collapsed' >");
 			out.write(
 				"<a href='"
-					+ getHelpURL(topic.getAttribute("href"))
+					+ UrlUtil.getHelpURL(topic.getAttribute("href"))
 					+ "' title='"
 					+ UrlUtil.htmlEncode(topic.getAttribute("label"))
 					+ "'>");
@@ -132,7 +159,7 @@ public class ContentsData {
 			out.write("<img src='images/plus.gif' style='visibility:hidden;' >");
 			out.write(
 				"<a href='"
-					+ getHelpURL(topic.getAttribute("href"))
+					+ UrlUtil.getHelpURL(topic.getAttribute("href"))
 					+ "' title='"
 					+ UrlUtil.htmlEncode(topic.getAttribute("label"))
 					+ "'>");
@@ -143,16 +170,6 @@ public class ContentsData {
 		}
 
 		out.write("</li>");
-	}
-
-	private String getHelpURL(String url) {
-		if (url == null || url.length() == 0)
-			url = "about:blank";
-		else if (url.startsWith("file:/"))
-			url = "content/" + url;
-		else
-			url = "content/help:" + url;
-		return url;
 	}
 
 }

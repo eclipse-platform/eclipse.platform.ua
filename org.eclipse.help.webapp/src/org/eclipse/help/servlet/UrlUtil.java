@@ -334,4 +334,23 @@ public class UrlUtil {
 		}
 		return newString.toString();
 	}
+	
+	
+	/**
+	 * Returns a URL that can be loaded from a browser.
+	 * This method is used for all url's except those from the webapp plugin.
+	 * @param url
+	 * @return String
+	 */
+	public static String getHelpURL(String url) {
+		if (url == null || url.length() == 0)
+			url = "about:blank";
+		else if (url.startsWith("http:/"))
+			;
+		else if (url.startsWith("file:/"))
+			url = "content/" + url;
+		else
+			url = "content/help:" + url;
+		return url;
+	}
 }

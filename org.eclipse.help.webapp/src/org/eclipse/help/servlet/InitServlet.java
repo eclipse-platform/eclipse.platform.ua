@@ -33,6 +33,10 @@ public class InitServlet extends HttpServlet {
 			// initializes string resources
 			resBundle = new WebappResources(context);
 			
+			// initialize help preferences
+			WebappPreferences prefs = new WebappPreferences(context);
+			context.setAttribute("WebappPreferences", prefs);
+			
 			// In infocentre mode, initialize and save the eclipse app
 			if (isInfocentre()) {
 				eclipse = new Eclipse(context);

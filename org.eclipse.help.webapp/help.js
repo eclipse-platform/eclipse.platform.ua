@@ -178,16 +178,6 @@ function restoreNavigation()
 }
 
 
-/**
- * Loads the specified table of contents
- */		
-function loadTOC(tocId)
-{
-	// navigate to this toc
-	NavFrame.toc.window.location.replace("contents.jsp?toc="+tocId);
-	
-}
-
 function doSearch(query)
 {
 	switchTab("search");

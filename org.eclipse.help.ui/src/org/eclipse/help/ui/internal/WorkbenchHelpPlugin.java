@@ -13,8 +13,6 @@ import org.eclipse.core.runtime.*;
 import org.eclipse.help.browser.*;
 import org.eclipse.help.internal.*;
 import org.eclipse.help.ui.internal.util.*;
-import org.eclipse.help.ui.internal.workingset.*;
-import org.eclipse.ui.*;
 import org.eclipse.ui.plugin.*;
 
 /**
@@ -30,8 +28,6 @@ public class WorkbenchHelpPlugin extends AbstractUIPlugin {
 	public static boolean DEBUG_INFOPOP = false;
 
 	private static WorkbenchHelpPlugin plugin;
-	private HelpWorkingSetSynchronizer workingSetListener;
-
 	/** 
 	 * Logs an Error message with an exception. Note that the message should already 
 	 * be localized to proper locale.
@@ -84,16 +80,6 @@ public class WorkbenchHelpPlugin extends AbstractUIPlugin {
 	 *   this plug-in 
 	 */
 	public void shutdown() throws CoreException {
-
-		if (HelpSystem.getMode() == HelpSystem.MODE_WORKBENCH) {
-			PlatformUI
-				.getWorkbench()
-				.getWorkingSetManager()
-				.removePropertyChangeListener(
-				workingSetListener);
-			HelpSystem.getWorkingSetManager().removePropertyChangeListener(
-				workingSetListener);
-		}
 		super.shutdown();
 	}
 	/**
@@ -109,24 +95,9 @@ public class WorkbenchHelpPlugin extends AbstractUIPlugin {
 		}
 
 		HelpSystem.setDefaultErrorUtil(new ErrorUtil());
-		if (HelpSystem.getMode() == HelpSystem.MODE_WORKBENCH) {
-			// register the working set listener to keep the ui and the help working sets in sych
-			workingSetListener = new HelpWorkingSetSynchronizer();
-			PlatformUI
-				.getWorkbench()
-				.getWorkingSetManager()
-				.addPropertyChangeListener(
-				workingSetListener);
-			HelpSystem.getWorkingSetManager().addPropertyChangeListener(
-				workingSetListener);
-		}
 	}
 
 	public IBrowser getHelpBrowser() {
 		return HelpSystem.getHelpBrowser();
-	}
-
-	public HelpWorkingSetSynchronizer getWorkingSetSynchronizer() {
-		return workingSetListener;
 	}
 }

@@ -62,8 +62,9 @@ function setTitle(label)
 {
 	if( label == null) label = "";
 	var title = document.getElementById("titleText");
+	if (title == null) return;
 	var text = title.lastChild;
-	alert(text.nodeValue)
+	if (text == null) return;
 	text.nodeValue = label;
 }
 

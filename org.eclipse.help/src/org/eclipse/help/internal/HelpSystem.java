@@ -21,12 +21,14 @@ public final class HelpSystem {
 	public final static String LINKS_VIEW_KEY = "linksView";
 	public final static String BASE_TOCS_KEY = "baseTOCS";
 	public final static String BOOKMARKS = "bookmarks";
+	public final static int MODE_WORBENCH = 0;
+	public final static int MODE_INFOCENTER = 1;
+	public final static int MODE_STANDALONE = 2;
 
 	protected TocManager tocManager;
 	protected ContextManager contextManager;
 	protected SearchManager searchManager;
-	private boolean infocenter = false;
-	private boolean standalone = false;
+	private int mode = MODE_WORBENCH;
 	private boolean webappStarted = false;
 	private boolean webappRunning = false;
 	/**
@@ -107,7 +109,7 @@ public final class HelpSystem {
 	public static boolean ensureWebappRunning() {
 		if (!getInstance().webappStarted) {
 			getInstance().webappStarted = true;
-			if (HelpSystem.isInfocenter() || HelpSystem.isStandalone()) {
+			if (getMode()!=MODE_WORBENCH) {
 				// start the help control web app
 				AppServer.add("helpControl", "org.eclipse.help.webapp", "");
 			}
@@ -119,34 +121,19 @@ public final class HelpSystem {
 	}
 
 	/**
-	 * Returns the infocenter.
-	 * @return true for infocenter
-	 *  false for stand-alone and workbench help
+	 * Returns the mode.
+	 * @return int
 	 */
-	public static boolean isInfocenter() {
-		return getInstance().infocenter;
+	public static int getMode() {
+		return getInstance().mode;
 	}
 
 	/**
-	 * Sets running in the infocenter mode.
+	 * Sets the mode.
+	 * @param mode The mode to set
 	 */
-	public static void setInfocenter() {
-		getInstance().infocenter = true;
-	}
-	/**
-	 * Returns the standalone.
-	 * @return true for standalone help
-	 *  false for infocenter and workbench help
-	 */
-	public static boolean isStandalone() {
-		return getInstance().standalone;
-	}
-
-	/**
-	 * Sets running in the standalone mode.
-	 */
-	public static void setStandalone() {
-		getInstance().standalone = true;
+	public static void setMode(int mode) {
+		getInstance().mode = mode;
 	}
 
 }

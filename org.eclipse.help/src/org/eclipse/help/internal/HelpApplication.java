@@ -12,7 +12,11 @@ import org.eclipse.help.AppServer;
 
 /**
  * Help application.
- * Starts webserver and help web application.
+ * Starts webserver and help web application for use
+ * by infocenter and stand-alone help.
+ * Application takes a parameter "mode", that can take values:
+ *  "infocenter" - when help system should run as infocenter,
+ *  "standalone" - when help system should run as standalone.
  */
 public class HelpApplication
 	implements IPlatformRunnable, IExecutableExtension {
@@ -65,11 +69,11 @@ public class HelpApplication
 		IConfigurationElement configElement,
 		String propertyName,
 		Object data) {
-		String value = (String) ((Map) data).get("infocenter");
-		if ("true".equalsIgnoreCase(value)) {
-			HelpSystem.setInfocenter();
-		} else{
-			HelpSystem.setStandalone();
+		String value = (String) ((Map) data).get("mode");
+		if ("infocenter".equalsIgnoreCase(value)) {
+			HelpSystem.setMode(HelpSystem.MODE_INFOCENTER);
+		} else if ("standalone".equalsIgnoreCase(value)) {
+			HelpSystem.setMode(HelpSystem.MODE_STANDALONE);
 		}
 	}
 	private void writeHostAndPort() throws IOException {

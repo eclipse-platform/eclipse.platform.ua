@@ -42,7 +42,7 @@
 	<extension point="org.eclipse.core.runtime.applications" id="infocenterApplication">
 		<application> 
 			<run class="org.eclipse.help.internal.HelpApplication">
-				<parameter name="infocenter" value="true"/> 
+				<parameter name="mode" value="infocenter"/> 
 			</run>
 		</application>
 	</extension>
@@ -50,7 +50,7 @@
 	<extension point="org.eclipse.core.runtime.applications" id="helpApplication">
 		<application> 
 			<run class="org.eclipse.help.internal.HelpApplication">
-				<parameter name="infocenter" value="false"/> 
+				<parameter name="mode" value="standalone"/> 
 			</run>
 		</application>
 	</extension>

@@ -61,17 +61,7 @@ public class StandaloneInfocenter {
 		processOptions(options);
 	}
 	/**
-	 * Controls start up and shut down of infocenter from command line.
-	 * @param args array of String containng options
-	 *  Options are:
-	 * 	<code>-command start | shutdown [-eclipsehome eclipseInstallPath] [platform options] [-vmargs [Java VM arguments]]</code>
-	 *  where
-	 *  <ul>
-	 * 	<li><code>dir</code> specifies Eclipse installation directory;
-	 * 	  it must be provided, when current directory is not the same
-	 *    as Eclipse installation directory,</li>
-	 *   <li><code>platform options</code> are other options that are supported by Eclipse Executable.</li>
-	 *  <ul>
+	 * @see org.eclipse.help.standalone.Infocenter#main(String[])
 	 */
 	public static void main(String[] args) {
 		// convert array of arguments to a list
@@ -91,7 +81,7 @@ public class StandaloneInfocenter {
 		printMainUsage();
 	}
 	/**
-	 * Shuts-down the infocenter application.
+	 * @see org.eclipse.help.standalone.Help#shutdown()
 	 */
 	public void shutdown() {
 		sendHelpCommand("shutdown", new String[0]);
@@ -100,7 +90,7 @@ public class StandaloneInfocenter {
 	}
 
 	/**
-	 * Starts the infocenter application.
+	 * @see org.eclipse.help.standalone.Help#start()
 	 */
 	public void start() {
 		host = null;

@@ -33,14 +33,8 @@ public class StandaloneHelp extends StandaloneInfocenter {
 	private static final String HELP_APPLICATION_ID =
 		"org.eclipse.help.helpApplication";
 	/**
-	* Constructs help system
-	* @param options array of String options and their values
-	* 	Option <code>-eclipseHome dir</code> specifies Eclipse
-	*  installation directory.
-	*  It must be provided, when current directory is not the same
-	*  as Eclipse installation directory.
-	*  Additionally, most options accepted by Eclipse execuable are supported.
-	*/
+	 * @see org.eclipse.help.standalone.Help#Help(java.util.List)
+	 */
 	public StandaloneHelp(List options) {
 		super(options, HELP_APPLICATION_ID);
 		startupTimeout = STARTUP_TIMEOUT;
@@ -48,50 +42,32 @@ public class StandaloneHelp extends StandaloneInfocenter {
 		connectionRetryInterval = CONNECTION_RETRY_INTERVAL;
 	}
 	/**
-	 * Displays context sensitive help.
-	 * @param contextId context id
-	 * @param x x coordinate
-	 * @param y y coordinate
+	 * @see org.eclipse.help.standalone.Help#displayContext(java.lang.String,int,int)
 	 */
 	public void displayContext(String contextId, int x, int y) {
 	}
 
 	/**
-	 * Displays context sensitive help in infopop.
-	 * @param contextId context id
-	 * @param x x coordinate
-	 * @param y y coordinate
+	 * @see org.org.eclipse.help.standalone.Help#displayContextInfopop(java.lang.String,int,int)
 	 */
 	public void displayContextInfopop(String contextId, int x, int y) {
 	}
 	/**
-	 * Displays help.
+	 * @see org.eclipse.help.standalone.Help#displayHelp()
 	 */
 	public void displayHelp() {
 		sendHelpCommand("displayHelp", new String[0]);
 	}
 
 	/**
-	 * Displays specified help resource.
-	 * @param href the href of the table of contents
+	 * @see org.eclipse.help.standalone.Help#displayHelp(java.lang.String)
 	 */
 	public void displayHelp(String href) {
 		sendHelpCommand("displayHelp", new String[] { "href=" + href });
 	}
 
 	/**
-	 * Controls standalone help system from command line.
-	 * @param args array of String containng options
-	 *  Options are:
-	 * 	<code>-command start | shutdown | (displayHelp [href]) [-eclipsehome eclipseInstallPath] [platform options] [-vmargs [Java VM arguments]]</code>
-	 *  where
-	 *  <ul>
-	 *  <li><code>href</code> is the URL of the help resource to display,</li>
-	 * 	<li><code>dir</code> specifies Eclipse installation directory;
-	 * 	  it must be provided, when current directory is not the same
-	 *    as Eclipse installation directory,</li>
-	 *   <li><code>platform options</code> are other options that are supported by Eclipse Executable.</li>
-	 *  <ul>
+	 * @see org.eclipse.help.standalone.Help#main(java.lang.String[])
 	 */
 	public static void main(String[] args) {
 		// convert array of arguments to a list

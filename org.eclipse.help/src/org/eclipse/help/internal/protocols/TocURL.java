@@ -24,7 +24,7 @@ public class TocURL extends HelpURL {
 	public final static String TOC = "toc";
 	
 	/**
-	 * @url "/pluginid/tocfile.xml"
+	 * @param url "/pluginid/tocfile.xml"
 	 * or "/"
 	 * or "/?topic=/pluginid/topic.html"
 	 */

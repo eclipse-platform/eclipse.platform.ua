@@ -32,7 +32,7 @@ import org.eclipse.ui.intro.config.*;
  * history of navigation locations. Also, dynamic awarness is honored here.
  *  
  */
-public abstract class AbstractIntroPartImplementation {
+public abstract class AbstractIntroPartImplementation implements IIntroContentProviderSite {
 
     // CustomizableIntroPart instance.
     private CustomizableIntroPart introPart = null;
@@ -244,6 +244,8 @@ public abstract class AbstractIntroPartImplementation {
      *  
      */
     protected abstract void updateNavigationActionsState();
+    
+    
 
     public abstract boolean navigateBackward();
 

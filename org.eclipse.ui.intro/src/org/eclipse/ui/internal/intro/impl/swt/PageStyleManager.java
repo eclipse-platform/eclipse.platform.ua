@@ -327,7 +327,7 @@ public class PageStyleManager extends SharedStyleManager {
         String key = page.getId() + ".show-link-description"; //$NON-NLS-1$
         String value = getProperty(key);
         if (value == null) {
-            key = ".show-link-description";
+            key = ".show-link-description"; //$NON-NLS-1$
             value = getProperty(key);
         }
         if (value == null)
@@ -339,7 +339,7 @@ public class PageStyleManager extends SharedStyleManager {
         String key = page.getId() + ".show-home-page-navigation"; //$NON-NLS-1$
         String value = getProperty(key);
         if (value == null) {
-            key = ".show-home-page-navigation";
+            key = ".show-home-page-navigation"; //$NON-NLS-1$
             value = getProperty(key);
         }
         if (value == null)

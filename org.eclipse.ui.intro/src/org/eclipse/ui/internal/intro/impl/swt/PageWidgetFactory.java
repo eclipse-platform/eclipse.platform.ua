@@ -228,7 +228,7 @@ public class PageWidgetFactory {
             ImageHyperlink imageLink = toolkit.createImageHyperlink(parent,
                     SWT.WRAP | SWT.CENTER);
             imageLink.setImage(linkImage);
-            imageLink.setHoverImage(styleManager.getImage(link, "hover-icon",
+            imageLink.setHoverImage(styleManager.getImage(link, "hover-icon", //$NON-NLS-1$
                     null));
             TableWrapData td = new TableWrapData();
             td.grabHorizontal = true;

@@ -53,6 +53,7 @@ The subelements used in a dynamic page are as follows: A &lt;b&gt;group&lt;/b&gt
             <element ref="html" minOccurs="0" maxOccurs="unbounded"/>
             <element ref="title" minOccurs="0" maxOccurs="1"/>
             <element ref="anchor" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="contentProvider" minOccurs="0" maxOccurs="unbounded"/>
          </choice>
          <attribute name="url" type="string">
             <annotation>
@@ -130,6 +131,7 @@ This seperation of pages can be used when performance is an issue, as the conten
             <element ref="include" minOccurs="0" maxOccurs="unbounded"/>
             <element ref="html" minOccurs="0" maxOccurs="unbounded"/>
             <element ref="anchor" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="contentProvider" minOccurs="0" maxOccurs="unbounded"/>
          </choice>
          <attribute name="id" type="string" use="required">
             <annotation>
@@ -587,6 +589,42 @@ This markup is only to be used with an HTML based intro part implementation. It 
             <annotation>
                <documentation>
                   unique id to identify this anchor.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="contentProvider">
+      <annotation>
+         <documentation>
+            A proxy for an intro content provider, which allows an intro page to dynamically pull data from various sources (e.g., the web, eclipse, etc) and provide content at runtime based on this dynamic data.  If the IIntroContentProvider class that is specified in the class attribute can not be loaded, then the contents of the text element will be rendered instead. 
+This is a dynamic version of the html intro tag. While the html tag allows for embedding or inlining a static html content into the generated html intro page, the contentProvider tag allows for dynamic creation of that content at runtime. 
+Another difference between the tags is that the html tag is only supported for the HTML presentation, while this contentProvider tag is supported for both the HTML and SWT presentations.
+         </documentation>
+      </annotation>
+      <complexType>
+         <all>
+            <element ref="text"/>
+         </all>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  unique identifier of this HTML element
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="pluginId" type="string">
+            <annotation>
+               <documentation>
+                  The id of the plugin that contains the IContentProvider class specified by the class attribute.  This is an optional attribute that should be used if the class doesn&apos;t come from the same plugin that defined the markup.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  A class that implements the IContentProvider interface
                </documentation>
             </annotation>
          </attribute>

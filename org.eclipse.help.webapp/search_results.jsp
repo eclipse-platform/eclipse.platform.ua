@@ -150,22 +150,11 @@ setTimeout('refresh()', 2000);
 
 }
 
-// Highlight topic
-String topic = request.getParameter("topic");
-if (topic != null && topic.startsWith("/"))
-	topic = request.getContextPath() + "/content/help:" + topic;
-else if (topic != null && topic.startsWith("file:/"))
-	topic = request.getContextPath() + "/content/help:/" + topic;
-
 %>
 
 <script language="JavaScript">
 
-// check if the topic URL starts with http
-if (!'<%=topic%>'.indexOf("http")==0)
-	selectTopic(window.location.protocol + "//" +window.location.host + '<%=topic%>');
-else
-	selectTopic('<%=topic%>');
+	selectTopicById('<%=searchData.getSelectedTopicId()%>');
 
 </script>
 

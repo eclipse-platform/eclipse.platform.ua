@@ -22,7 +22,7 @@
 
 <frameset id="helpFrameset" cols="25%,*"  framespacing="1" border="1"  frameborder="1" spacing="1"  scrolling="no">
    <frame name="NavFrame" src='<%="nav.jsp"+layout.getQuery()%>' marginwidth="0" marginheight="0" scrolling="no" frameborder="0" resize=yes>
-   <frame name="DisplayFrame" src='<%="display.jsp"+layout.getQuery()%>' marginwidth="0" marginheight="0" scrolling="no" frameborder="0" resize=yes>
+   <frame name="ContentFrame" src='<%="content.jsp"+layout.getQuery()%>' marginwidth="0" marginheight="0" scrolling="no" frameborder="0" resize=yes>
 </frameset>
 
 </html>

@@ -139,6 +139,21 @@ function selectTopic(topic)
 }
 
 /**
+ * Selects a topic in the list
+ */
+function selectTopicById(id)
+{
+	var topic = document.getElementById(id);
+	if (topic)
+	{
+		highlightTopic(topic);
+		scrollIntoView(topic);
+		return true;
+	}
+	return false;
+}
+
+/**
  * Scrolls the page to show the specified element
  */
 function scrollIntoView(node)

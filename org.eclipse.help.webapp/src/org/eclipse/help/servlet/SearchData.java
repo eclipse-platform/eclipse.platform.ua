@@ -19,6 +19,7 @@ public class SearchData extends RequestData {
 
 	// Request parameters
 	private String topicHref;
+	private String selectedTopicId = "";
 
 	// search results
 	Element resultsElement;
@@ -98,6 +99,11 @@ public class SearchData extends RequestData {
 			hits = new Hit[topics.getLength()];
 			for (int i = 0; i < topics.getLength(); i++) {
 				Element topic = (Element) topics.item(i);
+				
+				// the following assume topic numbering as in search_results.jsp
+				if (topic.getAttribute("href").equals(topicHref))
+					selectedTopicId = "a"+i;
+					
 				// obtain document score
 				String scoreString = topic.getAttribute("score");
 				try {
@@ -120,5 +126,9 @@ public class SearchData extends RequestData {
 			}
 		}
 		return hits;
+	}
+	
+	public String getSelectedTopicId() {
+		return selectedTopicId;
 	}
 }

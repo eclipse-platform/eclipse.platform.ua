@@ -108,7 +108,7 @@ function showView(view)
  		    class="<%=className%>"  
  		    name="<%=views[i].getName()%>" 
  		    id="<%=views[i].getName()%>" 
- 		    src="<%=views[i].getURL()%>" >
+ 		    src="<%=views[i].getURL()+layout.getQuery()%>" >
  	</iframe> 
 <%
 	}

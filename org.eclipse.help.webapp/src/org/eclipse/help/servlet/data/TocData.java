@@ -239,4 +239,73 @@ public class TocData extends RequestData {
 		out.write("</li>");
 	}
 
+	/**
+	 * Generates the HTML code (a tree) for a TOC.
+	 * @param toc
+	 * @param out
+	 * @throws IOException
+	 */
+	public void generateBasicToc(Element toc, Writer out) throws IOException {
+		// load the toc first
+		if (loadSelectedToc() == null)
+			return;
+
+		// Note: if we were to generate all the TOCS, then we have to load them first
+		NodeList topics = loadedToc.getChildNodes();
+		for (int i = 0; i < topics.getLength(); i++) {
+			Node n = topics.item(i);
+			if (n.getNodeType() == Node.ELEMENT_NODE)
+				generateBasicTopic((Element) n, out);
+		}
+	}
+
+	private void generateBasicTopic(Element topic, Writer out) throws IOException {
+
+		out.write("<li>");
+
+		boolean hasNodes = topic.hasChildNodes();
+		if (hasNodes) {
+			out.write("<nobr>");
+			out.write(
+				"<a href='"
+					+ UrlUtil.getHelpURL(topic.getAttribute("href"))
+					+ "' title='"
+					+ UrlUtil.htmlEncode(topic.getAttribute("label"))
+					+ "'>");
+			out.write("<img src='");
+			out.write(imagesDirectory);
+			out.write("/container_obj.gif'>");
+			out.write(UrlUtil.htmlEncode(topic.getAttribute("label")));
+			out.write("</a>");
+			out.write("</nobr>");
+
+			out.write("<ul>");
+
+			NodeList topics = topic.getChildNodes();
+			for (int i = 0; i < topics.getLength(); i++) {
+				Node n = topics.item(i);
+				if (n.getNodeType() == Node.ELEMENT_NODE)
+					generateBasicTopic((Element) n, out);
+			}
+
+			out.write("</ul>");
+		} else {
+			out.write("<nobr>");
+			out.write(
+				"<a href='"
+					+ UrlUtil.getHelpURL(topic.getAttribute("href"))
+					+ "' title='"
+					+ UrlUtil.htmlEncode(topic.getAttribute("label"))
+					+ "'>");
+			out.write("<img src='");
+			out.write(imagesDirectory);
+			out.write("/topic.gif'>");
+			out.write(UrlUtil.htmlEncode(topic.getAttribute("label")));
+			out.write("</a>");
+			out.write("</nobr>");
+		}
+
+		out.write("</li>");
+	}
+
 }

@@ -361,9 +361,9 @@ public class UrlUtil {
 		else if (url.startsWith("http:/"))
 			;
 		else if (url.startsWith("file:/"))
-			url = "content/" + url;
+			url = "../content/" + url;
 		else
-			url = "content/help:" + url;
+			url = "../content/help:" + url;
 		return url;
 	}
 }

@@ -20,6 +20,11 @@ public class BookmarksData extends RequestData {
 
 	public BookmarksData(ServletContext context, HttpServletRequest request) {
 		super(context, request);
+
+		// see if anything is to be added
+		addBookmark();
+		// see if anything is to be removd
+		removeBookmark();
 	}
 
 	public void addBookmark() {

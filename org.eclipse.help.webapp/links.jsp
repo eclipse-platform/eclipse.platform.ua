@@ -1,19 +1,14 @@
-<%@ page import="java.net.URLEncoder,org.eclipse.help.servlet.*,org.w3c.dom.*" errorPage="err.jsp" contentType="text/html; charset=UTF-8"%>
-
-<% 
-	// calls the utility class to initialize the application
-	application.getRequestDispatcher("/servlet/org.eclipse.help.servlet.InitServlet").include(request,response);
-	
-	LinksData linksData = new LinksData(application, request);
-	WebappPreferences prefs = linksData.getPrefs();
-%>
-
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<!--
+<%--
  (c) Copyright IBM Corp. 2000, 2002.
  All Rights Reserved.
--->
+--%>
+<%@ include file="header.jsp"%>
+
+<% 	
+	LinksData data = new LinksData(application, request);
+	WebappPreferences prefs = data.getPrefs();
+%>
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -23,66 +18,11 @@
 <title><%=WebappResources.getString("Links", request)%></title>
 
 <style type="text/css">
-BODY {
-	background-color: <%=prefs.getViewBackground()%>;
-	font: <%=prefs.getViewFont()%>;
-	margin-top:5px;
-	margin-left:5px;
-	padding:0;
-	border:0;
-	cursor:default;
-}
-
-A {
-	text-decoration:none; 
-	color:WindowText; 
-	padding:0px;
-	white-space: nowrap;
-}
-
-A:hover {
-	text-decoration:underline; 
-}
-
-IMG {
-	border:0px;
-	margin:0px;
-	padding:0px;
-	margin-right:4px;
-}
-
-TABLE {
-	background-color: <%=prefs.getViewBackground()%>;
-	font: <%=prefs.getViewFont()%>;
-	width:100%;
-}
-
-.list {
-	background-color: <%=prefs.getViewBackground()%>;
-	padding:2px;
-}
-     
-.active { 
-	background:<%=prefs.getToolbarBackground()%>;
-	width:100%;
-	height:100%;
-}
-
-.label {
-	margin-left:4px;
-}
-
+<%@ include file="list.css"%>
 </style>
 
 <base target="ContentViewFrame">
 <script language="JavaScript" src="list.js"></script>
-<script language="JavaScript">		
-var extraStyle = "";
-if (isMozilla)
-	extraStyle = "<style type='text/css'>.active, A.active:hover {background:WindowText;color:Window;} </style>";
- 
-document.write(extraStyle);
-</script>
 
 </head>
 
@@ -90,12 +30,12 @@ document.write(extraStyle);
 <body>
  
 <%
-if(!linksData.isLinksRequest()) {
+if(!data.isLinksRequest()) {
 	out.write(WebappResources.getString("pressF1", request));
-} else if (linksData.getLinks().length == 0){
+} else if (data.getLinks().length == 0){
 	out.write(WebappResources.getString("Nothing_found", null));
 } else {
-	Link[] links = linksData.getLinks();
+	Link[] links = data.getLinks();
 %>
 
 <table id='list'  cellspacing='0' >
@@ -130,7 +70,7 @@ if(!linksData.isLinksRequest()) {
 %>
 
 <script language="JavaScript">
-	selectTopicById('<%=linksData.getSelectedTopicId()%>');
+	selectTopicById('<%=data.getSelectedTopicId()%>');
 </script>
 
 </body>

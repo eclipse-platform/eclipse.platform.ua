@@ -1,23 +1,21 @@
-<%@ page import="java.net.URLEncoder,org.eclipse.help.servlet.*,org.w3c.dom.*" errorPage="err.jsp" contentType="text/html; charset=UTF-8"%>
-
-<% 
-	// calls the utility class to initialize the application
-	application.getRequestDispatcher("/servlet/org.eclipse.help.servlet.InitServlet").include(request,response);
-	
-	LayoutData layout = new LayoutData(application,request);
-	View[] views = layout.getViews();
-%>
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<!--
+<%--
  (c) Copyright IBM Corp. 2000, 2002.
  All Rights Reserved.
--->
+--%>
+<%@ include file="header.jsp"%>
+
+<% 
+	LayoutData data = new LayoutData(application,request);
+	WebappPreferences prefs = data.getPrefs();
+	View[] views = data.getViews();
+%>	
+
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
-<title>Navigation</title>
+<title><%=WebappResources.getString("Views", request)%></title>
 
 <style type="text/css">
 
@@ -102,13 +100,13 @@ function showView(view)
 <%
 	for (int i=0; i<views.length; i++) 
 	{
-		String className = layout.getVisibleView().equals(views[i].getName()) ? "visible" : "hidden";
+		String className = data.getVisibleView().equals(views[i].getName()) ? "visible" : "hidden";
 %>
  	<iframe frameborder="0" 
  		    class="<%=className%>"  
  		    name="<%=views[i].getName()%>" 
  		    id="<%=views[i].getName()%>" 
- 		    src="<%=views[i].getURL()+layout.getQuery()%>" >
+ 		    src="<%=views[i].getURL()+data.getQuery()%>" >
  	</iframe> 
 <%
 	}

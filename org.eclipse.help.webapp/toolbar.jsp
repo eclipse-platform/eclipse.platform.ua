@@ -1,17 +1,15 @@
-<%@ page import="org.eclipse.help.servlet.*" errorPage="err.jsp" contentType="text/html; charset=UTF-8"%>
+<%--
+ (c) Copyright IBM Corp. 2000, 2002.
+ All Rights Reserved.
+--%>
+<%@ include file="header.jsp"%>
 
 <% 
-	// calls the utility class to initialize the application
-	application.getRequestDispatcher("/servlet/org.eclipse.help.servlet.InitServlet").include(request,response);
-	WebappPreferences prefs = (new RequestData(application,request)).getPrefs();
+	RequestData data = new RequestData(application,request);
+	WebappPreferences prefs = data.getPrefs();
 %>
 
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<!--
- (c) Copyright IBM Corp. 2000, 2002.
- All Rights Reserved.
--->
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -41,6 +39,22 @@ BODY {
 	border:1px solid WindowText; 
 	border-left-width:0;
 }
+
+<%
+if (data.isIE()) {
+%>
+#tdborder {
+	border-right-width:0;
+}
+<%
+} else if (data.isMozilla()) {
+%>
+#hide_nav {
+	display:none;
+}
+<%
+}
+%>
  
 </style>
 
@@ -50,14 +64,6 @@ var isMozilla = navigator.userAgent.indexOf('Mozilla') != -1 && parseInt(navigat
 var isIE = navigator.userAgent.indexOf('MSIE') != -1;
 
 var navVisible = true;
-
-var extraStyle = "";
-if (isIE)
- 	 extraStyle = "<style type='text/css'>#tdborder{border-right-width:0;}</style>";
-else if (isMozilla)
-	 extraStyle = "<style type='text/css'>#hide_nav{display:none;}</style>";
-document.write(extraStyle);
-	
 	
 function goBack(button) {
 	parent.history.back();

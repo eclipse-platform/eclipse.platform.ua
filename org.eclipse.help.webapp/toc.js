@@ -14,15 +14,7 @@ var oldActiveClass = "";
 
 
 // Preload images
-minus = new Image();
-minus.src = "images/minus.gif";
-plus = new Image();
-plus.src = "images/plus.gif";
-
-folder_img = new Image();
-folder_img.src = "images/container_obj.gif";
-topic_img = new Image();
-topic_img.src = "images/topic.gif";
+// Note: code moved into the jsp, for dynamic image preferences
 
 /**
  * Returns the target node of an event

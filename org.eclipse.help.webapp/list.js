@@ -8,6 +8,8 @@
 var isMozilla = navigator.userAgent.indexOf('Mozilla') != -1 && parseInt(navigator.appVersion.substring(0,1)) >= 5;
 var isIE = navigator.userAgent.indexOf('MSIE') != -1;
 
+// selected node
+var active;
 var oldActive;
 
 /**
@@ -111,6 +113,7 @@ function highlightTopic(topic)
   			//if (isIE)
   			//	a.hideFocus = "true";
    		}
+   		active = a;
    		return true;
   	}
   	return false;
@@ -210,6 +213,67 @@ function getVerticalScroll(node)
 	}
 	
 	return scroll;
+}
+
+function hidePopupMenu() {
+	// hide popup if open
+	var menu = document.getElementById("menu");
+	if (!menu)
+		return;
+	if (menu.style.display == "block")
+		menu.style.display = "none";
+}
+
+function showPopupMenu(e) {
+	// show the menu
+	var x = e.clientX;
+	var y = e.clientY;
+
+	e.cancelBubble = true;
+
+	var menu = document.getElementById("menu");
+	if (!menu) 
+		return;	
+	menu.style.left = x+1;
+	menu.style.top = y+1;
+	menu.style.display = "block";
+}
+
+
+/**
+ * Popup a menu on right click over a bookmark.
+ * This handler assumes the list.js script has been loaded.
+ */
+function contextMenuHandler(e)
+{
+	// hide popup if open
+	hidePopupMenu();
+
+	if (isIE)
+		e = window.event;
+		
+  	var clickedNode;
+  	if (isMozilla)
+  		clickedNode = e.target;
+  	else if (isIE)
+   		clickedNode = e.srcElement;
+
+  	if (!clickedNode)
+  		return true;
+  	
+  	// call the click handler to select node
+  	mouseClickHandler(e);
+  	
+  	if(clickedNode.tagName == "A")
+  		active = clickedNode;
+  	else if (clickedNode.parentNode.tagName == "A")
+  		active = clickedNode.parentNode;
+  	else
+  		return true;
+	
+	showPopupMenu(e);
+	
+	return false;
 }
 
 

@@ -1,18 +1,15 @@
-<%@ page import="java.net.URLEncoder,org.eclipse.help.servlet.*,org.w3c.dom.*" errorPage="err.jsp" contentType="text/html; charset=UTF-8"%>
-
-<% 
-	// calls the utility class to initialize the application
-	application.getRequestDispatcher("/servlet/org.eclipse.help.servlet.InitServlet").include(request,response);
-	TocData tocData = new TocData(application, request);
-	WebappPreferences prefs = tocData.getPrefs();
-	Element selectedToc = tocData.getSelectedToc();
-%>
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<!--
+<%--
  (c) Copyright IBM Corp. 2000, 2002.
  All Rights Reserved.
--->
+--%>
+<%@ include file="header.jsp"%>
+
+<% 
+	TocData data = new TocData(application,request);
+	WebappPreferences prefs = data.getPrefs();
+	Element selectedToc = data.getSelectedToc();
+%>
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -20,80 +17,26 @@
 <title><%=WebappResources.getString("Content", request)%></title>
 
 <style type="text/css">
-
-BODY {
-	background-color: <%=prefs.getViewBackground()%>;
-	font: <%=prefs.getViewFont()%>;
-	margin:0;
-	padding:0;
-	border:0;
-}
-
-UL { 
-	border-width:0; 
-	margin-left:20px; 
-}
-
-#root {
-	margin-top:5px;
-	margin-left:5px;
-}
-  
-UL.expanded {
-	display:block; 
-}
-
-UL.collapsed { 
-	display: none;
-}
-
-LI { 
-	margin-top:3px; 
-	list-style-image:none;
-	list-style-type:none;
-}
-
-IMG {
-	border:0px;
-	margin:0px;
-	padding:0px;
-	margin-right:4px;
-}
-
-
-A {
-	text-decoration:none; 
-	color:WindowText;
-	padding-right:2px;
-	/* this works in ie5.5, but not in ie5.0  */
-	white-space: nowrap;
-}
-
-A:hover{
-	text-decoration:underline; 
-}
-
-A.active{ 
-	background:<%=prefs.getToolbarBackground()%>;
-	width:100%;
-}
-
-A.active:hover{
-	text-decoration:underline; 
-	background:<%=prefs.getToolbarBackground()%>;
-	width:100%;
-}
-  
-   
+<%@ include file="tree.css"%>
 </style>  
     
 <base target="ContentViewFrame">
+<script language="JavaScript">
+
+// Preload images
+minus = new Image();
+minus.src = "<%=prefs.getImagesDirectory()%>"+"/minus.gif";
+plus = new Image();
+plus.src = "<%=prefs.getImagesDirectory()%>"+"/plus.gif";
+
+folder_img = new Image();
+folder_img.src = "<%=prefs.getImagesDirectory()%>"+"/container_obj.gif";
+topic_img = new Image();
+topic_img.src = "<%=prefs.getImagesDirectory()%>"+"/topic.gif";
+</script>
+
 <script language="JavaScript" src="toc.js"></script>
 <script language="JavaScript"> 
-
-if (isMozilla)
- 	document.write("<style type='text/css'>UL { margin-left:-20px;} #root{ margin-left:-35px; margin-top:5px;} A.active, A.active:hover {background:WindowText;color:Window;} </style>");
- 
  
 /**
  * Loads the specified table of contents
@@ -112,16 +55,16 @@ var tocId = "";
 function onloadHandler()
 {
 <%
-	if (tocData.getSelectedToc() != null)
+	if (data.getSelectedToc() != null)
 	{
 %>
-	tocTitle = '<%=UrlUtil.JavaScriptEncode(tocData.getTocLabel(tocData.getSelectedToc()))%>';
+	tocTitle = '<%=UrlUtil.JavaScriptEncode(data.getTocLabel(data.getSelectedToc()))%>';
 	
 	// set title on the content toolbar
 	parent.parent.setToolbarTitle(tocTitle);
 		
 	// select specified topic, or else the book
-	var topic = '<%=tocData.getSelectedTopic()%>';
+	var topic = '<%=data.getSelectedTopic()%>';
 	if (topic != "about:blank")
 	{
 		if (topic.indexOf(window.location.protocol) != 0)
@@ -149,19 +92,18 @@ function onloadHandler()
 <body onload="onloadHandler()">
 	<ul class='expanded' id='root'>
 <%
-	String id = "";
-	Element[] tocs = tocData.getTocs();
+	Element[] tocs = data.getTocs();
 	for (int i=0; i<tocs.length; i++) 
 	{
 %>
 		<li>
-		<nobr><img src="<%=prefs.getImagesDirectory()%>/toc_obj.gif"><a id="b<%=i%>" style="font-weight: bold;" href="<%=tocData.getTocDescriptionTopic(tocs[i])%>" onclick='loadTOC("<%=tocData.getTocHref(tocs[i])%>")'><%=tocData.getTocLabel(tocs[i])%></a></nobr>
+		<nobr><img src="<%=prefs.getImagesDirectory()%>/toc_obj.gif"><a id="b<%=i%>" style="font-weight: bold;" href="<%=data.getTocDescriptionTopic(tocs[i])%>" onclick='loadTOC("<%=data.getTocHref(tocs[i])%>")'><%=data.getTocLabel(tocs[i])%></a></nobr>
 <%
 		// Only generate the selected toc
 		if (selectedToc != null &&
 		    selectedToc.getAttribute("href").equals(tocs[i].getAttribute("href")))
 		{
-			tocData.generateToc(tocs[i], out);
+			data.generateToc(tocs[i], out);
 			// keep track of the selected toc id
 %>
 			<script language="JavaScript">tocId="b"+<%=i%></script>

@@ -1,17 +1,13 @@
-<%@ page import="org.eclipse.help.servlet.*" errorPage="err.jsp" contentType="text/html; charset=UTF-8"%>
-
-<% 
-	// calls the utility class to initialize the application
-	application.getRequestDispatcher("/servlet/org.eclipse.help.servlet.InitServlet").include(request,response);
-	WebappPreferences prefs = (new RequestData(application,request)).getPrefs();
-%>
-
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<!--
+<%--
  (c) Copyright IBM Corp. 2000, 2002.
  All Rights Reserved.
--->
+--%>
+<%@ include file="header.jsp"%>
+
+<% 
+	RequestData data = new RequestData(application,request);
+	WebappPreferences prefs = data.getPrefs();
+%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

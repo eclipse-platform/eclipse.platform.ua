@@ -1,17 +1,14 @@
-<%@ page import="java.net.URLEncoder,java.text.NumberFormat,org.eclipse.help.servlet.*,org.w3c.dom.*" errorPage="err.jsp" contentType="text/html; charset=UTF-8"%>
-
-<% 
-	// calls the utility class to initialize the application
-	application.getRequestDispatcher("/servlet/org.eclipse.help.servlet.InitServlet").include(request,response);
-	
-	SearchData searchData = new SearchData(application, request);
-%>
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<!--
+<%--
  (c) Copyright IBM Corp. 2000, 2002.
  All Rights Reserved.
--->
+--%>
+<%@ include file="header.jsp"%>
+
+<% 
+	SearchData data = new SearchData(application, request);
+	WebappPreferences prefs = data.getPrefs();
+%>
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -21,62 +18,14 @@
 <title><%=WebappResources.getString("SearchResults", request)%></title>
 
 <style type="text/css">
-BODY {
-	background-color: Window;
-	font: icon;
-	margin-top:5px;
-	margin-left:5px;
-	padding:0;
-	border:0;
-	cursor:default;
-}
-
-
-A {
-	text-decoration:none; 
-	color:WindowText; 
-	padding-left:2px;
-	white-space: nowrap;
-}
-
-A:hover {
-	text-decoration:underline; 
-}
-
-
-TABLE {
-	background-color: Window;
-	font: icon;
-}
-
-.score {
-	padding-right:5px;
-}
-
-
-.list {
-	background-color: Window;
-	padding:2px;
-}
-     
-.active { 
-	background:ButtonFace;
-	width:100%;
-	height:100%;
-}
-
+<%@ include file="list.css"%>
 </style>
 
 
 <base target="ContentViewFrame">
 <script language="JavaScript" src="list.js"></script>
 <script language="JavaScript">		
-var extraStyle = "";
-if (isMozilla)
-	extraStyle = "<style type='text/css'>.active, A.active:hover {background:WindowText;color:Window;} </style>";
- 
-document.write(extraStyle);
- 
+
 function refresh() 
 { 
 	window.location.replace("search_results.jsp?<%=request.getQueryString()%>");
@@ -89,9 +38,9 @@ function refresh()
 <body >
 
 <%
-if (!searchData.isSearchRequest()) {
+if (!data.isSearchRequest()) {
 	out.write(WebappResources.getString("doSearch", request));
-} else if (searchData.isProgressRequest()) {
+} else if (data.isProgressRequest()) {
 %>
 
 <CENTER>
@@ -99,10 +48,10 @@ if (!searchData.isSearchRequest()) {
 	<TR><TD><%=WebappResources.getString("Indexing", request)%></TD></TR>
 	<TR><TD ALIGN='LEFT'>
 		<DIV STYLE='width:100px;height:16px;border:1px solid WindowText;'>
-			<DIV ID='divProgress' STYLE='width:<%=searchData.getIndexedPercentage()%>px;height:100%;background-color:Highlight'></DIV>
+			<DIV ID='divProgress' STYLE='width:<%=data.getIndexedPercentage()%>px;height:100%;background-color:Highlight'></DIV>
 		</DIV>
 	</TD></TR>
-	<TR><TD><%=searchData.getIndexedPercentage()%>% <%=WebappResources.getString("complete", request)%></TD></TR>
+	<TR><TD><%=data.getIndexedPercentage()%>% <%=WebappResources.getString("complete", request)%></TD></TR>
 	<TR><TD><br><%=WebappResources.getString("IndexingPleaseWait", request)%></TD></TR>
 </TABLE>
 </CENTER>
@@ -114,11 +63,11 @@ setTimeout('refresh()', 2000);
 
 <%
 	return;
-} else if (searchData.getHits().length == 0){
+} else if (data.getHits().length == 0){
 	out.write(WebappResources.getString("Nothing_found", request));
 } else {
 		
-	Hit[] hits = searchData.getHits();
+	Hit[] hits = data.getHits();
 %>
 
 <table id='list'  cellspacing='0' >
@@ -153,9 +102,7 @@ setTimeout('refresh()', 2000);
 %>
 
 <script language="JavaScript">
-
-	selectTopicById('<%=searchData.getSelectedTopicId()%>');
-
+	selectTopicById('<%=data.getSelectedTopicId()%>');
 </script>
 
 </body>

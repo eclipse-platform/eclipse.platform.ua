@@ -40,4 +40,12 @@ public class RequestData {
 	public WebappPreferences getPrefs() {
 		return (WebappPreferences)context.getAttribute("WebappPreferences");
 	}
+	
+	public boolean isIE() {
+		return isIE;
+	}
+	
+	public boolean isMozilla() {
+		return isMozilla;
+	}
 }

@@ -1,19 +1,14 @@
-<%@ page import="java.util.*,org.eclipse.help.servlet.*"  contentType="text/html; charset=UTF-8"%>
-
-<% 
-	// calls the utility class to initialize the application
-	application.getRequestDispatcher("/servlet/org.eclipse.help.servlet.InitServlet").include(request,response);
-
-	LayoutData layout = new LayoutData(application,request);
-	WebappPreferences prefs = layout.getPrefs();
-	View[] views = layout.getViews();
-%>
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<!--
+<%--
  (c) Copyright IBM Corp. 2000, 2002.
  All Rights Reserved.
--->
+--%>
+<%@ include file="header.jsp"%>
+
+<% 
+	LayoutData data = new LayoutData(application,request);
+	WebappPreferences prefs = data.getPrefs();
+	View[] views = data.getViews();
+%>
 
 <html>
 <head>
@@ -72,15 +67,20 @@ IMG {
 	padding:0px;
 	align:center;
 }
+
+<% 
+if (data.isMozilla()){
+%>
+BODY { 
+	height:21px;
+}
+<%
+}
+%>
+
 </style>
  
 <script language="JavaScript">
-
-var isMozilla = navigator.userAgent.indexOf('Mozilla') != -1 && parseInt(navigator.appVersion.substring(0,1)) >= 5;
-var extraStyle = "";
-if (isMozilla)
- 	extraStyle = "<style type='text/css'>BODY { height:21px;} </style>";
-document.write(extraStyle);
 
 var lastTab = "";
 /* 

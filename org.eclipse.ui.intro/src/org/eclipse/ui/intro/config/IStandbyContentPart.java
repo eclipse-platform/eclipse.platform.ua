@@ -20,6 +20,7 @@ import org.eclipse.ui.intro.*;
  * content. Standby parts can be contributed to the Eclipse intro using the
  * following extension point:
  * <p>
+ * 
  * <pre>
  *  &lt;extension point=&quot;org.eclipse.ui.intro.configExtension&quot;&gt;
  * 	&lt;standbyPart
@@ -29,8 +30,8 @@ import org.eclipse.ui.intro.*;
  *	&lt;/standbyPart&gt; 
  *  &lt;/extension&gt;
  * </pre>
- * </p>
  * 
+ * </p>
  * Standby content parts have a life cycle that starts with a call to init,
  * shortly after part construction, followed by a call to createPartControl.
  * During these two calls, the part is responsible for creating its content and

@@ -68,10 +68,10 @@ public class LayoutData extends RequestData {
 		if (views != null)
 			return views;
 		views = new View[] {
-			new View("toc", "toc.jsp", "images/contents_view.gif"),
-			new View("search", "search_results.jsp", "images/search_results_view.gif"),
-			new View("links", "links.jsp", "images/links_view.gif"),
-			new View("bookmarks", "bookmarks.jsp", "images/bookmarks_view.gif")
+			new View("toc", "toc.jsp", prefs.getImagesDirectory()+"/contents_view.gif"),
+			new View("search", "search_results.jsp", prefs.getImagesDirectory()+"/search_results_view.gif"),
+			new View("links", "links.jsp", prefs.getImagesDirectory()+"/links_view.gif"),
+			new View("bookmarks", "bookmarks.jsp", prefs.getImagesDirectory()+"/bookmarks_view.gif")
 		};
 		return views;
 	}

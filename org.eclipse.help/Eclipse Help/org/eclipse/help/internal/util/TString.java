@@ -353,7 +353,6 @@ public class TString {
 	
 	/**
 	 * Returns the unicode encoding of word as u1,u2,u3...
-	 * and ',' is url encoded as %2c
 	 * where u_i is the unicode code (decimal) of the i'th char of word.
 	 */
 	public static String getUnicodeNumbers(String word)
@@ -365,7 +364,7 @@ public class TString {
 		for (int i=0; i<len; i++)
 		{
 			if (i != 0)
-				buf.append("%2c");
+				buf.append(',');
 			int unicode = word.charAt(i);
 			buf.append(String.valueOf(unicode));
 		}

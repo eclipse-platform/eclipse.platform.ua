@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin
    id="org.eclipse.help.webapp"
-   name="%help_plugin_name"
+   name="%help_webapp_plugin_name"
    version="3.0.0"
    provider-name="%providerName"
    class="org.eclipse.help.internal.webapp.HelpWebappPlugin">

@@ -21,7 +21,7 @@
 <script language="JavaScript" src="help_js.jsp"></script>
 </head>
 
-<frameset onload="onloadFrameset()"  rows="24,*"  frameborder="0" framespacing="0" border=0 spacing=0 >
+<frameset  rows="24,*"  frameborder="0" framespacing="0" border=0 spacing=0 >
 	<frame name="ToolbarFrame" src='<%="toolbar.jsp"+layout.getQuery()%>'  marginwidth="0" marginheight="0" scrolling="no" frameborder="0" noresize=0>
 	<frame name="ContentFrame" src='<%=layout.getContentURL()%>'  marginwidth="10" marginheight="0" frameborder="0" >
 </frameset>

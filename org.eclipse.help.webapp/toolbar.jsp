@@ -60,12 +60,12 @@ document.write(extraStyle);
 	
 function goBack(button) {
 	parent.history.back();
-	if (isIE) button.blur();
+	if (isIE && button) button.blur();
 }
 
 function goForward(button) {
 	parent.history.forward();
-	if (isIE) button.blur();
+	if (isIE && button) button.blur();
 }
 
 
@@ -76,6 +76,7 @@ function bookmarkPage(button)
 	// exception is thrown. We need to catch it and ignore it.
 	try
 	{
+		/********** HARD CODED VIEW NAME *************/
 		parent.parent.NavFrame.showView("bookmarks");
 		
 		// use the url from plugin id only
@@ -94,7 +95,7 @@ function bookmarkPage(button)
 			
 		parent.parent.NavFrame.ViewsFrame.bookmarks.location = "bookmarks.jsp?add="+url+"&title="+escape(title);
 	}catch (e) {}
-	if (isIE) button.blur();
+	if (isIE && button) button.blur();
 
 }
 
@@ -115,7 +116,7 @@ function toggleNav(button)
 		frameset.setAttribute("cols", parent.oldSize);
 	}
 	navVisible = !navVisible;
-	if (isIE) button.blur();
+	if (isIE && button) button.blur();
 }
 
 
@@ -124,19 +125,19 @@ function resynch(button)
 	try
 	{
 		var topic = parent.ContentFrame.window.location.href;
-		parent.displayTocFor(topic);
+		parent.parent.NavFrame.displayTocFor(topic);
 	}
 	catch(e)
 	{
 	}
-	if (isIE) button.blur();
+	if (isIE && button) button.blur();
 }
 
 function printContent(button)
 {
 	parent.ContentFrame.focus();
 	print();
-	if (isIE) button.blur();
+	if (isIE && button) button.blur();
 }
 
 function setTitle(label)

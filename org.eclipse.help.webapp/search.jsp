@@ -163,6 +163,7 @@ function doSearch(query)
 	}
 		
 	var viewsFrame = parent.HelpFrame.NavFrame.ViewsFrame;
+	/******** HARD CODED VIEW NAME *********/
 	if (isIE)
 		viewsFrame.document.search.location.replace("search_results.jsp?"+query);
 	else if (isMozilla)

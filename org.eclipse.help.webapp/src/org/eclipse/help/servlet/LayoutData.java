@@ -77,7 +77,10 @@ public class LayoutData {
 	public String getVisibleView() {
 		String view = req.getParameter("tab");
 		if (view != null && view.length() > 0)
-			return view;
+			if (view.equals("toc"))
+				return "content"; // compatibility with old code
+			else
+				return view;
 		else
 			return "content";
 	}

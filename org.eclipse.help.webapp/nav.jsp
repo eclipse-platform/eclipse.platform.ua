@@ -111,6 +111,7 @@ function restoreNavigation()
 
 	/**** HARD CODED VIEW NAME *********/	
 	var tocView = ViewsFrame.toc.ViewFrame;
+
 	if (temp && (isIE || isMozilla10)){
 		// Restore old navigation
 		if (isIE)

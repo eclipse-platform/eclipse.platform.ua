@@ -14,6 +14,7 @@ var oldActiveClass = "";
 
 
 // Preload images
+// **********************************************************
 // Note: code moved into the jsp, for dynamic image preferences
 
 /**

@@ -79,7 +79,7 @@ function onloadHandler()
 %>
 	alert('<%=UrlUtil.JavaScriptEncode(WebappResources.getString("CannotSync", request))%>');
 	// when we don't find the specified toc, we just restore navigation
-	parent.parent.restoreNavigation();
+	parent.parent.parent.restoreNavigation();
 <%
 	}
 %>

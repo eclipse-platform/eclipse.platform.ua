@@ -118,7 +118,7 @@ if (data.getScript() != null) {
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%" style="padding-left:5;">
 			<tr>
 				<td style="font: <%=prefs.getToolbarFont()%>">
-					<div id="titleText"><%=data.getTitle()%>
+					<div id="titleText">&nbsp;<%=data.getTitle()%>
 					</div>
 				</td>
 			</tr>

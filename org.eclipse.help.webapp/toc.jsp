@@ -131,6 +131,12 @@ function onloadHandler()
 		selectTopicById(tocId);
 
 <%
+	} else if ("yes".equals(request.getParameter("synch"))) {
+%>
+	alert('<%=UrlUtil.JavaScriptEncode(WebappResources.getString("CannotSync", request))%>');
+	// when we don't find the specified toc, we just restore navigation
+	parent.parent.restoreNavigation();
+<%
 	}
 %>
 }

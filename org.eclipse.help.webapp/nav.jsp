@@ -100,9 +100,9 @@ function saveNavigation()
 function restoreNavigation()
 {	
 	// turn to the right tab
-	var oldTab = tempTab;
+	var oldTab = tempView;
 	
-	showView(tempTab);
+	showView(tempView);
 
 	/**** HARD CODED VIEW NAME *********/	
 	if (temp && (isIE || isMozilla10)){

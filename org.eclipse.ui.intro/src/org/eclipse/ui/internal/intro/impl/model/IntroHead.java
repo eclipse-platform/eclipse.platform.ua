@@ -45,6 +45,8 @@ public class IntroHead extends AbstractIntroElement {
         super(element, bundle);
         src = getAttribute(element, ATT_SRC);
         encoding = getAttribute(element, ATT_ENCODING);
+        if (encoding == null)
+            encoding = "UTF-8";
 
         // Resolve.
         src = IntroModelRoot.getPluginLocation(src, bundle);

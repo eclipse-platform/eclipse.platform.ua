@@ -241,13 +241,11 @@ public class TocData extends RequestData {
 			out.write(
 				"<a href='"
 					+ UrlUtil.getHelpURL(topic.getHref())
-					+ "' title='"
-					+ UrlUtil.htmlEncode(topic.getLabel())
 					+ "'>");
 			out.write("<img src='");
 			out.write(imagesDirectory);
-			out.write("/container_obj.gif' border=0>");
-			out.write("&nbsp;" + UrlUtil.htmlEncode(topic.getLabel()));
+			out.write("/container_obj.gif' border=0>&nbsp;");
+			out.write(UrlUtil.htmlEncode(topic.getLabel()));
 			out.write("</a>");
 			out.write("</nobr>");
 
@@ -264,13 +262,11 @@ public class TocData extends RequestData {
 			out.write(
 				"<a href='"
 					+ UrlUtil.getHelpURL(topic.getHref())
-					+ "' title='"
-					+ UrlUtil.htmlEncode(topic.getLabel())
 					+ "'>");
 			out.write("<img src='");
 			out.write(imagesDirectory);
-			out.write("/topic.gif' border=0>");
-			out.write("&nbsp;" + UrlUtil.htmlEncode(topic.getLabel()));
+			out.write("/topic.gif' border=0>&nbsp;");
+			out.write(UrlUtil.htmlEncode(topic.getLabel()));
 			out.write("</a>");
 			out.write("</nobr>");
 		}

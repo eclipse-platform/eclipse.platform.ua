@@ -13,6 +13,7 @@ package org.eclipse.help.ui.internal;
 
 import org.eclipse.help.*;
 import org.eclipse.help.internal.base.BaseHelpSystem;
+import org.eclipse.help.internal.context.IStyledContext;
 import org.eclipse.jface.resource.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.accessibility.*;
@@ -195,8 +196,8 @@ public class ContextHelpDialog {
 	private Control createInfoArea(Composite parent) {
 		// Create the text field.
 		String styledText;
-		if (context instanceof IContext2) {
-			styledText = ((IContext2) context).getStyledText();
+		if (context instanceof IStyledContext) {
+			styledText = ((IStyledContext) context).getStyledText();
 		} else {
 			styledText = context.getText();
 		}

@@ -13,8 +13,10 @@ package org.eclipse.help.ui.internal.views;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.help.*;
 import org.eclipse.help.internal.HelpPlugin;
+import org.eclipse.help.internal.context.IStyledContext;
 import org.eclipse.help.ui.internal.*;
 import org.eclipse.jface.action.*;
+import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.wizard.*;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.*;
@@ -291,26 +293,14 @@ public class ContextHelpPart extends SectionPart implements IHelpPart {
 		sbuf.append(decodeContextBoldTags(context));
 		sbuf.append("</p>"); //$NON-NLS-1$
 		IHelpResource[] links = context.getRelatedTopics();
-		IContext2 context2 = null;
-		if (context instanceof IContext2) {
-			context2 = (IContext2)context;
-			ContextHelpSorter sorter = new ContextHelpSorter(context2);
-			sorter.sort(null, links);
-		}
 		if (links != null && links.length > 0) {
-			String category = null;
-			if (context2==null)
-				addCategory(sbuf, null);
+			sbuf.append("<p><span color=\""); //$NON-NLS-1$
+			sbuf.append(FormColors.TITLE);
+			sbuf.append("\">"); //$NON-NLS-1$
+			sbuf.append(HelpUIResources.getString("ContextHelpPart.seeAlso")); //$NON-NLS-1$
+			sbuf.append("</span></p>"); //$NON-NLS-1$
 			for (int i = 0; i < links.length; i++) {
 				IHelpResource link = links[i];
-				if (context2!=null) {
-					String cat = context2.getCategory(link);
-					if (cat==null && category!=null || cat!=null&&category==null||
-							cat!=null&&category!=null &&!cat.equals(category)) {
-						addCategory(sbuf, cat);
-					}
-					category = cat;
-				}
 				sbuf.append("<li style=\"image\" value=\""); //$NON-NLS-1$
 				sbuf.append(IHelpUIConstants.IMAGE_FILE_F1TOPIC);
 				sbuf.append("\" indent=\"21\">"); //$NON-NLS-1$
@@ -326,16 +316,6 @@ public class ContextHelpPart extends SectionPart implements IHelpPart {
 		}
 		sbuf.append("</form>"); //$NON-NLS-1$
 		return sbuf.toString();
-	}
-	
-	private void addCategory(StringBuffer sbuf, String category) {
-		if (category==null)
-			category = HelpUIResources.getString("ContextHelpPart.seeAlso");//$NON-NLS-1$
-		sbuf.append("<p><span color=\""); //$NON-NLS-1$
-		sbuf.append(FormColors.TITLE);
-		sbuf.append("\">"); //$NON-NLS-1$
-		sbuf.append(category);
-		sbuf.append("</span></p>"); //$NON-NLS-1$
 	}
 
 	private String getTopicCategory(String href, String locale) {
@@ -357,8 +337,8 @@ public class ContextHelpPart extends SectionPart implements IHelpPart {
 	 */
 	private String decodeContextBoldTags(IContext context) {
 		String styledText;
-		if (context instanceof IContext2) {
-			styledText = ((IContext2) context).getStyledText();
+		if (context instanceof IStyledContext) {
+			styledText = ((IStyledContext) context).getStyledText();
 		} else {
 			styledText = context.getText();
 		}

@@ -26,7 +26,7 @@
 <%
 if(!data.isLinksRequest()) {
 	out.write(WebappResources.getString("pressF1", request));
-} else if (data.getLinkCount() == 0){
+} else if (data.getLinksCount() == 0){
 	out.write(WebappResources.getString("Nothing_found", null));
 } else {
 %>
@@ -34,15 +34,14 @@ if(!data.isLinksRequest()) {
 <table border="0" cellpadding="0" cellspacing="0">
 
 <%
-	for (int link = 0; i < data.getLinkCount(); link++) 
+	for (int link = 0; link < data.getLinksCount(); link++) 
 	{
 %>
 
 <tr id='r<%=link%>'>
 	<td align='left' nowrap>
 		<a id='a<%=link%>' 
-		   href='<%=data.getTopicHref(link)%>' 
-		   title="<%=data.getTopicTocLabel(link)%>">
+		   href='<%=data.getTopicHref(link)%>'>
 		   <img src="<%=prefs.getImagesDirectory()%>/topic.gif" border=0>
 		   <%=data.getTopicLabel(link)%>
 		 </a>

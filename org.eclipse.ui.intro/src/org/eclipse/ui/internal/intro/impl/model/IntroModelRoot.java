@@ -26,7 +26,7 @@ import org.w3c.dom.*;
  * appropriate classes.
  * 
  * Model rules:
- * <ol>
+ * <ul>
  * <li>if an attribute is not included in the markup, its value will be null in
  * the model.</li>
  * <li>the current page id is set silently when loading the model. You do not
@@ -68,6 +68,11 @@ import org.w3c.dom.*;
  * is a must, null the DOM class instance the minute you are done. This is
  * because you want the VM to garbage collect the DOM model. Keeping a reference
  * to the DOM model from the Intro model will prevent that.</li>
+ * <li>(since 3.0.2) several passes are used to resolve contributions to
+ * anchors that themselves where contributed through an extension. Each time a
+ * contribution is resolved, the model tries to resolve all unresolved
+ * contribution, recursively.
+ * </ul>
  * </ol>
  */
 public class IntroModelRoot extends AbstractIntroContainer {
@@ -96,6 +101,11 @@ public class IntroModelRoot extends AbstractIntroContainer {
     // the config extensions for this model.
     private IConfigurationElement[] configExtensionElements;
 
+    // a hashtable to hold all loaded DOMs until resolving all configExtensions
+    // is done. Key is the extensionContent DOM element, while value is the
+    // bundle from where it was loaded.
+    private Hashtable unresolvedConfigExt = new Hashtable();
+
     // maintain listener list for model changes.
     private ListenerList propChangeListeners = new ListenerList(2);
 
@@ -103,6 +113,7 @@ public class IntroModelRoot extends AbstractIntroContainer {
      * Model root. Takes a configElement that represents <config>in the
      * plugin.xml markup AND all the extension contributed to this model through
      * the configExtension point.
+     *  
      */
     public IntroModelRoot(IConfigurationElement configElement,
             IConfigurationElement[] configExtensionElements) {
@@ -179,7 +190,7 @@ public class IntroModelRoot extends AbstractIntroContainer {
     }
 
     /**
-     * Resolve each include in this container's children.
+     * Resolve contributions into this container's children.
      */
     protected void resolveChildren() {
         // now handle config extension.
@@ -248,56 +259,89 @@ public class IntroModelRoot extends AbstractIntroContainer {
     }
 
     /**
-     * Handles all the configExtensions to this current model.
+     * Handles all the configExtensions to this current model. Resolving
+     * configExts means finding target anchor and inserting extension content at
+     * target. Also, several passes are used to resolve as many extensions as
+     * possible. This allows for resolving nested anchors (ie: anchors to
+     * anchors in contributions).
      *  
      */
     private void resolveConfigExtensions() {
-        for (int i = 0; i < configExtensionElements.length; i++) {
-            // get the bundle from the extensions since they are defined in
-            // other plugins.
-            Bundle bundle = ModelLoaderUtil
-                    .getBundleFromConfigurationElement(configExtensionElements[i]);
-
-            Document dom = loadDOM(configExtensionElements[i]);
-            if (dom == null)
-                // we failed to parse the content file. Intro Parser would
-                // have logged the fact. Parser would also have checked to
-                // see if the content file has the correct root tag.
-                continue;
-
-            // Find the target of this container extension, and add all its
-            // children to target. Make sure to pass bundle to propagate to all
-            // children.
-            Element extensionContentElement = loadExtensionContent(dom, bundle);
-            if (extensionContentElement == null)
-                // no extension content defined.
-                continue;
-
-            if (extensionContentElement.hasAttribute("failed")) { //$NON-NLS-1$
-                // we failed to resolve this configExtension, because target
-                // could not be found or is not an anchor, add the extension
-                // as a (unresolved) child of this model.
-                children.add(new IntroExtensionContent(extensionContentElement,
-                        bundle));
-                continue;
-            }
-
-            // Now load all pages and shared groups from this config extension
-            // only if we resolved this extension. No point adding pages that
-            // will never be referenced.
-            Element[] pages = ModelLoaderUtil.getElementsByTagName(dom,
-                    IntroPage.TAG_PAGE);
-            for (int j = 0; j < pages.length; j++) {
-                // Create the model class for an intro Page.
-                IntroPage page = new IntroPage(pages[j], bundle);
-                page.setParent(this);
-                children.add(page);
-            }
-
-            // load all shared groups from all configExtensions to this model.
-            loadSharedGroups(dom, bundle);
+        for (int i = 0; i < configExtensionElements.length; i++)
+            resolveConfigExtension(configExtensionElements[i]);
+        // now add all unresolved extensions as model children and log fact.
+        Enumeration keys = unresolvedConfigExt.keys();
+        while (keys.hasMoreElements()) {
+            Element configExtensionElement = (Element) keys.nextElement();
+            children.add(new IntroExtensionContent(configExtensionElement,
+                    (Bundle) unresolvedConfigExt.get(configExtensionElement)));
         }
+
     }
+
+
+    private void resolveConfigExtension(IConfigurationElement configExtElement) {
+        // get the bundle from the extensions since they are defined in
+        // other plugins.
+        Bundle bundle = ModelLoaderUtil
+                .getBundleFromConfigurationElement(configExtElement);
+
+        Document dom = loadDOM(configExtElement);
+        if (dom == null)
+            // we failed to parse the content file. Intro Parser would
+            // have logged the fact. Parser would also have checked to
+            // see if the content file has the correct root tag.
+            return;
+        else
+            resolveConfigExtension(dom, bundle);
+    }
+
+
+    private void resolveConfigExtension(Document dom, Bundle bundle) {
+        // Find the target of this container extension, and add all its
+        // children to target. Make sure to pass bundle to propagate to all
+        // children.
+        Element extensionContentElement = loadExtensionContent(dom, bundle);
+        if (extensionContentElement == null)
+            // no extension content defined, ignore extension completely.
+            return;
+
+        if (extensionContentElement.hasAttribute("failed")) { //$NON-NLS-1$
+            // we failed to resolve this configExtension, because target
+            // could not be found or is not an anchor, add the extension
+            // as an (unresolved) child of this model.
+
+            //   children.add(new
+            // IntroExtensionContent(extensionContentElement,
+            //          bundle));
+            if (!unresolvedConfigExt.containsKey(extensionContentElement))
+                unresolvedConfigExt.put(extensionContentElement, bundle);
+
+            return;
+        }
+
+        // We resolved a contribution. Now load all pages and shared groups
+        // from this config extension. No point adding pages that will never
+        // be referenced.
+        Element[] pages = ModelLoaderUtil.getElementsByTagName(dom,
+                IntroPage.TAG_PAGE);
+        for (int j = 0; j < pages.length; j++) {
+            // Create the model class for an intro Page.
+            IntroPage page = new IntroPage(pages[j], bundle);
+            page.setParent(this);
+            children.add(page);
+        }
+
+        // load all shared groups from all configExtensions to this model.
+        loadSharedGroups(dom, bundle);
+
+        // since we resolved a contribution, try resolving some of the
+        // unresolved ones before going on.
+        unresolvedConfigExt.remove(extensionContentElement);
+        tryResolvingExtensions();
+    }
+
+
 
     /**
      * load the extension content of this configExtension into model classes,
@@ -336,8 +380,21 @@ public class IntroModelRoot extends AbstractIntroContainer {
             IntroAnchor targetAnchor = (IntroAnchor) target;
             insertAnchorChildren(targetAnchor, extensionContent, bundle);
             handleExtensionStyleInheritence(targetAnchor, extensionContent);
+            // make sure to remove failed flag otherwise recursive resolving
+            // will not owrk.
+            extensionContentElement.removeAttribute("failed");
         }
         return extensionContentElement;
+    }
+
+
+    private void tryResolvingExtensions() {
+        Enumeration keys = unresolvedConfigExt.keys();
+        while (keys.hasMoreElements()) {
+            Element configExtensionElement = (Element) keys.nextElement();
+            resolveConfigExtension(configExtensionElement.getOwnerDocument(),
+                    (Bundle) unresolvedConfigExt.get(configExtensionElement));
+        }
     }
 
 
@@ -425,7 +482,7 @@ public class IntroModelRoot extends AbstractIntroContainer {
 
     /**
      * @return Returns the standby Page. May return null if standby page is not
-     *         defined.
+     *               defined.
      */
     public IntroHomePage getStandbyPage() {
         return standbyPage;
@@ -433,7 +490,7 @@ public class IntroModelRoot extends AbstractIntroContainer {
 
     /**
      * @return all pages *excluding* the Home Page. If all pages are needed,
-     *         call <code>(AbstractIntroPage[])
+     *               call <code>(AbstractIntroPage[])
      *         getChildrenOfType(IntroElement.ABSTRACT_PAGE);</code>
      */
     public IntroPage[] getPages() {
@@ -467,12 +524,12 @@ public class IntroModelRoot extends AbstractIntroContainer {
      * id, the message is logged, and the model retains its old current page.
      * 
      * @param currentPageId
-     *            The currentPageId to set. *
+     *                   The currentPageId to set. *
      * @param fireEvent
-     *            flag to indicate if event notification is needed.
+     *                   flag to indicate if event notification is needed.
      * @return true if the model has a page with the passed id, false otherwise.
-     *         If the method fails, the current page remains the same as the
-     *         last state.
+     *               If the method fails, the current page remains the same as the
+     *               last state.
      */
     public boolean setCurrentPageId(String pageId, boolean fireEvent) {
         if (pageId == currentPageId)
@@ -510,7 +567,7 @@ public class IntroModelRoot extends AbstractIntroContainer {
      * trigger a UI refresh.
      * 
      * @param propertyId
-     *            the id of the property that changed
+     *                   the id of the property that changed
      */
     public void firePropertyChange(final int propertyId) {
         Object[] array = propChangeListeners.getListeners();
@@ -538,7 +595,7 @@ public class IntroModelRoot extends AbstractIntroContainer {
 
     /**
      * @return Returns the currentPage. return null if page is not found, or if
-     *         we are not in a dynamic intro mode.
+     *               we are not in a dynamic intro mode.
      */
     public AbstractIntroPage getCurrentPage() {
         if (!isdynamicIntro)

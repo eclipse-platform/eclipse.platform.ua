@@ -95,7 +95,7 @@ public class LinksData extends RequestData {
 	private void loadLinks() {
 
 		String contextId = request.getParameter("contextId");
-		IContext context = HelpPlugin.getContextManager().getContext(contextId);
+		IContext context = HelpSystem.getContext(contextId);
 		if (context == null) {
 			links = new IHelpResource[0];
 			return;

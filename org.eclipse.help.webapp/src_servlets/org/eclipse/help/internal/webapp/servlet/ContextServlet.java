@@ -43,7 +43,7 @@ public class ContextServlet extends HttpServlet {
 		if (contextId == null || contextId.length() < 2)
 			throw new ServletException();
 		contextId = contextId.substring(1);
-		IContext context = HelpPlugin.getContextManager().getContext(contextId);
+		IContext context = HelpSystem.getContext(contextId);
 		if (context == null)
 			throw new ServletException();
 		

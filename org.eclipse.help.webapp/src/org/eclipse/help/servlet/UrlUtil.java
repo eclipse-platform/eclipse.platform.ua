@@ -89,6 +89,7 @@ public class UrlUtil {
 	}
 	/**
 	 * Decodes strings encoded with Javascript 1.3 escape
+	 * Handles DBCS charactes that escape encoded as %uHHLL.
 	 */
 	public static String unescape(String encodedURL) {
 		int len = encodedURL.length();
@@ -149,7 +150,9 @@ public class UrlUtil {
 	/**
 	 * Obtains parameter from request.
 	 * request.getParameter() returns incorrect string
-	 * for non ASCII queries encoded from UTF-8 bytes
+	 * for non ASCII queries encoded from UTF-8 bytes.
+	 * When move to servlet 2.3, use request.setCharacterEncoding()
+	 * and get rid of this method.
 	 */
 	public static String getRequestParameter(
 		HttpServletRequest request,
@@ -159,7 +162,9 @@ public class UrlUtil {
 	/**
 	 * Obtains parameter from request query string.
 	 * request.getParameter() returns incorrect string
-	 * for non ASCII queries encoded from UTF-8 bytes
+	 * for non ASCII queries encoded from UTF-8 bytes.
+	 * When move to servlet 2.3, use request.setCharacterEncoding()
+	 * and get rid of this method.
 	 */
 	public static String getRequestParameter(
 		String query,
@@ -173,7 +178,10 @@ public class UrlUtil {
 	/**
 	 * Obtains values of a parameter from request.
 	 * request.getParameter() returns incorrect string
-	 * for non ASCII queries encoded from UTF-8 bytes
+	 * for non ASCII queries encoded from UTF-8 bytes.
+	 * When move to servlet 2.3, use request.setCharacterEncoding()
+	 * and get rid of this method.
+	 * @return String[]
 	 */
 	public static String[] getRequestParameters(
 		HttpServletRequest request,
@@ -183,6 +191,8 @@ public class UrlUtil {
 	/**
 	 * Obtains values of a parameter from request query string.
 	 * @return String[]
+	 * When move to servlet 2.3, use request.setCharacterEncoding()
+	 * and get rid of this method.
 	 */
 	public static String[] getRequestParameters(
 		String query,
@@ -273,7 +283,7 @@ public class UrlUtil {
 	}
 
 	/**
-	 * Encodes string for embedding in html source
+	 * Encodes string for embedding in html source.
 	 */
 	public static String htmlEncode(String str) {
 	
@@ -313,7 +323,7 @@ public class UrlUtil {
 	}
 	
 	/**
-	 *  change all occurrences of oldPat to newPat
+	 *  Changes all occurrences of oldPat to newPat in a string in.
 	 */
 	public static String change(String in, String oldPat, String newPat) {
 		if (oldPat.length() == 0)

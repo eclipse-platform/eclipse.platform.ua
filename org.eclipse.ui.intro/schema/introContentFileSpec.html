@@ -6,7 +6,12 @@
 <meta name="GENERATOR" content="Microsoft FrontPage 5.0">
 <meta name="ProgId" content="FrontPage.Editor.Document">
 <meta http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="style.css" charset="ISO-8859-1" type="text/css">
+<!-- default platform documentation stylesheets -->
+<style>@import url("../../book.css");</style>
+<style>@import url("book.css");</style>
+<!-- default schema documentation stylesheets -->
+<style>@import url("schema.css");</style>
+
 <title>Intro Content File XML Format</title>
 </head>
 
@@ -282,7 +287,7 @@ is supported for both the HTML and SWT presentations.</p>
 <p><br>
 &nbsp;</p>
 <ul class="ConfigMarkup" id="attlistDesc">
-  <li><b>id</b> - unique identifier of this HTML element </li>
+  <li><b>id</b> - unique identifier of this content provider element. </li>
   <li><b>pluginId</b> - The id of the plug-in that contains the IContentProvider 
   class specified by the class attribute. This is an optional attribute that 
   should be used if the class doesn't come from the same plug-in that defined 

@@ -610,7 +610,7 @@ Another difference between the tags is that the html tag is only supported for t
          <attribute name="id" type="string" use="required">
             <annotation>
                <documentation>
-                  unique identifier of this HTML element
+                  unique identifier of this content provider element.
                </documentation>
             </annotation>
          </attribute>

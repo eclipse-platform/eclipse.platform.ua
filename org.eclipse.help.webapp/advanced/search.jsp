@@ -162,6 +162,7 @@ function doSearch(query)
 			return;
 		query ="searchWord="+escape(searchWord)+"&maxHits="+maxHits;
 	}
+	query=query+"&encoding=js";
 		
 	/******** HARD CODED VIEW NAME *********/
 	parent.HelpFrame.NavFrame.showView("search");

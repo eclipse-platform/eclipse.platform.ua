@@ -3,20 +3,16 @@
  * All Rights Reserved.
  */
 package org.eclipse.help.servlet.data;
-import java.io.*;
-import java.text.*;
+import java.text.NumberFormat;
 import java.util.*;
-import java.util.ArrayList;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
-import org.eclipse.core.runtime.*;
-import org.eclipse.help.*;
-import org.eclipse.help.internal.*;
+import org.eclipse.help.internal.HelpSystem;
 import org.eclipse.help.internal.search.*;
 import org.eclipse.help.internal.util.*;
-import org.eclipse.help.servlet.*;
+import org.eclipse.help.servlet.UrlUtil;
 
 /**
  * Helper class for searchView.jsp initialization
@@ -45,7 +41,15 @@ public class SearchData extends RequestData {
 		if (topicHref != null && topicHref.length() == 0)
 			topicHref = null;
 
-		searchWord = request.getParameter("searchWord");
+		if (UrlUtil.isIE(request)
+			&& request.getParameter("encoding") != null) {
+			// parameter is escaped using JavaScript
+			searchWord =
+				UrlUtil.unescape(
+					UrlUtil.getRawRequestParameter(request, "searchWord"));
+		} else {
+			searchWord = request.getParameter("searchWord");
+		}
 
 		// try loading search results or get the indexing progress info.
 		if (isSearchRequest()) {
@@ -68,8 +72,7 @@ public class SearchData extends RequestData {
 	 * @return boolean
 	 */
 	public boolean isSearchRequest() {
-		return (
-			request.getParameter("searchWord") != null);
+		return (request.getParameter("searchWord") != null);
 	}
 
 	/**
@@ -86,7 +89,7 @@ public class SearchData extends RequestData {
 	public int getResultsCount() {
 		return hits.length;
 	}
-	
+
 	public String getSelectedTopicId() {
 		return selectedTopicId;
 	}
@@ -110,14 +113,14 @@ public class SearchData extends RequestData {
 			return String.valueOf(hits[i].getScore());
 		}
 	}
-	
+
 	public String getTopicTocLabel(int i) {
 		if (hits[i].getToc() != null)
 			return UrlUtil.htmlEncode(hits[i].getToc().getLabel());
 		else
 			return "";
 	}
-	
+
 	/**
 	 * Return indexed completion percentage
 	 */
@@ -135,14 +138,13 @@ public class SearchData extends RequestData {
 			return searchWord;
 	}
 
-
 	/**
 	 * Returns the list of selected TOC's as a comma-separated list
 	 */
 	public String getSelectedTocsList() {
 		String[] books = request.getParameterValues("scope");
 		StringBuffer booksList = new StringBuffer();
-		if (books!=null && books.length > 0) {
+		if (books != null && books.length > 0) {
 			booksList.append('"');
 			booksList.append(UrlUtil.JavaScriptEncode(books[0]));
 			booksList.append('"');
@@ -161,10 +163,10 @@ public class SearchData extends RequestData {
 	 */
 	public boolean isTocSelected(int toc) {
 		TocData tocData = new TocData(context, request);
-		String href=tocData.getTocHref(toc);
+		String href = tocData.getTocHref(toc);
 		String[] books = request.getParameterValues("scope");
-		for(int i=0; i<books.length; i++){
-			if(books[i].equals(href)){
+		for (int i = 0; i < books.length; i++) {
+			if (books[i].equals(href)) {
 				return true;
 			}
 		}
@@ -178,13 +180,15 @@ public class SearchData extends RequestData {
 	private void loadSearchResults() {
 		try {
 			SearchProgressMonitor pm =
-				SearchProgressMonitor.getProgressMonitor(
-					getLocale());
+				SearchProgressMonitor.getProgressMonitor(getLocale());
 			if (pm.isDone()) {
 				this.indexCompletion = 100;
-				
-				SearchResults results=createHitCollector();
-				HelpSystem.getSearchManager().search(createSearchQuery(), results, pm);
+
+				SearchResults results = createHitCollector();
+				HelpSystem.getSearchManager().search(
+					createSearchQuery(),
+					results,
+					pm);
 				hits = results.getSearchHits();
 				if (hits == null) {
 					Logger.logError(Resources.getString("index_is_busy"), null);
@@ -200,15 +204,22 @@ public class SearchData extends RequestData {
 		}
 
 	}
-	private ISearchQuery createSearchQuery(){
-		String fieldSearchStr=request.getParameter("fieldSearch");
-		boolean fieldSearch=fieldSearchStr!=null?new Boolean(fieldSearchStr).booleanValue():false;
-		
-		return new SearchQuery(searchWord,fieldSearch, new ArrayList(), getLocale());
+	private ISearchQuery createSearchQuery() {
+		String fieldSearchStr = request.getParameter("fieldSearch");
+		boolean fieldSearch =
+			fieldSearchStr != null
+				? new Boolean(fieldSearchStr).booleanValue()
+				: false;
+
+		return new SearchQuery(
+			searchWord,
+			fieldSearch,
+			new ArrayList(),
+			getLocale());
 	}
-	private SearchResults createHitCollector(){
-		String[] scopes=request.getParameterValues("scope");
-		Collection scopeCol=null;
+	private SearchResults createHitCollector() {
+		String[] scopes = request.getParameterValues("scope");
+		Collection scopeCol = null;
 		if (scopes != null) {
 			if (scopes.length
 				!= HelpSystem.getTocManager().getTocs(getLocale()).length) {
@@ -219,9 +230,9 @@ public class SearchData extends RequestData {
 				}
 			}
 		}
-		
-		int maxHits=500;
-		String maxHitsStr=request.getParameter("maxHits");
+
+		int maxHits = 500;
+		String maxHitsStr = request.getParameter("maxHits");
 		if (maxHitsStr != null) {
 			try {
 				int clientmaxHits = Integer.parseInt(maxHitsStr);

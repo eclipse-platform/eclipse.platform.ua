@@ -245,20 +245,24 @@ function mouseMoveHandler(e) {
  */
 function mouseClickHandler(e) {
 
-  var clickedNode;
-  if (isMozilla)
-  	clickedNode = e.target;
-  else if (isIE)
-   	clickedNode = window.event.srcElement;
-  else 
-  	return;
+	// hide popup if open
+	var menu = document.getElementById("menu");
+	if (menu && menu.style.display == "block")
+		menu.style.display = "none";
+		
+  	var clickedNode;
+ 	if (isMozilla)
+  		clickedNode = e.target;
+  	else if (isIE)
+   		clickedNode = window.event.srcElement;
+  	else 
+  		return true;
   	
-  highlightTopic(clickedNode);
+  	highlightTopic(clickedNode);
 
-  if (isMozilla)
-  	e.cancelBubble = true;
+  	if (isMozilla)
+  		e.cancelBubble = true;
 }
-
 
 
 function focusHandler(e)

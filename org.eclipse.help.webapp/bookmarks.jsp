@@ -75,15 +75,16 @@ TABLE {
 }
 
 #menu {
+	position:absolute;
+	display:none;
 	background:ButtonFace;
 	border:2px outset;
-	margin:2px;
+	padding:2px 0px;
 }
 
 #removeBookmark {
-	width:80%;
-	margin-left:10px;
-	margin-right:2px;
+	padding-left:10px;
+	padding-right:10px;
 }
 
 .selected {
@@ -119,6 +120,7 @@ var bookmark;
  */
 function removeBookmark() 
 {
+	alert("remove bookmark " + bookmark)
 	if (!bookmark) 
 		return;
 		
@@ -136,8 +138,10 @@ function removeBookmark()
 	if (title == null || title == "")
 		title = url;
 			
+	bookmark = null;
 	window.location.replace("bookmarks.jsp?remove="+url+"&title="+escape(title));
 }
+
 
 /**
  * Popup a menu on right click over a bookmark.
@@ -158,8 +162,6 @@ function contextMenuHandler(e)
   		clickedNode = e.target;
   	else if (isIE)
    		clickedNode = e.srcElement;
-  	else 
-  		return true;
 
   	if (!clickedNode)
   		return true;
@@ -194,16 +196,6 @@ function contextMenuHandler(e)
 	
 	return false;
 }
-
-/*
-// listen for right click events
-if (isMozilla) {
-  document.addEventListener('onmousedown', mouseDownHandler, true);
-}
-else if (isIE){
-  document.onmousedown = mouseDownHandler;
-}
-*/
 
 </script>
 
@@ -240,9 +232,8 @@ else if (isIE){
 %>
 
 </table>
-
-<div id="menu" style="position:absolute;display:none;">
-	<div id="removeBookmark" class="unselected" onmouseover="this.className='selected'" onmouseout="this.className='unselected'" onclick="removeBookmark()">Remove</div>
+<div id="menu">
+	<div id="removeBookmark" class="unselected" onmouseover="this.className='selected'" onmouseout="this.className='unselected'" onclick="removeBookmark()"><%=WebappResources.getString("RemoveBookmark",request)%></div>
 </div>
 
 </body>

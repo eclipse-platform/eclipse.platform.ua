@@ -30,7 +30,7 @@ public class TocFile {
 	/**
 	 * Toc File Constructor
 	 */
-	protected TocFile(
+	public TocFile(
 		String plugin,
 		String href,
 		boolean primary,

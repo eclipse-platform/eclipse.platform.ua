@@ -28,14 +28,15 @@ function liveAction(pluginId, className, argument)
 	// to do: cleanup this, including the location of the hidden livehelp frame.
 
 	// navigate to top help frameset
-	for (var x=self; x; x = x.parent)
+	var x;
+	for (x=self; x; x = x.parent)
 		if (x.EclipseHelpSystem)
 			break;
 	
 	if (x == null) 
 		return;
 		
-	var toolbarFrame = x.ToolbarFrame;
+	var toolbarFrame = x.HelpFrame.ContentFrame.ToolbarFrame;
 	if (!toolbarFrame)
 		return;
 
@@ -66,7 +67,13 @@ function showTopicInContents(topic) {
 		
 	try
 	{
-		parent.displayTocFor(topic);
+		// navigate to top help frameset
+		var x;
+		for (x=self; x; x = x.parent)
+		if (x.EclipseHelpSystem)
+			break;
+		if (x != null)		
+			x.HelpFrame.NavFrame.displayTocFor(topic);
 	}
 	catch(e)
 	{

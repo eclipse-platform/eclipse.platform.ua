@@ -14,7 +14,7 @@ import org.eclipse.help.servlet.UrlUtil;
 import org.w3c.dom.*;
 
 /**
- * Helper class for toc.jsp initialization
+ * Helper class for tocView.jsp initialization
  */
 public class TocData extends RequestData {
 

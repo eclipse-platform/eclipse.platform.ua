@@ -71,10 +71,10 @@ public class LayoutData extends RequestData {
 		if (views != null)
 			return views;
 		views = new View[] {
-			new View("toc", "toc.jsp", prefs.getImagesDirectory()+"/contents_view.gif"),
-			new View("search", "search_results.jsp", prefs.getImagesDirectory()+"/search_results_view.gif"),
-			new View("links", "links.jsp", prefs.getImagesDirectory()+"/links_view.gif"),
-			new View("bookmarks", "bookmarks.jsp", prefs.getImagesDirectory()+"/bookmarks_view.gif")
+			new View("toc", "", prefs.getImagesDirectory()+"/contents_view.gif"),
+			new View("search", "", prefs.getImagesDirectory()+"/search_results_view.gif"),
+			new View("links", "", prefs.getImagesDirectory()+"/links_view.gif"),
+			new View("bookmarks", "", prefs.getImagesDirectory()+"/bookmarks_view.gif")
 		};
 		return views;
 	}
@@ -85,5 +85,14 @@ public class LayoutData extends RequestData {
 			return view;
 		else
 			return "toc";
+	}
+	
+	public View getCurrentView() {
+		String name = request.getParameter("view");
+		views = getViews();
+		for (int i=0; i<views.length; i++)
+			if (views[i].getName().equals(name))
+				return views[i];
+		return null;
 	}
 }

@@ -43,7 +43,7 @@ function bookmarkPage(button)
 		if (title == null || title == "")
 			title = url;
 			
-		parent.parent.NavFrame.ViewsFrame.bookmarks.location.replace("bookmarks.jsp?add="+url+"&title="+escape(title));
+		parent.parent.NavFrame.ViewsFrame.bookmarks.location.replace("bookmarksView.jsp?add="+url+"&title="+escape(title));
 	}catch (e) {}
 	if (isIE && button) button.blur();
 

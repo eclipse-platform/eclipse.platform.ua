@@ -15,7 +15,7 @@ import org.eclipse.help.servlet.UrlUtil;
 import org.w3c.dom.*;
 
 /**
- * Helper class for search_results.jsp initialization
+ * Helper class for searchView.jsp initialization
  */
 public class SearchData extends RequestData {
 
@@ -111,7 +111,7 @@ public class SearchData extends RequestData {
 			for (int i = 0; i < topics.getLength(); i++) {
 				Element topic = (Element) topics.item(i);
 				
-				// the following assume topic numbering as in search_results.jsp
+				// the following assume topic numbering as in searchView.jsp
 				if (topic.getAttribute("href").equals(topicHref))
 					selectedTopicId = "a"+i;
 					

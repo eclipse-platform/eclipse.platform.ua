@@ -131,8 +131,7 @@ function restoreNavigation()
 </script>
 </head>
 
-<frameset onload="showView('<%=data.getVisibleView()%>')" id="navFrameset" rows="24,*,24"  framespacing="0" border="0"  frameborder="0" spacing="0"  scrolling="no">
-   <frame name="ToolbarFrame" src='<%="navToolbar.jsp"+data.getQuery()%>' marginwidth="0" marginheight="0" scrolling="no" frameborder="0" noresize>
+<frameset onload="showView('<%=data.getVisibleView()%>')" id="navFrameset" rows="*,24"  framespacing="0" border="0"  frameborder="0" spacing="0"  scrolling="no">
    <frame name="ViewsFrame" src='<%="views.jsp"+data.getQuery()%>' marginwidth="0" marginheight="0" scrolling="no" frameborder="0" resize=yes>
    <frame name="TabsFrame" src='<%="tabs.jsp"+data.getQuery()%>' marginwidth="0" marginheight="0" scrolling="no" frameborder="0" noresize>
 </frameset>

@@ -57,17 +57,6 @@ IFRAME {
 
 <script language="Javascript">
 
-var titleArray = new Array ();
-<%
-	for (int i=0; i<views.length; i++) 
-	{	
-%>
-	titleArray['<%=views[i].getName()%>'] = '<%=WebappResources.getString(views[i].getName(), request)%>';
-<%
-	}
-%>
-
-
 var lastView = "";
 /**
  * Switches to specified view
@@ -78,9 +67,6 @@ function showView(view)
 		return;
 		
 	lastView = view;
-	
-	// set the title on the navigation toolbar to match the tab
-  	parent.setNavToolbarTitle(titleArray[view]);
        	
 	// show appropriate frame
  	var iframes = parent.ViewsFrame.document.body.getElementsByTagName("IFRAME");
@@ -106,7 +92,7 @@ function showView(view)
  		    class="<%=className%>"  
  		    name="<%=views[i].getName()%>" 
  		    id="<%=views[i].getName()%>" 
- 		    src="<%=views[i].getURL()+data.getQuery()%>" >
+ 		    src='<%="view.jsp?view="+views[i].getName()+"&"+request.getQueryString()%>'>
  	</iframe> 
 <%
 	}

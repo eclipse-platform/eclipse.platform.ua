@@ -38,16 +38,11 @@ BODY {
 #tdborder {
 	border:1px solid WindowText; 
 	border-left-width:0;
+	border-right-width:0;
 }
 
 <%
-if (data.isIE()) {
-%>
-#tdborder {
-	border-right-width:0;
-}
-<%
-} else if (data.isMozilla()) {
+if (data.isMozilla()) {
 %>
 #hide_nav {
 	display:none;
@@ -93,6 +88,20 @@ function setTitle(label)
 	text.nodeValue = " "+label;
 }
 
+
+/**
+ * handler for double click: maximize/restore this view
+ */
+function mouseDblClickHandler(e) {
+	toggleNav();
+}
+
+if (isMozilla)
+  document.addEventListener('dblclick', mouseDblClickHandler, true);
+else if (isIE)
+  document.ondblclick = mouseDblClickHandler;
+
+
 </script>
 
 </head>
@@ -102,7 +111,7 @@ function setTitle(label)
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%" style="padding-left:5;">
 			<tr>
 				<td style="font: <%=prefs.getToolbarFont()%>">
-					<div id="titleText">&nbsp;
+					<div id="titleText"><%=data.getTitle()%>
 					</div>
 				</td>
 			</tr>
@@ -151,7 +160,7 @@ function setTitle(label)
 <%
 		}
 	}
-%>
+%>				
 			</tr>
 		</table>
 	</div>	

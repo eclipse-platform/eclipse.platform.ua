@@ -13,6 +13,8 @@
 	{
 %>
 <jsp:include page="toolbar.jsp">
+	<jsp:param name="view" value=""/>
+	
 	<jsp:param name="name"     value="back"/>
 	<jsp:param name="tooltip"  value='back_tip'/>
 	<jsp:param name="image"    value='back.gif'/>
@@ -100,4 +102,14 @@
 
 <%
 	}
+
+if (data.isIE()) {
 %>
+<style type="text/css">
+#tdborder {
+	border-right-width:0;
+}
+</style>
+<%
+}
+%> 

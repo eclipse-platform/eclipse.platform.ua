@@ -276,7 +276,7 @@ function highlightTopic(topic)
   	var a = getAnchorNode(topic); 
   	if (a != null)
   	{
-  	  	parent.parent.setContentToolbarTitle(tocTitle);
+  	  	parent.parent.parent.setContentToolbarTitle(tocTitle);
   	  	if (oldActive) 
   	  		oldActive.className = oldActiveClass;
 

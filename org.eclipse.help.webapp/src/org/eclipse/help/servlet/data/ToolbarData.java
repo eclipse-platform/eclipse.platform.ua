@@ -63,4 +63,8 @@ public class ToolbarData extends RequestData {
 	public ToolbarButton[] getButtons() {
 		return buttons;
 	}
+	
+	public String getTitle() {
+		return WebappResources.getString(request.getParameter("view"), request);
+	}
 }

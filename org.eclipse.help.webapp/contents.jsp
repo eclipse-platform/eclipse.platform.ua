@@ -145,9 +145,7 @@ function loadTOC(tocId)
 <script language="JavaScript">
 
 	// set title on the content toolbar
-	/**************
-	 * FIX THIS	 **************/
-	//parent.parent.setToolbarTitle('<%=UrlUtil.JavaScriptEncode(contents.getTocLabel(contents.getSelectedToc()))%>');
+	parent.parent.setToolbarTitle('<%=UrlUtil.JavaScriptEncode(contents.getTocLabel(contents.getSelectedToc()))%>');
 		
 	// select specified topic, or else the book
 	var topic = '<%=contents.getSelectedTopic()%>';

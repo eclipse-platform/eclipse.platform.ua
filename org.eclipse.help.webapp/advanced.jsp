@@ -85,10 +85,9 @@ FORM {
 
 #booksContainer {
 	background:Window;
-	border-top:1px solid ThreeDShadow;
-	border-bottom:1px solid ThreeDShadow;
-	padding-left:10px;
-	overflow:auto; ;
+	border:1px solid ThreeDShadow;
+	margin:0px 10px;
+	overflow:auto;
 }
 
 .book {
@@ -138,21 +137,10 @@ function doAdvancedSearch()
 		
 		window.opener.document.forms["searchForm"].searchWord.value = searchWord;
 		var query = "<%=searchWordParName%>="+escape(searchWord)+"&maxHits="+maxHits + "&scopedSearch=true" + scope;
-		window.opener.parent.doSearch(query);
+		window.opener.doSearch(query);
 		window.opener.focus();
 		window.close();
 	} catch(ex) {}
-}
-
-function fixHeights()
-{
-	var booksContainer = document.getElementById("booksContainer");
-	var h = opener.h
-			- document.getElementById("searchTable").offsetHeight 
-			- document.getElementById("buttonsTable").offsetHeight
-			- document.getElementById("selectBook").offsetHeight
-			- 30;
-	booksContainer.style.height = h;
 }
 
 function restoreSelectedBooks()
@@ -193,9 +181,6 @@ function onloadHandler()
 {
 	// select the books from previous run, or all otherwise
 	restoreSelectedBooks();
-	
-	// fix the height of the books container
-	fixHeights();
 }
 
 </script>
@@ -205,7 +190,7 @@ function onloadHandler()
 <body onload="onloadHandler()">
 
 <form name="searchForm" onsubmit="doAdvancedSearch()">
-
+<div style="overflow:auto;height:250px;">
 	<table id="searchTable" width="100%" cellspacing=0 cellpading=0 border=0 align=center >
 		<tr><td style="padding:0px 10px;"><%=WebappResources.getString("SearchExpression", request)%>
 		</td></tr>
@@ -238,6 +223,10 @@ for (int i=0; i<tocs.getLength(); i++)
 %>
 			</div>
 		</td></tr>
+	</table>
+</div>
+<div style="height:50px;">
+	<table valign="bottom" align="right">
 		<tr id="buttonsTable" valign="bottom"><td valign="bottom" align="right">
   			<table cellspacing=10 cellpading=0 border=0 align=right  style="background:transparent;">
 				<tr>
@@ -251,6 +240,7 @@ for (int i=0; i<tocs.getLength(); i++)
   			</table>
 		</td></tr>
 	</table>
+</div>
  </form>
 
 </body>

@@ -109,6 +109,7 @@ INPUT {
 
 <script language="JavaScript">
 var isIE = navigator.userAgent.indexOf('MSIE') != -1;
+var isMozilla = navigator.userAgent.toLowerCase().indexOf('mozilla') != -1 && parseInt(navigator.appVersion.substring(0,1)) >= 5;
 
 var extraStyle = "";
 if (isIE)
@@ -120,7 +121,7 @@ document.write(extraStyle);
 var selectedBooks=<%=booksArrayInit%>;
 var advancedDialog;
 var w = 400;
-var h = 400;
+var h = 300;
 
 function saveSelectedBooks(books)
 {
@@ -145,15 +146,27 @@ function closeAdvanced()
 	catch(e) {}
 }
 
-function doSearch()
+/**
+ * This function can be called from this page or from
+ * the advanced search page. When called from the advanced
+ * search page, a query is passed. */
+function doSearch(query)
 {
-	var form = document.forms["searchForm"];
-	var searchWord = form.searchWord.value;
-	var maxHits = form.maxHits.value;
-	if (!searchWord || searchWord == "")
-		return;
-	else
-		parent.doSearch("<%=searchWordParName%>="+escape(searchWord)+"&maxHits="+maxHits);
+	if (!query || query == "")
+	{
+		var form = document.forms["searchForm"];
+		var searchWord = form.searchWord.value;
+		var maxHits = form.maxHits.value;
+		if (!searchWord || searchWord == "")
+			return;
+		query ="<%=searchWordParName%>="+escape(searchWord)+"&maxHits="+maxHits;
+	}
+		
+	var viewsFrame = parent.HelpFrame.NavFrame.ViewsFrame;
+	if (isIE)
+		viewsFrame.document.SearchResults.location.replace("search_results.jsp?"+query);
+	else if (isMozilla)
+		viewsFrame.document.getElementById("SearchResults").src = "search_results.jsp?"+query; 
 }
 
 function fixHeights()

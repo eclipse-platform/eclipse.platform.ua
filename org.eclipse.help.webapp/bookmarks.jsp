@@ -88,7 +88,7 @@ TABLE {
 
 </style>
 
-<base target="MainFrame">
+<base target="ContentFrame">
 
 <script language="JavaScript" src="list.js"></script>
 

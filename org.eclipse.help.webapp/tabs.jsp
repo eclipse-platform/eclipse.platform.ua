@@ -1,4 +1,4 @@
-<%@ page import="java.util.*,org.eclipse.help.servlet.*,org.w3c.dom.*" errorPage="err.jsp" contentType="text/html; charset=UTF-8"%>
+<%@ page import="java.util.*,org.eclipse.help.servlet.*"  contentType="text/html; charset=UTF-8"%>
 
 <% 
 	// calls the utility class to initialize the application
@@ -72,24 +72,75 @@ IMG {
 }
 </style>
  
- <script language="JavaScript">
- var isMozilla = navigator.userAgent.indexOf('Mozilla') != -1 && parseInt(navigator.appVersion.substring(0,1)) >= 5;
- var extraStyle = "";
-  if (isMozilla)
-  	 extraStyle = "<style type='text/css'>BODY { height:21px;} </style>";
- 	
- document.write(extraStyle);
-</script>
+<script language="JavaScript">
 
+var isMozilla = navigator.userAgent.indexOf('Mozilla') != -1 && parseInt(navigator.appVersion.substring(0,1)) >= 5;
+var extraStyle = "";
+if (isMozilla)
+ 	extraStyle = "<style type='text/css'>BODY { height:21px;} </style>";
+document.write(extraStyle);
+ 
+
+var titleArray = new Array ();
+<%
+	View[] views = layout.getViews();
+	for (int i=0; i<views.length; i++) 
+	{	
+%>
+	titleArray['<%=views[i].getName()%>'] = '<%=WebappResources.getString(views[i].getName(), request)%>';
+<%
+	}
+%>
+
+var tocTitle = null;
+var lastTab = "";
+
+
+/* 
+ * Switch tabs.
+ */ 
+function switchTab(nav, newTitle)
+{ 	
+	if (nav == lastTab) 
+		return;
+		
+	lastTab = nav;
+	
+	// set the title on the navigation toolbar to match the tab
+  	if (newTitle)
+     	parent.ToolbarFrame.document.getElementById("titleText").innerHTML = newTitle;
+    else
+    	parent.ToolbarFrame.document.getElementById("titleText").innerHTML = titleArray[nav];
+       	
+	// show appropriate frame
+ 	var iframes = parent.ViewsFrame.document.body.getElementsByTagName("IFRAME");
+ 	for (var i=0; i<iframes.length; i++)
+ 	{			
+  		if (iframes[i].id != nav)
+   			iframes[i].className = "hidden";
+  		else
+   			iframes[i].className = "visible";
+ 	}
+ 
+ 	// show the appropriate pressed tab
+  	var buttons = document.body.getElementsByTagName("TD");
+  	for (var i=0; i<buttons.length; i++)
+  	{
+  		if (buttons[i].id == nav) // Note: assumes the same id shared by tabs and iframes
+			buttons[i].className = "pressed";
+		else if (buttons[i].className == "pressed")
+			buttons[i].className = "tab";
+ 	 }
+}
+</script>
 
 </head>
    
-<body>
+<body onload="switchTab('<%=layout.getVisibleView()%>')">
 
   <table cellspacing="0" cellpadding="0" border="0" width="100%" height="100%">
    <tr>
 <%
-	View[] views = layout.getViews();
 	for (int i=0; i<views.length; i++) 
 	{
 		String title = WebappResources.getString(views[i].getName(), request);
@@ -98,15 +149,14 @@ IMG {
 	     align="center"  
 	     class="tab" 
 	     id="<%=views[i].getName()%>" 
-	     onclick="parent.switchTab('<%=views[i].getName()%>')" 
+	     onclick="switchTab('<%=views[i].getName()%>')" 
 	     onmouseover="window.status='<%=views[i].getName()%>';return true;" 
 	     onmouseout="window.status='';">
-	     <a  href='javascript:parent.switchTab("<%=views[i].getName()%>");' 
+	     <a  href='javascript:switchTab("<%=views[i].getName()%>");' 
 	         onclick='this.blur()' 
 	         onmouseover="window.status='<%=title%>';return true;" 
 	         onmouseout="window.status='';">
-	         <img class="tabImage" 
-	              alt="<%=title%>" 
+	         <img alt="<%=title%>" 
 	              title="<%=title%>" 
 	              src="<%=views[i].getImageURL()%>"
 	         >

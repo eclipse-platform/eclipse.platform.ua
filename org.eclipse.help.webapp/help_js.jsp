@@ -144,13 +144,3 @@ function restoreNavigation()
 	}
 }
 
-
-function doSearch(query)
-{
-	switchTab("search");
-	if (!query || query == "") return;
-	if (isIE)
-		NavFrame.document.search.location.replace("search_results.jsp?"+query);
-	else if (isMozilla)
-		NavFrame.document.getElementById("search").src = "search_results.jsp?"+query; 
-}

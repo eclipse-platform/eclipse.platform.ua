@@ -92,7 +92,7 @@ public class QueryBuilder {
 					if (!highlightWords.contains(token.value))
 						highlightWords.add(token.value);
 				} else {
-					List wordList = analyzeText(analyzer, token.value);
+					List wordList = analyzeText(analyzer, "contents", token.value);
 					
 					// add original word to the list of words to highlight
 					if (wordList.size() > 0 && !highlightWords.contains(token.value))
@@ -115,7 +115,7 @@ public class QueryBuilder {
 				newTokens.add(token);
 			else if (token.type == QueryWordsToken.PHRASE) {
 				QueryWordsPhrase phrase = QueryWordsToken.phrase();
-				List wordList = analyzeText(analyzer, token.value);
+				List wordList = analyzeText(analyzer, "exact_contents", token.value);
 
 				// add original word to the list of words to highlight
 				if (wordList.size() > 0 && !highlightWords.contains(token.value))
@@ -126,8 +126,8 @@ public class QueryBuilder {
 					phrase.addWord(word);
 					
 					// add analyzed word to the list of words to highlight
-					if (!highlightWords.contains(word))
-						highlightWords.add(word);
+					// if (!highlightWords.contains(word))
+					//	highlightWords.add(word);
 				}
 				// add phrase only if not empty
 				if (phrase.getWords().size() > 0) {
@@ -141,10 +141,10 @@ public class QueryBuilder {
 	 * Get a list of tokens corresponding to a search word or phrase
 	 * @return List of String
 	 */
-	private List analyzeText(Analyzer analyzer, String text) {
+	private List analyzeText(Analyzer analyzer, String fieldName, String text) {
 		List words = new ArrayList(1);
 		Reader reader = new StringReader(text);
-		TokenStream tStream = analyzer.tokenStream("contents", reader);
+		TokenStream tStream = analyzer.tokenStream(fieldName, reader);
 		Token tok;
 		try {
 			while (null != (tok = tStream.next())) {
@@ -330,16 +330,17 @@ public class QueryBuilder {
 		return booleanQuery;
 	}
 	/**
-	 * Obtains analyzed words from query as one string.
-	 * Words are separated by space.
+	 * Obtains analyzed terms from query as one string.
+	 * Words are double quoted, and separated by space.
 	 * The analyzed words are needed for highlighting
 	 * word roots.
 	 */
-	public String getAnalyzedWords() {
+	public String gethighlightTerms() {
 		StringBuffer buf = new StringBuffer();
 		for (Iterator it = highlightWords.iterator(); it.hasNext();) {
+			buf.append('"');
 			buf.append(it.next());
-			buf.append(' ');
+			buf.append("\" ");
 		}
 
 		return buf.toString();

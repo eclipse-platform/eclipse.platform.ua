@@ -7,19 +7,24 @@ package org.eclipse.help.servlet;
 
 import java.util.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 public class HighlightFilter implements IFilter {
 	private String searchWord;
+	private HttpServletRequest request;
 
 	private static final String scriptPart1 =
 		"\n<script language=\"JavaScript\">\n<!--\nvar keywords = new Array (";
 	private static final String scriptPart3 =
-		");\nvar highlighted=false;\nonload=highlight;\ndocument.onreadystatechange=highlight;\nfunction highlight()\n{\nif(highlighted){\nreturn;\n}\nhighlighted=true;\nif (!document.body) return; var newText = document.body.createTextRange();\nfor (var i = 0; i < keywords.length; i++) {\nwhile (newText.findText(keywords[i]) )\n{\nvar replacement = newText.htmlText\nnewText.pasteHTML(\"<span class=highlight style='background-color:ButtonFace;color:ButtonText;'>\" + replacement + \"</span>\");\n}\nnewText = document.body.createTextRange();\n}\n}\n// -->\n</script>\n";
+		");\n-->\n</script>\n<script language=\"JavaScript\" src=\"";
+	private static final String scriptPart5 = "highlight.js\"></script>\n";
 
 	/**
 	 * Constructor.
 	 */
-	public HighlightFilter(String searchWord) {
-		this.searchWord = searchWord;
+	public HighlightFilter(HttpServletRequest request) {
+		this.request = request;
+		this.searchWord = UrlUtil.getRequestParameter(request, "resultof");
 	}
 
 	/*
@@ -44,6 +49,7 @@ public class HighlightFilter implements IFilter {
 	 */
 	private byte[] createJScript(Collection keywords) {
 		StringBuffer buf = new StringBuffer(scriptPart1);
+		// append comma separated list of keywords
 		Iterator it = keywords.iterator();
 		if (!it.hasNext())
 			return null;
@@ -53,18 +59,32 @@ public class HighlightFilter implements IFilter {
 			keyword = (String) it.next();
 			buf.append(", \"").append(keyword).append("\"");
 		}
+		//
 		buf.append(scriptPart3);
+		// append "../" to get to the webapp
+		String path = request.getPathInfo();
+		if (path != null) {
+			for (int i;
+				0 <= (i = path.indexOf('/'));
+				path = path.substring(i + 1)) {
+				buf.append("../");
+			}
+		}
+		//
+		buf.append(scriptPart5);
 		return buf.toString().getBytes();
 	}
 	/**
-	 * Extracts keywords from query 
+	 * Extracts keywords from query that contains
+	 * keywords dobule quoted and separated by space
 	 * @return Collection of String
 	 */
 	private Collection getWords() {
-		Collection tokens = new ArrayList();
-		//Divide along quotation marks and brackets
+		// Collect words to hash set to eliminate duplcates
+		Collection tokens = new HashSet();
+		//Divide along quotation marks
 		StringTokenizer qTokenizer =
-			new StringTokenizer(searchWord.trim(), "\"()", true);
+			new StringTokenizer(searchWord.trim(), "\"", true);
 		boolean withinQuotation = false;
 		String quotedString = "";
 		while (qTokenizer.hasMoreTokens()) {
@@ -81,28 +101,11 @@ public class HighlightFilter implements IFilter {
 				continue;
 			}
 			if (withinQuotation) {
-				quotedString += (curToken);
-			} else {
-				//divide not quoted strings along white space
-				StringTokenizer parser = new StringTokenizer(curToken.trim());
-				while (parser.hasMoreTokens()) {
-					tokens.add(parser.nextToken());
-				}
+				tokens.add(curToken);
 			}
-
 		}
 
-		Collection words = new HashSet(); // to eliminate duplicate words
-		for (Iterator it = tokens.iterator(); it.hasNext();) {
-			String token = (String) it.next();
-			String tokenLowerCase = token.toLowerCase(Locale.US);
-			if (!tokenLowerCase.equals("\"")
-				&& !tokenLowerCase.equals("and")
-				&& !tokenLowerCase.equals("or")
-				&& !tokenLowerCase.equals("not"))
-				words.add(token);
-		}
-		return words;
+		return tokens;
 
 	}
 	/**

@@ -200,8 +200,7 @@ public class EclipseConnector {
 				if (UrlUtil.getRequestParameter(req, "resultof") != null)
 					return new IFilter[] {
 						cssFilter,
-						new HighlightFilter(
-							UrlUtil.getRequestParameter(req, "resultof"))};
+						new HighlightFilter(req)};
 				else
 					return basicFilters;
 			} else
@@ -209,8 +208,7 @@ public class EclipseConnector {
 		} else {
 			if (UrlUtil.getRequestParameter(req, "resultof") != null)
 				return new IFilter[] {
-					new HighlightFilter(
-						UrlUtil.getRequestParameter(req, "resultof"))};
+					new HighlightFilter(req)};
 			else
 				return noFilters;
 		}

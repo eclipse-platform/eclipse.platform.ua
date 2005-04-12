@@ -60,7 +60,7 @@ public class HelpApplication implements IPlatformRunnable, IExecutableExtension 
 		metadata = new File(Platform.getLocation().toFile(), ".metadata/"); //$NON-NLS-1$
 		if (!BaseHelpSystem.ensureWebappRunning()) {
 			System.out
-					.println(NLS.bind(HelpBaseResources.HelpApplication_couldNotStart, Platform.getLogFileLocation().toOSString()));
+					.println(NLS.bind("HelpApplication.couldNotStart", Platform.getLogFileLocation().toOSString())); //$NON-NLS-1$
 			return EXIT_OK;
 		}
 

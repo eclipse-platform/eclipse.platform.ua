@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.0"?>
-<plugin>
-
-   <extension-point id="contexts" name="%contexts_extension_point_name" schema="schema/contexts.exsd"/>
-   <extension-point id="toc" name="%toc_extension_point_name" schema="schema/toc.exsd"/>
-   <extension-point id="contentProducer" name="%content_producer_extension_point_name" schema="schema/contentProducer.exsd"/>
-
-</plugin>

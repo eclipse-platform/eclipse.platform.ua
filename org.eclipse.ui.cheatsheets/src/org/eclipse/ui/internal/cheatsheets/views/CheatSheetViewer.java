@@ -913,17 +913,7 @@ public class CheatSheetViewer implements ICheatSheetViewer, IMenuContributor {
 	private boolean readFile() {
 		if(parser == null)
 			parser = new CheatSheetParser();
-		// If the cheat sheet was registered then
-		// search for a specific type - composite or simple
-		int cheatSheetKind = CheatSheetParser.ANY;
-		if (contentElement.isRegistered()) { 
-			if (contentElement.isComposite()) {
-				cheatSheetKind = CheatSheetParser.COMPOSITE_ONLY;
-			} else {
-				cheatSheetKind = CheatSheetParser.SIMPLE_ONLY;
-			}
-		}
-		model = parser.parse(contentURL, cheatSheetKind);
+		model = parser.parse(contentURL);
 		return model == null ? false : true;
 	}
 

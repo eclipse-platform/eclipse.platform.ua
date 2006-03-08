@@ -47,12 +47,6 @@ public class CheatSheetParser {
 
 	private DocumentBuilder documentBuilder;
 	private ArrayList itemExtensionContainerList;
-	
-	// Cheatsheet kinds that can be parsed
-	public static final int COMPOSITE_ONLY = 1;
-	public static final int SIMPLE_ONLY = 2;
-	public static final int ANY = 3;
-	
 
 
 	/**
@@ -793,7 +787,7 @@ public class CheatSheetParser {
 		}
 	}
 
-	public ICheatSheet parse(URL url, int cheatSheetKind) {
+	public ICheatSheet parse(URL url) {
 		if(url == null) {
 			return null;
 		}
@@ -840,7 +834,7 @@ public class CheatSheetParser {
 			}
 		}
 		
-		if ( cheatSheetKind == COMPOSITE_ONLY  ||  (cheatSheetKind == ANY && isComposite(document))) {
+		if (isComposite(document)) {
 			CompositeCheatSheetParser compositeParser = new CompositeCheatSheetParser();
 			CompositeCheatSheetModel result = compositeParser.parseCompositeCheatSheet(document, url);
 			if (!compositeParser.getStatus().isOK()) {

@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.ui.internal.cheatsheets.registry;
 
-import com.ibm.icu.text.Collator;
+import java.text.Collator;
 
 import org.eclipse.jface.viewers.*;
 import org.eclipse.ui.model.WorkbenchAdapter;

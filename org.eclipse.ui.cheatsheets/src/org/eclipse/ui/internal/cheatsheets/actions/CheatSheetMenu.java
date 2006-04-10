@@ -10,10 +10,8 @@
  *******************************************************************************/
 package org.eclipse.ui.internal.cheatsheets.actions;
 
-import com.ibm.icu.text.Collator;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.text.Collator;
+import java.util.*;
 import java.util.List;
 
 import org.eclipse.jface.action.ContributionItem;

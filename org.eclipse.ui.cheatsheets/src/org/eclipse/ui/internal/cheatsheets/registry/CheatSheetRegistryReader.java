@@ -10,13 +10,8 @@
  *******************************************************************************/
 package org.eclipse.ui.internal.cheatsheets.registry;
 
-import com.ibm.icu.text.Collator;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.StringTokenizer;
+import java.text.Collator;
+import java.util.*;
 
 import org.eclipse.core.runtime.*;
 import org.eclipse.ui.internal.cheatsheets.*;

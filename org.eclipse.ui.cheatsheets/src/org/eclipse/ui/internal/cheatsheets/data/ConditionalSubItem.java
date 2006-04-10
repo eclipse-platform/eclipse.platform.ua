@@ -10,8 +10,7 @@
  *******************************************************************************/
 package org.eclipse.ui.internal.cheatsheets.data;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.*;
 
 import org.eclipse.ui.internal.cheatsheets.views.CheatSheetManager;
 

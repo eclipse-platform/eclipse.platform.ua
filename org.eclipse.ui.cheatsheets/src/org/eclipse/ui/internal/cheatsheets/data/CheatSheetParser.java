@@ -12,7 +12,7 @@ package org.eclipse.ui.internal.cheatsheets.data;
 
 import java.io.*;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.*;
 
 import javax.xml.parsers.*;
 

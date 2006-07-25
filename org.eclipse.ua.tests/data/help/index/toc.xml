@@ -6,4 +6,5 @@
 		<topic label="topic3.html" href="data/help/index/topic3.html"/>
 	</topic>
 	<topic label="topic2.html" href="data/help/index/topic2.html"/>
+	<anchor id="anchor"/>
 </toc>

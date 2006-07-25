@@ -12,4 +12,7 @@
    <entry keyword="topic4.html">
       <topic href="data/help/index/topic4.html"/>
    </entry>
+   <entry keyword="topic5.html">
+      <topic href="data/help/index/topic5.html"/>
+   </entry>
 </index>

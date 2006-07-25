@@ -13,9 +13,11 @@ package org.eclipse.help.internal.toc;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.help.IToc;
 import org.eclipse.help.ITopic;
@@ -257,6 +259,32 @@ public class Toc extends TocNode implements IToc, ITocElement {
 		}
 		return size;
 	}
+	
+	public Set getAllTopicHrefs() {
+		Set hrefs = new HashSet();
+		if (descriptionTopic != null && descriptionTopic.getHref() != null) {
+			hrefs.add(descriptionTopic.getHref());
+		}
+		if (topicMap != null) {
+			hrefs.addAll(topicMap.keySet());
+		}
+		ITopic[] extraTopics = getExtraTopics();
+		if (extraTopics != null) {
+			for (int i=0;i<extraTopics.length;++i) {
+				ITopic topic = extraTopics[i];
+				if (topic != null && topic.getHref() != null) {
+					hrefs.add(topic.getHref());
+				}
+			}
+		}
+		// recurse through child tocs
+		for (Iterator it = getChildrenTocs().iterator(); it.hasNext();) {
+			Toc childToc = (Toc) it.next();
+			hrefs.addAll(childToc.getAllTopicHrefs());
+		}
+		return hrefs;
+	}
+	
 	void registerTopic(ITopic topic) {
 		String topicHref = topic.getHref();
 		if (topicHref != null) {

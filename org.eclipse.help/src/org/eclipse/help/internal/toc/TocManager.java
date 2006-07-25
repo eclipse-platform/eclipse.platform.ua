@@ -18,12 +18,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
 
-import org.eclipse.core.runtime.*;
-import org.eclipse.help.*;
-import org.eclipse.help.internal.*;
-import org.eclipse.help.internal.model.*;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Preferences;
+import org.eclipse.help.IToc;
+import org.eclipse.help.internal.HelpPlugin;
+import org.eclipse.help.internal.model.ITocElement;
 import org.eclipse.help.internal.util.ProductPreferences;
 
 /**
@@ -44,6 +49,8 @@ public class TocManager {
 	 */
 	private Map contributingPlugins2IndexPaths;
 
+	private Set topicHrefs;
+	
 	/**
 	 * HelpNavigationManager constructor.
 	 */
@@ -51,6 +58,7 @@ public class TocManager {
 		super();
 		try {
 			tocsByLang = new HashMap();
+			topicHrefs = new HashSet();
 			// build TOCs for machine locale at startup
 			// Note: this can be removed, and build on first invocation...
 			build(Platform.getNL());
@@ -131,7 +139,15 @@ public class TocManager {
 			tocs = new ITocElement[builtTocs.size()];
 			int i = 0;
 			for (Iterator it = builtTocs.iterator(); it.hasNext();) {
-				tocs[i++] = (ITocElement) it.next();
+				ITocElement tocEl = (ITocElement)it.next();
+				tocs[i++] = tocEl;
+				
+				// for safety
+				if (tocEl instanceof Toc) {
+					Toc toc = (Toc)tocEl;
+					Set hrefs = toc.getAllTopicHrefs();
+					topicHrefs.addAll(hrefs);
+				}
 			}
 			List orderedTocs = orderTocs(builtTocs);
 			tocs = new ITocElement[orderedTocs.size()];
@@ -305,6 +321,23 @@ public class TocManager {
 			}
 		}
 		return categorized;
+	}
+	
+	/*
+	 * Returns whether or not the topic is ignored. This is done by checking
+	 * whether or not the topic is associated with any toc.
+	 */
+	public boolean isTopicIgnored(String href) {
+		return !topicHrefs.contains(href);
+	}
+	
+	/*
+	 * For testing purposes only. Forces a reload of the TOC.
+	 */
+	public void reset() {
+		tocsByLang = new HashMap();
+		topicHrefs = new HashSet();
+		build(Platform.getNL());
 	}
 	
 	/**

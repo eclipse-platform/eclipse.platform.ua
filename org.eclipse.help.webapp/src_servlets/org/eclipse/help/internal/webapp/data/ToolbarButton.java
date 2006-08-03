@@ -19,6 +19,7 @@ public class ToolbarButton {
 	private String tooltip;
 	private String image;
 	private String action;
+	private String param;
 	private boolean state;
 	private boolean isSeparator;
 
@@ -27,11 +28,12 @@ public class ToolbarButton {
 	}
 
 	public ToolbarButton(String name, String tooltip, String image,
-			String action, boolean state) {
+			String action, String param, boolean state) {
 		this.name = name;
 		this.tooltip = tooltip;
 		this.image = image;
 		this.action = action;
+		this.param = param;
 		this.state = state;
 	}
 
@@ -70,6 +72,10 @@ public class ToolbarButton {
 		return action;
 	}
 
+	public String getParam() {
+		return param;
+	}
+	
 	public boolean isOn() {
 		return state;
 	}

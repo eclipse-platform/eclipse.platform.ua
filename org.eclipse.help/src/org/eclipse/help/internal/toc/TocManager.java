@@ -328,7 +328,14 @@ public class TocManager {
 	 * whether or not the topic is associated with any toc.
 	 */
 	public boolean isTopicIgnored(String href) {
-		return !topicHrefs.contains(href);
+		boolean found = topicHrefs.contains(href);
+		if (!found) {
+			int index = href.indexOf('#');
+			if (index != -1) {
+				found = topicHrefs.contains(href.substring(0, index));
+			}
+		}
+		return !found;
 	}
 	
 	/*

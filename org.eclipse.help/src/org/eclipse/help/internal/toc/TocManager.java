@@ -58,7 +58,9 @@ public class TocManager {
 		super();
 		try {
 			tocsByLang = new HashMap();
-			topicHrefs = new HashSet();
+			if (isTopicHrefsRequired()) {
+				topicHrefs = new HashSet();
+			}
 			// build TOCs for machine locale at startup
 			// Note: this can be removed, and build on first invocation...
 			build(Platform.getNL());
@@ -142,8 +144,8 @@ public class TocManager {
 				ITocElement tocEl = (ITocElement)it.next();
 				tocs[i++] = tocEl;
 				
-				// for safety
-				if (tocEl instanceof Toc) {
+				// keep track of all hrefs for keyword index if needed
+				if (topicHrefs != null && tocEl instanceof Toc) {
 					Toc toc = (Toc)tocEl;
 					Set hrefs = toc.getAllTopicHrefs();
 					topicHrefs.addAll(hrefs);
@@ -328,14 +330,25 @@ public class TocManager {
 	 * whether or not the topic is associated with any toc.
 	 */
 	public boolean isTopicIgnored(String href) {
-		boolean found = topicHrefs.contains(href);
-		if (!found) {
-			int index = href.indexOf('#');
-			if (index != -1) {
-				found = topicHrefs.contains(href.substring(0, index));
+		if (topicHrefs != null) {
+			boolean found = topicHrefs.contains(href);
+			if (!found) {
+				int index = href.indexOf('#');
+				if (index != -1) {
+					found = topicHrefs.contains(href.substring(0, index));
+				}
 			}
+			return !found;
 		}
-		return !found;
+		return false;
+	}
+	
+	/*
+	 * Returns whether we need to keep track of all the topic hrefs or not.
+	 * We only need it if we have a keyword index and at least one toc is ignored.
+	 */
+	private boolean isTopicHrefsRequired() {
+		return HelpPlugin.getIndexManager().isIndexContributed() && !getIgnoredTocs().isEmpty();
 	}
 	
 	/*

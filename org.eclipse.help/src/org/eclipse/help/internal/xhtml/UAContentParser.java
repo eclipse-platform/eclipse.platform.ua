@@ -9,8 +9,11 @@
 
 package org.eclipse.help.internal.xhtml;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.net.URL;
 import java.util.Hashtable;
@@ -123,8 +126,18 @@ public class UAContentParser {
 			DocumentBuilder parser = createParser();
 			if (fileObject instanceof String)
 				return parser.parse((String) fileObject);
-			else if (fileObject instanceof InputStream)
-				return parser.parse((InputStream) fileObject);
+			else if (fileObject instanceof InputStream) {
+				BufferedInputStream in = new BufferedInputStream((InputStream)fileObject);
+				String charset = getCharset(in);
+				InputSource input = null;
+				if (charset != null) {
+					input = new InputSource(new InputStreamReader(in, charset));
+				}
+				else {
+					input = new InputSource(in);
+				}
+				return parser.parse(input);
+			}
 			return null;
 		}
 		catch (Exception e) {
@@ -150,7 +163,14 @@ public class UAContentParser {
 		return hasXHTMLContent;
 	}
 
-
-
-
+	/*
+	 * Returns the charset specified in the meta tag, or null if can't find it.
+	 */
+	private static String getCharset(BufferedInputStream in) throws IOException {
+		in.mark(XHTMLCharsetParser.MAX_OFFSET);
+		byte[] buf = new byte[XHTMLCharsetParser.MAX_OFFSET];
+		in.read(buf);
+		in.reset();
+		return XHTMLCharsetParser.getCharsetFromHTML(new ByteArrayInputStream(buf));
+	}
 }

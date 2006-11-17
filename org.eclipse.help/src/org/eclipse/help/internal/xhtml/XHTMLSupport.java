@@ -27,12 +27,13 @@ public class XHTMLSupport {
 	private Document document = null;
 
 	private UAContentMergeProcessor mergeProcessor = null;
+	private UACharsetProcessor charsetProcessor = null;
 
 
 	public XHTMLSupport(String pluginID, String file, Document document, String locale) {
 		this.document = document;
 		mergeProcessor = new UAContentMergeProcessor(pluginID, file, document, locale);
-
+		charsetProcessor = new UACharsetProcessor();
 	}
 
 	/**
@@ -65,6 +66,9 @@ public class XHTMLSupport {
 		// resolve anchors.
 		mergeProcessor.resolveContentExtensions();
 
+		// set charset to UTF-8, since that's how we're going to output it
+		charsetProcessor.processCharset(document);
+		
 		return document;
 	}
 

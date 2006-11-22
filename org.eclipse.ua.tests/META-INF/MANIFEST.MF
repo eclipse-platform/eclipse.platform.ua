@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: User Assistance Test
 Bundle-SymbolicName: org.eclipse.ua.tests;singleton:=true
-Bundle-Version: 3.2.1.qualifier
+Bundle-Version: 3.2.2.qualifier
 Bundle-Activator: org.eclipse.ua.tests.plugin.UserAssistanceTestPlugin
 Bundle-Localization: plugin
 Require-Bundle: org.apache.lucene,
@@ -13,6 +13,7 @@ Require-Bundle: org.apache.lucene,
  org.eclipse.help.appserver,
  org.eclipse.help.base,
  org.eclipse.help.ui,
+ org.eclipse.test.performance,
  org.eclipse.ui,
  org.eclipse.ui.cheatsheets,
  org.eclipse.ui.intro,

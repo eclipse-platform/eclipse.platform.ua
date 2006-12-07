@@ -555,8 +555,15 @@ public class HelpIndexBuilder {
 				hrefs.add(href);
 		}
 		NodeList subtopics = topic.getElementsByTagName("topic"); //$NON-NLS-1$
-		for (int i = 0; i < subtopics.getLength(); i++)
-			add((Element) subtopics.item(i), hrefs);
+		for (int i = 0; i < subtopics.getLength(); i++) {
+			Element subtopic = (Element) subtopics.item(i);
+			href = getAttribute(subtopic, "href"); //$NON-NLS-1$
+			if (href != null && !href.equals("") && !href.startsWith("http://") && !href.startsWith("https://")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				href = SearchIndex.getIndexableHref(href);
+				if (href != null)
+					hrefs.add(href);
+			}
+		}
 	}
 	
 	/*

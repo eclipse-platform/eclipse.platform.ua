@@ -93,12 +93,19 @@ public class OpenHelpTest extends PerformanceTestCase {
 				display.sleep();
 			}
 		}
+		flush();
 	}
 	
 	private void closeHelp() throws Exception {
 		if (shell != null) {
 			shell.dispose();
 			shell = null;
+		}
+	}
+	
+	private static void flush() {
+		Display display = Display.getCurrent();
+		while (display.readAndDispatch()) {
 		}
 	}
 }

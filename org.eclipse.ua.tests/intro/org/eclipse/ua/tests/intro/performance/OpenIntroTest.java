@@ -18,6 +18,7 @@ import org.eclipse.test.performance.Dimension;
 import org.eclipse.test.performance.PerformanceTestCase;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.internal.intro.impl.model.loader.ExtensionPointManager;
 import org.eclipse.ui.intro.IIntroManager;
 import org.eclipse.ui.intro.IIntroPart;
 
@@ -40,7 +41,7 @@ public class OpenIntroTest extends PerformanceTestCase {
 		}
 		
 		// run the tests
-		for (int i=0;i<20;++i) {
+		for (int i=0;i<50;++i) {
 			closeIntro();
 			startMeasuring();
 			openIntro();
@@ -57,6 +58,7 @@ public class OpenIntroTest extends PerformanceTestCase {
 		if (part != null) {
 			manager.closeIntro(part);
 		}
+		ExtensionPointManager.getInst().clear();
 		flush();
 	}
 

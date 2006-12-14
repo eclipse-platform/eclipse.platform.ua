@@ -13,6 +13,7 @@ package org.eclipse.ua.tests.help.performance;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+import org.eclipse.help.internal.HelpPlugin;
 import org.eclipse.help.internal.appserver.WebappManager;
 import org.eclipse.help.internal.base.BaseHelpSystem;
 import org.eclipse.swt.SWT;
@@ -28,6 +29,8 @@ import org.eclipse.ui.PlatformUI;
 
 public class OpenHelpTest extends PerformanceTestCase {
 
+	private Shell shell;
+	
 	/*
 	 * Returns an instance of this Test.
 	 */
@@ -41,26 +44,31 @@ public class OpenHelpTest extends PerformanceTestCase {
 		// warm-up
 		for (int i=0;i<3;++i) {
 			openHelp();
+			closeHelp();
 		}
 		
 		// run the tests
-		for (int i=0;i<20;++i) {
+		for (int i=0;i<50;++i) {
 			startMeasuring();
 			openHelp();
 			stopMeasuring();
+			closeHelp();
 		}
 		
 		commitMeasurements();
 		assertPerformance();
 	}
 	
-	private static void openHelp() throws Exception {
+	private void openHelp() throws Exception {
+		// make sure we're not using cached tocs
+		HelpPlugin.getTocManager().reset();
+
 		// start the webapp
 		BaseHelpSystem.ensureWebappRunning();
 		
 		// open a browser
 		Shell parent = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-		Shell shell = new Shell(parent);
+		shell = new Shell(parent);
 		shell.setLayout(new FillLayout());
 		shell.setSize(parent.getSize());
 		Browser browser = new Browser(shell, SWT.NONE);
@@ -85,6 +93,12 @@ public class OpenHelpTest extends PerformanceTestCase {
 				display.sleep();
 			}
 		}
-		shell.dispose();
+	}
+	
+	private void closeHelp() throws Exception {
+		if (shell != null) {
+			shell.dispose();
+			shell = null;
+		}
 	}
 }

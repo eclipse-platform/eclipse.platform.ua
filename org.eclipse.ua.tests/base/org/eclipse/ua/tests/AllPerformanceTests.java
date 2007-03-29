@@ -15,7 +15,6 @@ import junit.framework.TestSuite;
 
 import org.eclipse.ua.tests.cheatsheet.performance.AllCheatSheetPerformanceTests;
 import org.eclipse.ua.tests.help.performance.AllHelpPerformanceTests;
-import org.eclipse.ua.tests.intro.performance.AllIntroPerformanceTests;
 
 /*
  * Tests all user assistance performance (automated).
@@ -34,7 +33,7 @@ public class AllPerformanceTests extends TestSuite {
 	 */
 	public AllPerformanceTests() {
 		addTest(AllHelpPerformanceTests.suite());
-		addTest(AllIntroPerformanceTests.suite());
+		//addTest(AllIntroPerformanceTests.suite());
 		addTest(AllCheatSheetPerformanceTests.suite());
 	}
 }

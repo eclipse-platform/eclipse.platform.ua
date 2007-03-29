@@ -37,7 +37,6 @@ public class IgnoredTocsTest extends TestCase {
 		Preferences prefs = HelpPlugin.getDefault().getPluginPreferences();
 		oldValue = prefs.getString(HelpPlugin.IGNORED_TOCS_KEY);
 		prefs.setValue(HelpPlugin.IGNORED_TOCS_KEY, "/org.eclipse.ua.tests/data/help/index/tocIgnored.xml");
-		HelpPlugin.getTocManager().reset();
 	}
 	
 	protected void tearDown() throws Exception {

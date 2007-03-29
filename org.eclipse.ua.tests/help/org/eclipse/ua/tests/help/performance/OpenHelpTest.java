@@ -13,7 +13,6 @@ package org.eclipse.ua.tests.help.performance;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.eclipse.help.internal.HelpPlugin;
 import org.eclipse.help.internal.appserver.WebappManager;
 import org.eclipse.help.internal.base.BaseHelpSystem;
 import org.eclipse.swt.SWT;
@@ -60,9 +59,6 @@ public class OpenHelpTest extends PerformanceTestCase {
 	}
 	
 	private void openHelp() throws Exception {
-		// make sure we're not using cached tocs
-		HelpPlugin.getTocManager().reset();
-
 		// start the webapp
 		BaseHelpSystem.ensureWebappRunning();
 		

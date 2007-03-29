@@ -68,12 +68,19 @@ public class OpenIntroTest extends PerformanceTestCase {
 		IIntroManager manager = workbench.getIntroManager();
 		CustomizableIntroPart introPart = (CustomizableIntroPart)manager.showIntro(workbench.getActiveWorkbenchWindow(), false);
 
+		/*
+		 * We don't have the internal test hook .internal_isFinishedLoading()
+		 * in 3.2 (only in 3.2.2), so I comment this out. This test isn't
+		 * being included in the test suite.
+		 */
+		/*
 		Display display = Display.getDefault();
 		while (!introPart.internal_isFinishedLoading()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
 		}
+		*/
 		flush();
 	}
 	

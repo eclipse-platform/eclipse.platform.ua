@@ -47,8 +47,10 @@ public class EclipseConnector {
 	private static final String errorPageEnd = "</p></body></html>"; //$NON-NLS-1$
 	private static final IFilter filters[] = new IFilter[]{
 			new HighlightFilter(), new FramesetFilter(), new InjectionFilter(), new DynamicXHTMLFilter(), new BreadcrumbsFilter() };
+	private ServletContext context;
 
 	public EclipseConnector(ServletContext context) {
+		this.context= context;
 	}
 
 	public void transfer(HttpServletRequest req, HttpServletResponse resp)
@@ -89,7 +91,17 @@ public class EclipseConnector {
 			}
 
 			URLConnection con = openConnection(url, req, resp);
-			resp.setContentType(con.getContentType());
+			String contentType = con.getContentType();
+			if ("text/plain".equals(contentType)) { //$NON-NLS-1$
+				// URLConnection.getContentType() defaults to "text/plain",
+				// use the context to get a more reliable result.
+				String pathInfo = req.getPathInfo();
+				String mimeType = context.getMimeType(pathInfo);
+				if (mimeType != null) {
+					contentType = mimeType;
+				}
+			}
+			resp.setContentType(contentType);
 
 			long maxAge = 0;
 			try {

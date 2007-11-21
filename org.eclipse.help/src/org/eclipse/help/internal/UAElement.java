@@ -64,6 +64,13 @@ public class UAElement implements IUAElement {
 	public UAElement(String name, IUAElement src) {
 		this(name);
 		this.src = src;
+		if (src instanceof UAElement) {
+			UAElement sourceElement = (UAElement) src;
+		    String filter = sourceElement.getAttribute(ATTRIBUTE_FILTER);
+		    if (filter != null && filter.length() > 0) {
+		        this.setAttribute(ATTRIBUTE_FILTER, filter);
+		    }
+		}
 	}
 	
 	public void appendChild(UAElement uaElementToAppend) {

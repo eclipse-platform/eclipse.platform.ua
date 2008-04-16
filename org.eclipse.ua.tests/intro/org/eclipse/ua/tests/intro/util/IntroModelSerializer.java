@@ -41,8 +41,8 @@ public class IntroModelSerializer {
         printModelRootInfo(root, buffer);
 
         // Root Page
-        IntroHomePage rootPage = root.getHomePage();
-        printHomePage(rootPage, buffer);
+        AbstractIntroPage rootPage = root.getHomePage();
+        printHomePage((IntroHomePage) rootPage, buffer);
         printPageChildren(rootPage, buffer);
 
         IntroPage[] pages = root.getPages();

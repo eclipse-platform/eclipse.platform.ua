@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<compositeCheatsheet name="Test Guide">
-    <taskGroup  name= "Task name">
-        <task name="This is Task1" id = "task1"> 
-            <dependsOn task = "task1"/>
-        </task>
-    </taskGroup>
-</compositeCheatsheet>

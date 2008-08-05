@@ -1,5 +1,5 @@
 <%--
- Copyright (c) 2000, 2007 IBM Corporation and others.
+ Copyright (c) 2000, 2008 IBM Corporation and others.
  All rights reserved. This program and the accompanying materials 
  are made available under the terms of the Eclipse Public License v1.0
  which accompanies this distribution, and is available at
@@ -363,7 +363,7 @@ function closeMenu() {
 }
 
 function itemEnter(e) {
-    this.style.background = "<%=data.isSafari() ? "DarkBlue" : "Highlight"%>";
+    this.style.background = "Highlight";
     this.style.color = "HighlightText";
     parent.frames[parent.frames.length - 1].window.status = this.firstChild.nodeValue;
     return true;

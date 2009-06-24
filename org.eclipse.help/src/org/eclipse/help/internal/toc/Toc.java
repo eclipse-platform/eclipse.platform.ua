@@ -135,10 +135,10 @@ public class Toc extends UAElement implements IToc {
 						return getTopics();
 					}
 					public boolean isEnabled(IEvaluationContext context) {
-						return isEnabled(context);
+						return Toc.this.isEnabled(context);
 					}
 					public IUAElement[] getChildren() {
-						return getChildren();
+						return new IUAElement[0];
 					}
 				};
 			}

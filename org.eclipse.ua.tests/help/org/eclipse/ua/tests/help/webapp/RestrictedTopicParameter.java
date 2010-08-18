@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008, 2009 IBM Corporation and others.
+ *  Copyright (c) 2008, 2010 IBM Corporation and others.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -51,39 +51,39 @@ public class RestrictedTopicParameter extends TestCase {
 	public void testWorkbenchMode() {
 		BaseHelpSystem.setMode(BaseHelpSystem.MODE_WORKBENCH);
 		setRestrictTopic(true);
-		assertTrue(UrlUtil.isValidTopicURL("http://www.eclipse.org"));
-		assertTrue(UrlUtil.isValidTopicURL("https://www.eclipse.org"));
+		assertFalse(UrlUtil.isValidTopicParamOrWasOpenedFromHelpDisplay("http://www.eclipse.org"));
+		assertFalse(UrlUtil.isValidTopicParamOrWasOpenedFromHelpDisplay("https://www.eclipse.org"));
 		setRestrictTopic(false);
-		assertTrue(UrlUtil.isValidTopicURL("http://www.eclipse.org"));
-		assertTrue(UrlUtil.isValidTopicURL("https://www.eclipse.org"));
+		assertTrue(UrlUtil.isValidTopicParamOrWasOpenedFromHelpDisplay("http://www.eclipse.org"));
+		assertTrue(UrlUtil.isValidTopicParamOrWasOpenedFromHelpDisplay("https://www.eclipse.org"));
 	}
 	
 	public void testStandaloneMode() {
 		BaseHelpSystem.setMode(BaseHelpSystem.MODE_STANDALONE);
 		setRestrictTopic(true);
-		assertTrue(UrlUtil.isValidTopicURL("http://www.eclipse.org"));
-		assertTrue(UrlUtil.isValidTopicURL("https://www.eclipse.org"));
+		assertFalse(UrlUtil.isValidTopicParamOrWasOpenedFromHelpDisplay("http://www.eclipse.org"));
+		assertFalse(UrlUtil.isValidTopicParamOrWasOpenedFromHelpDisplay("https://www.eclipse.org"));
 		setRestrictTopic(false);
-		assertTrue(UrlUtil.isValidTopicURL("http://www.eclipse.org"));
-		assertTrue(UrlUtil.isValidTopicURL("https://www.eclipse.org"));
+		assertTrue(UrlUtil.isValidTopicParamOrWasOpenedFromHelpDisplay("http://www.eclipse.org"));
+		assertTrue(UrlUtil.isValidTopicParamOrWasOpenedFromHelpDisplay("https://www.eclipse.org"));
 	}
 
 	public void testInfocenterUnrestricted() {
 		BaseHelpSystem.setMode(BaseHelpSystem.MODE_INFOCENTER);
 		setRestrictTopic(false);
-		assertTrue(UrlUtil.isValidTopicURL("http://www.eclipse.org"));
-		assertTrue(UrlUtil.isValidTopicURL("https://www.eclipse.org"));
-		assertTrue(UrlUtil.isValidTopicURL("org.eclipse.platform.doc.user/reference/ref-43.htm"));
+		assertTrue(UrlUtil.isValidTopicParamOrWasOpenedFromHelpDisplay("http://www.eclipse.org"));
+		assertTrue(UrlUtil.isValidTopicParamOrWasOpenedFromHelpDisplay("https://www.eclipse.org"));
+		assertTrue(UrlUtil.isValidTopicParamOrWasOpenedFromHelpDisplay("org.eclipse.platform.doc.user/reference/ref-43.htm"));
 	}
 	
 	public void testInfocenterResestricted() {
 		BaseHelpSystem.setMode(BaseHelpSystem.MODE_INFOCENTER);
 		setRestrictTopic(true);
-		assertFalse(UrlUtil.isValidTopicURL("http://www.eclipse.org"));
-		assertFalse(UrlUtil.isValidTopicURL("https://www.eclipse.org"));
-		assertFalse(UrlUtil.isValidTopicURL("HTTP://www.eclipse.org"));
-		assertFalse(UrlUtil.isValidTopicURL("file://somepath.html"));
-		assertTrue(UrlUtil.isValidTopicURL("org.eclipse.platform.doc.user/reference/ref-43.htm"));
+		assertFalse(UrlUtil.isValidTopicParamOrWasOpenedFromHelpDisplay("http://www.eclipse.org"));
+		assertFalse(UrlUtil.isValidTopicParamOrWasOpenedFromHelpDisplay("https://www.eclipse.org"));
+		assertFalse(UrlUtil.isValidTopicParamOrWasOpenedFromHelpDisplay("HTTP://www.eclipse.org"));
+		assertFalse(UrlUtil.isValidTopicParamOrWasOpenedFromHelpDisplay("file://somepath.html"));
+		assertTrue(UrlUtil.isValidTopicParamOrWasOpenedFromHelpDisplay("org.eclipse.platform.doc.user/reference/ref-43.htm"));
 	}
 	
 }

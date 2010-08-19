@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and others.
+ * Copyright (c) 2007 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,6 +39,13 @@ public class WebappManager {
 		// set the base URL
 		d.put("context.path", "/help"); //$NON-NLS-1$ //$NON-NLS-2$
 		d.put("other.info", "org.eclipse.help"); //$NON-NLS-1$ //$NON-NLS-2$
+
+		String hostCommandLineOverride = HelpBasePlugin.getBundleContext().getProperty("server_host"); //$NON-NLS-1$
+		if (hostCommandLineOverride != null && hostCommandLineOverride.trim().length() > 0) {
+			d.put("http.host", hostCommandLineOverride); //$NON-NLS-1$
+		}
+			
+
 		
 		// suppress Jetty INFO/DEBUG messages to stderr
 		Logger.getLogger("org.mortbay").setLevel(Level.WARNING); //$NON-NLS-1$	

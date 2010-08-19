@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -196,7 +196,7 @@ public final class BaseHelpSystem {
 
 	public static URL resolve(String href, boolean documentOnly) {
 		String url = null;
-		if (href == null || href.indexOf("://") != -1) //$NON-NLS-1$
+		if (href == null || href.indexOf("://") != -1 || isFileProtocol(href)) //$NON-NLS-1$
 			url = href;
 		else {
 			BaseHelpSystem.ensureWebappRunning();
@@ -215,7 +215,7 @@ public final class BaseHelpSystem {
 
 	public static URL resolve(String href, String servlet) {
 		String url = null;
-		if (href == null || href.indexOf("://") != -1) { //$NON-NLS-1$
+		if (href == null || href.indexOf("://") != -1 || isFileProtocol(href)) { //$NON-NLS-1$
 			url = href;
 		}
 		else {
@@ -235,6 +235,14 @@ public final class BaseHelpSystem {
 			return null;
 		}
 	}
+	
+	private static boolean isFileProtocol(String href) {
+			// Test for file: or /file:
+			int index = href.indexOf("file:"); //$NON-NLS-1$
+			return ( index == 0 ||  (index == 1 && href.charAt(0) == '/' )); 
+		}
+		
+
 
 	public static String unresolve(URL url) {
 		return unresolve(url.toString());

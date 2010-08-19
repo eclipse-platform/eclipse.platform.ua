@@ -12,6 +12,7 @@
 package org.eclipse.help.internal.webapp.servlet;
 
 import java.io.*;
+import java.net.URLEncoder;
 
 import javax.servlet.http.*;
 
@@ -30,6 +31,7 @@ public class FramesetFilter implements IFilter {
 	 */
 	public OutputStream filter(HttpServletRequest req, OutputStream out) {
 		String uri = req.getRequestURI();
+		String url = req.getPathInfo();
 		if (uri == null) {
 			return out;
 		}
@@ -63,7 +65,15 @@ public class FramesetFilter implements IFilter {
 		} else {
 			script.append("index.jsp?topic="); //$NON-NLS-1$
 		}
-		script.append(req.getPathInfo());
+		// script.append(req.getPathInfo());
+		// Sanitize the url
+		try{
+			url = URLEncoder.encode(url, "UTF-8"); //$NON-NLS-1$
+			script.append(url);
+		} catch (UnsupportedEncodingException uee){
+			return out;
+		}
+
 		script.append(scriptPart3);
 		try {
 			return new FilterHTMLHeadOutputStream(out, script.toString()

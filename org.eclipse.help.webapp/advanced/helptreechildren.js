@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 IBM Corporation and others.
+ * Copyright (c) 2006, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,7 @@ function updateTree(xml) {
     var treeRoot = document.getElementById("tree_root");
     var nodes = tocData.childNodes;
     selectedNode = null;
-    mergeChildren(treeRoot, nodes);
+    mergeChildren(treeRoot, nodes, 0);
     if (selectedNode != null) {
         // Focusing on the last child will increase the chance that it is visible
         if (!highlightSelectedNode) {
@@ -49,7 +49,7 @@ function updateTree(xml) {
     return errorTags.length > 0;
  }
  
-function mergeChildren(treeItem, nodes) {
+function mergeChildren(treeItem, nodes, level) {
     var childContainer;
     if (treeItem.id == "tree_root") {
         childContainer=treeItem;
@@ -58,10 +58,23 @@ function mergeChildren(treeItem, nodes) {
     }
     var childAdded = false;
     var hasPlaceholder = childContainer != null && childContainer.className == "unopened";
+    var childCount = 0;
+    var nodeIndex = 0;
+
+    // Compute total # of nodes for accessibility attributes
+    // nodes.length cannot be used because the list may contain xml elements
+    // which are not nodes
+        
+    for (var i = 0; i < nodes.length; i++) {
+        if (nodes[i].tagName == "node") {
+            childCount++;
+        }
+    }
     if (nodes) {  
         for (var i = 0; i < nodes.length; i++) {
             var node = nodes[i];
             if (node.tagName == "node") {
+            nodeIndex++;
                 if (hasPlaceholder) {
                     // Remove the loading message
                     treeItem.removeChild(childContainer);
@@ -79,10 +92,10 @@ function mergeChildren(treeItem, nodes) {
                 var href = node.getAttribute("href");
                 var image = node.getAttribute("image");
                 var id = node.getAttribute("id");
-                var childItem = mergeChild(childContainer, id, title, href, image, isLeaf);
+                var childItem = mergeChild(childContainer, id, title, href, image, isLeaf, nodeIndex, childCount, level + 1);
                 var isSelected = node.getAttribute("is_selected");
                 if (!isLeaf) {
-                    mergeChildren(childItem, node.childNodes);
+                    mergeChildren(childItem, node.childNodes, level + 1);
                 }
                 if (isSelected) {
                     selectedNode = childItem;
@@ -106,7 +119,7 @@ function mergeChildren(treeItem, nodes) {
 }
 
 // Create a child if one with this if does not exist  
-function mergeChild(treeItem, id, name, href, image, isLeaf) {  
+function mergeChild(treeItem, id, name, href, image, isLeaf, position, setsize, level) {  
     var children = treeItem.childNodes;
     if (children !== null) {
         for (var i = 0; i < children.length; i++) {
@@ -158,7 +171,10 @@ function mergeChild(treeItem, id, name, href, image, isLeaf) {
         anchor.href = href;
     }
     anchor.title = name;
-    setAccessibilityRole(anchor, WAI_TREEITEM);
+    setAccessibilityRole(anchor, WAI_TREEITEM);    
+    setAccessibilitySetsize(anchor, setsize); 
+    setAccessibilityPosition(anchor, position); 
+    setAccessibilityTreeLevel(anchor, level);
     
     if (topicImage) {
         anchor.appendChild(topicImage);

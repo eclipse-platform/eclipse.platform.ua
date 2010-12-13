@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2006 IBM Corporation and others.
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
 package org.eclipse.help.internal.webapp.servlet;
 
 import java.io.*;
+import java.net.URLEncoder;
 
 import javax.servlet.http.*;
 
@@ -30,6 +31,8 @@ public class FramesetFilter implements IFilter {
 	 */
 	public OutputStream filter(HttpServletRequest req, OutputStream out) {
 		String uri = req.getRequestURI();
+		String url = req.getPathInfo();
+
 		if (uri == null || !uri.endsWith("html") && !uri.endsWith("htm")) { //$NON-NLS-1$ //$NON-NLS-2$
 			return out;
 		}
@@ -54,7 +57,16 @@ public class FramesetFilter implements IFilter {
 			script.append("../"); //$NON-NLS-1$
 		}
 		script.append("?topic="); //$NON-NLS-1$
-		script.append(req.getPathInfo());
+		
+
+		// Sanitize the url
+		try{
+			url = URLEncoder.encode(url, "UTF-8"); //$NON-NLS-1$
+			script.append(url);
+		} catch (UnsupportedEncodingException uee){
+			return out;
+		}
+
 		script.append(scriptPart3);
 		try {
 			return new FilterHTMLHeadOutputStream(out, script.toString()

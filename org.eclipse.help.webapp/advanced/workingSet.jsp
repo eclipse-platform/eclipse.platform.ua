@@ -1,5 +1,5 @@
 <%--
- Copyright (c) 2000, 2004 IBM Corporation and others.
+ Copyright (c) 2000, 2010 IBM Corporation and others.
  All rights reserved. This program and the accompanying materials 
  are made available under the terms of the Eclipse Public License v1.0
  which accompanies this distribution, and is available at
@@ -129,7 +129,7 @@ minus.src = "<%=prefs.getImagesDirectory()%>"+"/minus.gif";
 var plus = new Image();
 plus.src = "<%=prefs.getImagesDirectory()%>"+"/plus.gif";
 
-var oldName = '<%=data.isEditMode()?data.getWorkingSetName():""%>';
+var oldName = '<%=data.isEditMode()?UrlUtil.JavaScriptEncode(data.getWorkingSetName()):""%>';
 var altBookClosed = "<%=UrlUtil.JavaScriptEncode(ServletResources.getString("bookClosed", request))%>";
 var altBookOpen = "<%=UrlUtil.JavaScriptEncode(ServletResources.getString("bookOpen", request))%>";
 
@@ -169,7 +169,7 @@ function doSubmit()
 		if (!hrefs || hrefs == "")
 			return false;
 
-		var query = "operation="+'<%=data.getOperation()%>'+"&workingSet="+encodeURIComponent(workingSet)+ hrefs+"&oldName="+encodeURIComponent(oldName);
+		var query = "operation="+'<%=UrlUtil.JavaScriptEncode(data.getOperation())%>'+"&workingSet="+encodeURIComponent(workingSet)+ hrefs+"&oldName="+encodeURIComponent(oldName);
 		window.opener.location.replace("workingSetManager.jsp?"+query);
 		window.opener.focus();
 		window.close();
@@ -349,7 +349,8 @@ function enableOK() {
 	<table id="wsTable" width="100%" cellspacing=0 cellpading=0 border=0 align=center >
 		<tr><td style="padding:5px 10px 0px 10px;"><label for="workingSet" accesskey="<%=ServletResources.getAccessKey("WorkingSetName", request)%>"><%=ServletResources.getLabel("WorkingSetName", request)%>:</label>
 		</td></tr>
-		<tr><td style="padding:0px 10px;"><input type="text" id="workingSet" name="workingSet" value='<%=data.isEditMode()?data.getWorkingSetName():""%>' maxlength=256 alt='<%=ServletResources.getString("WorkingSetName", request)%>' title='<%=ServletResources.getString("WorkingSetName", request)%>' onkeyup="enableOK();return true;">
+		<tr><td style="padding:0px 10px;"><input type="text" id="workingSet" name="workingSet" 
+		    value='<%=data.isEditMode()?UrlUtil.htmlEncode(data.getWorkingSetName()):""%>' maxlength=256 alt='<%=ServletResources.getString("WorkingSetName", request)%>' title='<%=ServletResources.getString("WorkingSetName", request)%>' onkeyup="enableOK();return true;">
         </td></tr>
          <tr><td><div id="selectBook" style="padding-top:5px; margin-<%=isRTL?"right":"left"%>:10px;"><%=ServletResources.getString("WorkingSetContent", request)%>:</div>
 		</td></tr>

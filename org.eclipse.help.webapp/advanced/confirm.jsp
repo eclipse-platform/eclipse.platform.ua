@@ -1,5 +1,5 @@
 <%--
- Copyright (c) 2000, 2006 IBM Corporation and others.
+ Copyright (c) 2000, 2010 IBM Corporation and others.
  All rights reserved. This program and the accompanying materials 
  are made available under the terms of the Eclipse Public License v1.0
  which accompanies this distribution, and is available at
@@ -75,7 +75,7 @@ if(!data.isMozilla() || "1.3".compareTo(data.getMozillaVersion()) <=0){
 %>
 	sizeButtons();
 <%}%>
-	document.getElementById("<%=request.getParameter("initialFocus")%>").focus();
+	document.getElementById("<%=UrlUtil.JavaScriptEncode(request.getParameter("initialFocus"))%>").focus();
 }
 
 function sizeButtons() {
@@ -93,10 +93,10 @@ function confirmed(){
 	try{
 <% if ("true".equalsIgnoreCase(request.getParameter("dontaskagain")) ){ %>
 		if(document.getElementById("dontask").checked){
-			window.opener.<%=request.getParameter("dontaskagainCallback")%>;
+			window.opener.<%=UrlUtil.JavaScriptEncode(request.getParameter("dontaskagainCallback"))%>;
 		}
 <% } %>
-		window.opener.<%=request.getParameter("confirmCallback")%>;
+		window.opener.<%=UrlUtil.JavaScriptEncode(request.getParameter("confirmCallback"))%>;
 	} catch(e) {}
  	window.close();
 	return false;

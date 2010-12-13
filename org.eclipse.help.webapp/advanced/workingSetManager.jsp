@@ -1,5 +1,5 @@
 <%--
- Copyright (c) 2000, 2004 IBM Corporation and others.
+ Copyright (c) 2000, 2010 IBM Corporation and others.
  All rights reserved. This program and the accompanying materials 
  are made available under the terms of the Eclipse Public License v1.0
  which accompanies this distribution, and is available at
@@ -261,8 +261,8 @@ for (int i=0; i<wsets.length; i++)
 		   href='#' 
 		   onclick="active=this;highlightHandler()"
    		   ondblclick="selectWorkingSet()"
-		   title="<%=wsets[i]%>">
-		   <%=wsets[i]%>
+		   title="<%=UrlUtil.htmlEncode(wsets[i])%>">
+		   <%=UrlUtil.htmlEncode(wsets[i])%>
 		 </a>
 	</td>
 </tr>

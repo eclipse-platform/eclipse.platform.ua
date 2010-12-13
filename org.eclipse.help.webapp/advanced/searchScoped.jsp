@@ -1,5 +1,5 @@
 <%--
- Copyright (c) 2000, 2004 IBM Corporation and others.
+ Copyright (c) 2000, 2010 IBM Corporation and others.
  All rights reserved. This program and the accompanying materials 
  are made available under the terms of the Eclipse Public License v1.0
  which accompanies this distribution, and is available at
@@ -234,8 +234,8 @@ function onloadHandler(e)
 					<a id="scopeLabel" href="javascript:openAdvanced();" title='<%=ServletResources.getString("ScopeTooltip", request)%>' alt='<%=ServletResources.getString("ScopeTooltip", request)%>' onmouseover="window.status='<%=ServletResources.getString("ScopeTooltip", request)%>'; return true;" onmouseout="window.status='';"><%=ServletResources.getLabel("Scope", request)%>:</a>
 				</td>
 				<td nowrap>
-					<input type="hidden" name="workingSet" value='<%=data.getScope()%>'>
-					<div id="scope" ><%=data.getScope()%></div>
+					<input type="hidden" name="workingSet" value='<%=UrlUtil.htmlEncode(data.getScope())%>'>
+					<div id="scope" ><%=UrlUtil.htmlEncode(data.getScope())%></div>
 				</td>
 			</tr>
 

@@ -1,5 +1,5 @@
 <%--
- Copyright (c) 2000, 2006 IBM Corporation and others.
+ Copyright (c) 2000, 2010 IBM Corporation and others.
  All rights reserved. This program and the accompanying materials 
  are made available under the terms of the Eclipse Public License v1.0
  which accompanies this distribution, and is available at
@@ -208,7 +208,7 @@ function closeConfirmShowAllDialog(){
  		    name="<%=views[i].getName()%>"
  		    title="<%=ServletResources.getString("ignore", views[i].getName(), request)%>"
  		    id="<%=views[i].getName()%>" 
- 		    src='<%="view.jsp?view="+views[i].getName()+(request.getQueryString()==null?"":("&"+request.getQueryString()))%>'>
+ 		    src='<%="view.jsp?view="+views[i].getName()+(request.getQueryString()==null?"":("&"+UrlUtil.htmlEncode(request.getQueryString())))%>'>
  	</iframe> 
 <%
 	}

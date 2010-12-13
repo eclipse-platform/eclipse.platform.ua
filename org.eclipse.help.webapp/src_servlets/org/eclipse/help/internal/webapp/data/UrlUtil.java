@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2006 IBM Corporation and others.
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,9 +22,10 @@ import org.eclipse.help.internal.base.util.*;
 
 public class UrlUtil {
 	// XML escaped characters mapping
-	private static final String invalidXML[] = {"&", ">", "<", "\""}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+	private static final String invalidXML[] = {"&", ">", "<", "\"", "'"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+	// Note that we have to use &#39; instead of &apos; because &apos; does not work in all versions of IE
 	private static final String escapedXML[] = {
-			"&amp;", "&gt;", "&lt;", "&quot;"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			"&amp;", "&gt;", "&lt;", "&quot;", "&#39;"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
 	// for Safari build 125.1 finds version 125
 	static final Pattern safariPatern = Pattern.compile(

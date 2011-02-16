@@ -186,8 +186,12 @@ function setTitle(label)
 function registerMaximizedChangedListener(){
 	// get to the frameset
 	var p = parent;
-	while (p && !p.registerMaximizeListener)
+	while (p && !p.registerMaximizeListener) {	   
+	    if (p === p.parent)  {
+	        return;
+        }
 		p = p.parent;
+	}
 	
 	if (p!= null){
 		p.registerMaximizeListener('<%=UrlUtil.JavaScriptEncode(data.getName())%>Toolbar', maximizedChanged);
@@ -217,8 +221,12 @@ function restore_maximize(button)
 function toggleFrame(){
 	// get to the frameset
 	var p = parent;
-	while (p && !p.toggleFrame)
+	while (p && !p.toggleFrame) {
+	    if (p === p.parent)  {
+	        return;
+        }
 		p = p.parent;
+	}
 	
 	if (p!= null){
 		p.toggleFrame('<%=UrlUtil.JavaScriptEncode(data.getTitle())%>');

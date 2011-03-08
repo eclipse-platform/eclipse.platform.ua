@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2011 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,8 +31,15 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.help.internal.HelpPlugin;
 import org.eclipse.help.internal.base.BaseHelpSystem;
 import org.eclipse.help.internal.base.HelpBasePlugin;
+import org.eclipse.help.internal.base.util.TString;
 
 public class UrlUtil {
+	// XML escaped characters mapping
+	private static final String invalidXML[] = {"&", ">", "<", "\"", "'"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+	// Note that we have to use &#39; instead of &apos; because &apos; does not work in all versions of IE
+	private static final String escapedXML[] = {
+			"&amp;", "&gt;", "&lt;", "&quot;", "&#39;"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+
 	// for Safari build 125.1 finds version 125
 	static final Pattern safariPattern = Pattern.compile(
 			"Safari/(\\d+)(?:\\.|\\s|$)", Pattern.CASE_INSENSITIVE); //$NON-NLS-1$
@@ -92,33 +99,9 @@ public class UrlUtil {
 			return null;
 		}
 
-		StringBuffer result = new StringBuffer();
-		for (int i = 0 ; i < str.length(); i++) {
-			appendEncodedChar(result, str.charAt(i));
-		}
-		return result.toString();
-	}
-
-	private static void appendEncodedChar(StringBuffer result, char ch) {
-		if (needsEncoding(ch)) {
-			int chInt = ch;
-			result.append("&#" + chInt + ';'); //$NON-NLS-1$
-			return;
-		}
-		result.append(ch);		
-	}
-
-	private static boolean needsEncoding(char ch) {
-		if (ch > 255) {
-			return false;
-		}
-		if (Character.isLetterOrDigit(ch)) {
-			return false;
-		}
-		if ( ch == ' ' || ch == '_') {
-			return false;
-		}
-		return true;
+		for (int i = 0; i < invalidXML.length; i++)
+			str = TString.change(str, invalidXML[i], escapedXML[i]);
+		return str;
 	}
 
 	public static boolean isLocalRequest(HttpServletRequest request) {

@@ -39,4 +39,30 @@
     <module>org.eclipse.ui.intro</module>
     <module>org.eclipse.ui.intro.universal</module>
   </modules>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>target-platform-configuration</artifactId>
+        <configuration>
+          <dependency-resolution>
+            <extraRequirements>
+              <requirement>
+                <type>eclipse-plugin</type>
+                <id>org.apache.lucene</id>
+                <versionRange>[2.9,3.0)</versionRange>
+              </requirement>
+              <requirement>
+                <type>eclipse-plugin</type>
+                <id>org.apache.lucene.analysis</id>
+                <versionRange>[2.9,3.0)</versionRange>
+              </requirement>
+            </extraRequirements>
+          </dependency-resolution>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build> 
+
 </project>

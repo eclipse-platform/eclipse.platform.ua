@@ -29,7 +29,6 @@
 
   <modules>
     <module>org.eclipse.help</module>
-    <module>org.eclipse.help.appserver</module>
     <module>org.eclipse.help.base</module>
     <module>org.eclipse.help.ui</module>
     <module>org.eclipse.help.webapp</module>
@@ -65,4 +64,18 @@
     </plugins>
   </build> 
 
+  <profiles>
+    <profile>
+      <id>platform-3.8</id>
+      <activation>
+        <file>
+          <exists>../platform-3.8</exists>
+        </file>
+      </activation>
+
+      <modules>
+        <module>org.eclipse.help.appserver</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>

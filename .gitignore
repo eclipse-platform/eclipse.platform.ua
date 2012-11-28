@@ -1,5 +1,9 @@
-*/bin/
-*/bin2/
+org.eclipse.help.base/ant_tasks/
+org.eclipse.ua.tests/ua-tests.jar
+org.eclipse.ui.intro.universal/universal.jar
+/*/bin/
+/*/target/
+/*/bin2/
 *~
 *.rej
 *.bak

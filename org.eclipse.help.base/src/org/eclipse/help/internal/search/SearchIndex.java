@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2016 IBM Corporation and others.
+ * Copyright (c) 2000, 2019 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -352,6 +352,9 @@ public class SearchIndex implements IHelpSearchIndex {
 				ir.close();
 			}
 			ir = DirectoryReader.open(luceneDirectory);
+			if (iw == null) {
+				return beginDeleteBatch();
+			}
 			return true;
 		} catch (IOException e) {
 			HelpBasePlugin.logError("Exception occurred in search indexing at beginDeleteBatch.", e); //$NON-NLS-1$
@@ -458,6 +461,8 @@ public class SearchIndex implements IHelpSearchIndex {
 				return false;
 			ir.close();
 			ir = null;
+			iw.close();
+			iw = null;
 			// save the update info:
 			// - all the docs
 			// - plugins (and their version) that were indexed

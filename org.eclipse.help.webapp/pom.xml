@@ -18,14 +18,14 @@
   </parent>
   <groupId>org.eclipse.help</groupId>
   <artifactId>org.eclipse.help.webapp</artifactId>
-  <version>3.9.800-SNAPSHOT</version>
+  <version>3.9.801-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
   <build>
     <plugins>
       <plugin>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-jspc-maven-plugin</artifactId>
-        <version>9.4.27.v20200227</version>
+        <version>9.4.31.v20200723</version>
         <executions>
           <execution>
             <id>jspc</id>

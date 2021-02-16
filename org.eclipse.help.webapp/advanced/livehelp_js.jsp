@@ -1,5 +1,5 @@
 <%--
- Copyright (c) 2000, 2018 IBM Corporation and others.
+ Copyright (c) 2000, 2021 IBM Corporation and others.
  All rights reserved. This program and the accompanying materials 
  are made available under the terms of the Eclipse Public License v1.0
  which accompanies this distribution, and is available at
@@ -44,7 +44,15 @@ function liveActionInternal(topHelpWindow, pluginId, className, argument)
 	url=url.substring(0, i+1);
 	var encodedArg=encodeURIComponent(argument);
 	url=url+"livehelp/?pluginID="+pluginId+"&class="+className+"&arg="+encodedArg+"&nocaching="+Math.random();
-
+	<%
+	Object token = request.getSession().getAttribute("LSESSION"); //$NON-NLS-1$
+	// Validate token to protect against XSS
+	if (token instanceof String && ((String)token).matches("[a-z0-9-]{36}")) {//$NON-NLS-1$) {
+	%>
+	url=url+"&token=<%=token%>";
+	<%
+	}
+	%>
 	// we need to find the toolbar frame.
 	// to do: cleanup this, including the location of the hidden livehelp frame.	
 	var toolbarFrame = topHelpWindow.HelpFrame.ContentFrame.ContentToolbarFrame;

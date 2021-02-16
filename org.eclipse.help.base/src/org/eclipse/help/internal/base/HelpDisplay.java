@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2021 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,8 @@ package org.eclipse.help.internal.base;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -190,6 +192,12 @@ public class HelpDisplay {
 			} else if (helpURL.startsWith("topic=")) { //$NON-NLS-1$
 				String topic = helpURL.substring("topic=".length()); //$NON-NLS-1$
 				helpURL = getHelpDisplay().getHelpForTopic( topic, WebappManager.getHost(),  WebappManager.getPort());
+			}
+			String basehelp = getBaseURL();
+			if (BaseHelpSystem.getMode() != BaseHelpSystem.MODE_INFOCENTER && helpURL.startsWith(basehelp)) {
+				String sessid = UUID.randomUUID().toString();
+				BaseHelpSystem.getInstance().setLiveHelpToken(sessid);
+				helpURL += (helpURL.indexOf('?') < 0 ? '?' : '&') + "token=" + sessid; //$NON-NLS-1$
 			}
 
 			BaseHelpSystem.getHelpBrowser(forceExternal)

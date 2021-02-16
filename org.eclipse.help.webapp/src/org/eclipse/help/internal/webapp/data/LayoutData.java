@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2015 IBM Corporation and others.
+ * Copyright (c) 2000, 2021 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -43,6 +43,11 @@ public class LayoutData extends RequestData {
 
 		// initialize the query string
 		String qs = request.getQueryString();
+		// Remove any live help token
+		if (qs != null) {
+			qs = qs.replaceFirst("^token=[a-z0-9-]{36}", ""); //$NON-NLS-1$ //$NON-NLS-2$
+			qs = qs.replaceFirst("&token=[a-z0-9-]{36}", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		}
 		if (qs != null && qs.length() > 0)
 			query = "?" + qs; //$NON-NLS-1$
 	}

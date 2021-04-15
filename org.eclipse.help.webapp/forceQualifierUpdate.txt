@@ -7,3 +7,4 @@ Bug 510404 - Comparator errors in I20170112-2000
 Bug 558450 - Unanticipated comparator errors in I20191218-1805
 Bug 571423 - Update to jetty-9.4.37.v20210219
 >>>>>>> CHANGE (02da65 Bug 571423 - Update to jetty-9.4.37.v20210219)
+Bug 569855 (CVE-2020-27225) - Vulnerability in Eclipse livehelp.

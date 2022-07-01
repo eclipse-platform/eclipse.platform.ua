@@ -7,3 +7,4 @@ Bug 571423 - Update to jetty-9.4.37.v20210219
 Bug 569855 - Vulnerability in Eclipse livehelp (CVE-2020-27225)
 Bug 573066 - Update to Jetty 9.4.40
 Bug 576203 - Update to Jetty 9.4.43
+Update to Jetty 9.4.48

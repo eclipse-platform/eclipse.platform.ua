@@ -26,7 +26,6 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.help.internal.base.HelpBasePlugin;
 import org.eclipse.help.internal.util.ProductPreferences;
 import org.eclipse.help.internal.webapp.data.CssUtil;
-import org.eclipse.help.internal.webapp.data.UrlUtil;
 import org.eclipse.help.webapp.IFilter;
 
 /**
@@ -61,9 +60,7 @@ public class InjectionFilter implements IFilter {
 		if (uri == null || !uri.endsWith("html") && !uri.endsWith("htm") && !isNav) { //$NON-NLS-1$ //$NON-NLS-2$
 			return out;
 		}
-		if (UrlUtil.isBot(req)) {
-			return out;
-		}
+
 		String pathInfo = req.getPathInfo();
 		if (pathInfo == null) {
 			return out;

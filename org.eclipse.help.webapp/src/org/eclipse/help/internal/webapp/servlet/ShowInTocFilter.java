@@ -39,8 +39,7 @@ public class ShowInTocFilter implements IFilter {
 
 		if ("/nftopic".equals(req.getServletPath()) ||  //$NON-NLS-1$
 			"/ntopic".equals(req.getServletPath()) ||  //$NON-NLS-1$
-			"/rtopic".equals(req.getServletPath()) ||  //$NON-NLS-1$
-			UrlUtil.isBot(req)) {
+			"/rtopic".equals(req.getServletPath()) ) {  //$NON-NLS-1$
 			return out;
 		}
 

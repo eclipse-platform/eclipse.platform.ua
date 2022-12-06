@@ -260,16 +260,6 @@ public class UrlUtil {
 		}
 	}
 
-	public static boolean isBot(HttpServletRequest request) {
-		String agent = request.getHeader("User-Agent"); //$NON-NLS-1$
-		if (agent==null)
-			return false;
-		agent=agent.toLowerCase(Locale.ENGLISH);
-		// sample substring Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
-		return agent.contains("bot") || agent.contains("crawl")//$NON-NLS-1$ //$NON-NLS-2$
-				|| request.getParameter("bot") != null;//$NON-NLS-1$
-	}
-
 	public static boolean isGecko(HttpServletRequest request) {
 		String agent = request.getHeader("User-Agent"); //$NON-NLS-1$
 		return isGecko(agent);

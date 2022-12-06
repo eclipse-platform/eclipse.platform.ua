@@ -49,9 +49,7 @@ public class BreadcrumbsFilter implements IFilter {
 		if ("/rtopic".equals(req.getServletPath()) || "/nftopic".equals(req.getServletPath())) { //$NON-NLS-1$ //$NON-NLS-2$
 			return out;
 		}
-		if (UrlUtil.isBot(req)) {
-			return out;
-		}
+
 		if ("true".equals(req.getParameter("noframes"))) {  //$NON-NLS-1$//$NON-NLS-2$
 			return out;
 		}

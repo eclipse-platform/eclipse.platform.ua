@@ -75,6 +75,7 @@
         <configuration>
           <useUIHarness>true</useUIHarness>
           <useUIThread>true</useUIThread>
+          <appArgLine>-consoleLog</appArgLine>
           <product>org.eclipse.sdk.ide</product>
         </configuration>
       </plugin>

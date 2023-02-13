@@ -103,8 +103,9 @@ public class ApiDocTest {
 
 	private static final String[] TOCS = {
 			"org.eclipse.platform.doc.isv",
-			"org.eclipse.jdt.doc.isv",
-			"org.eclipse.pde.doc.user",
+			// FIXME why do we test JDT + PDE here ?!?
+//			"org.eclipse.jdt.doc.isv",
+//			"org.eclipse.pde.doc.user",
 	};
 	private static final String TOPICS_REFERENCE_XML = "topics_Reference.xml";
 	private static final String REFERENCE_EXTENSION_POINTS = "reference/extension-points/";

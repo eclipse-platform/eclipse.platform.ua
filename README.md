@@ -11,23 +11,20 @@ Contributor License Agreement:
 ------------------------------
 Before your contribution can be accepted by the project, you need to create and electronically sign the [Eclipse Foundation Contributor License Agreement (CLA).](http://www.eclipse.org/legal/CLA.php)
 
-Contact:
---------
-Contact the project developers via the [project's "dev" list.](https://accounts.eclipse.org/mailing-list/platform-dev)
-
-Search for bugs:
-----------------
-Track ongoing development and issues in [Bugzilla.](https://bugs.eclipse.org/bugs)<br>
-Information regarding source code management, builds, coding standards, and more and be found under [here.](https://projects.eclipse.org/projects/eclipse.platform.ua/developer)
-
 Create a new bug:
 -----------------
 You can register bugs and feature requests in the Github Issue Tracker. Remember that contributions are always welcome!
 - [View existing UA issues](https://github.com/eclipse-platform/eclipse.platform.ua/issues)
 - [New UA issue](https://github.com/eclipse-platform/eclipse.platform.ua/issues/new)
+- 
+Information regarding source code management, builds, coding standards, and more and be found under [here.](https://projects.eclipse.org/projects/eclipse.platform.ua/developer)
 
 Please bear in mind that this project is almost entirely developed by volunteers. If you do not provide the implementation yourself (or pay someone to do it for you), the bug might never get fixed. If it is a serious bug, other people than you might care enough to provide a fix.
 
 License:
 -----------------
 [Eclipse Public License (EPL) 2.0](https://www.eclipse.org/legal/epl-2.0/)
+
+Contact:
+--------
+Contact the project developers via the [project's "dev" list.](https://accounts.eclipse.org/mailing-list/platform-dev)
